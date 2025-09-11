@@ -1,4 +1,4 @@
-# zzzSpot
+# SnoozeSpot
 Where naps meet the map.
 ##
 
