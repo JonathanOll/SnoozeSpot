@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot
+package com.example
 
 import io.ktor.server.application.*
 
@@ -7,5 +7,10 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
+    configureFrameworks()
+    configureSerialization()
+    configureMonitoring()
+    configureSecurity()
+    configureHTTP()
     configureRouting()
 }

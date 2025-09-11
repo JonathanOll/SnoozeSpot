@@ -28,32 +28,28 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import org.slf4j.event.*
 
-fun Application.configureRouting() {
-    install(StatusPages) {
-        exception<Throwable> { call, cause ->
-            call.respondText(text = "500: $cause" , status = HttpStatusCode.InternalServerError)
-        }
+fun Application.configureHTTP() {
+    routing {
+        openAPI(path = "openapi")
     }
-    install(Resources)
-    install(RequestValidation) {
-        validate<String> { bodyText ->
-            if (!bodyText.startsWith("Hello"))
-                ValidationResult.Invalid("Body text should start with 'Hello'")
-            else ValidationResult.Valid
+    install(HttpsRedirect) {
+            // The port to redirect to. By default 443, the default HTTPS port.
+            sslPort = 443
+            // 301 Moved Permanently, or 302 Found redirect.
+            permanentRedirect = true
+        }
+    install(DefaultHeaders) {
+        header("X-Engine", "Ktor") // will send this header with each response
+    }
+    install(AsyncApiPlugin) {
+        extension = AsyncApiExtension.builder {
+            info {
+                title("Sample API")
+                version("1.0.0")
+            }
         }
     }
     routing {
-        get("/") {
-            call.respondText("Hello World!")
-        }
-        // Static plugin. Try to access `/static/index.html`
-        staticResources("/static", "static")
-        get<Articles> { article ->
-            // Get all articles ...
-            call.respond("List of articles sorted starting from ${article.sort}")
-        }
+        swaggerUI(path = "openapi")
     }
 }
-@Serializable
-@Resource("/articles")
-class Articles(val sort: String? = "new")

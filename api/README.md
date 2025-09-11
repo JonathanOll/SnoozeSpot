@@ -1,4 +1,4 @@
-# api
+# ktor-sample
 
 This project was created using the [Ktor Project Generator](https://start.ktor.io).
 
@@ -12,9 +12,25 @@ Here are some useful links to get you started:
 
 Here's a list of features included in this project:
 
-| Name                                               | Description                                                 |
-| ----------------------------------------------------|------------------------------------------------------------- |
-| [Routing](https://start.ktor.io/p/routing-default) | Allows to define structured routes and associated handlers. |
+| Name                                                                   | Description                                                                        |
+| ------------------------------------------------------------------------|------------------------------------------------------------------------------------ |
+| [Dependency Injection](https://start.ktor.io/p/ktor-di)                | Enables dependency injection for your server                                       |
+| [Content Negotiation](https://start.ktor.io/p/content-negotiation)     | Provides automatic content conversion according to Content-Type and Accept headers |
+| [Routing](https://start.ktor.io/p/routing)                             | Provides a structured routing DSL                                                  |
+| [kotlinx.serialization](https://start.ktor.io/p/kotlinx-serialization) | Handles JSON serialization using kotlinx.serialization library                     |
+| [Call Logging](https://start.ktor.io/p/call-logging)                   | Logs client requests                                                               |
+| [Status Pages](https://start.ktor.io/p/status-pages)                   | Provides exception handling for routes                                             |
+| [Static Content](https://start.ktor.io/p/static-content)               | Serves static files from defined locations                                         |
+| [Resources](https://start.ktor.io/p/resources)                         | Provides type-safe routing                                                         |
+| [Request Validation](https://start.ktor.io/p/request-validation)       | Adds validation for incoming requests                                              |
+| [Authentication](https://start.ktor.io/p/auth)                         | Provides extension point for handling the Authorization header                     |
+| [Authentication JWT](https://start.ktor.io/p/auth-jwt)                 | Handles JSON Web Token (JWT) bearer authentication scheme                          |
+| [Authentication Basic](https://start.ktor.io/p/auth-basic)             | Handles 'Basic' username / password authentication scheme                          |
+| [OpenAPI](https://start.ktor.io/p/openapi)                             | Serves OpenAPI documentation                                                       |
+| [HttpsRedirect](https://start.ktor.io/p/https-redirect)                | Redirects insecure HTTP requests to the respective HTTPS endpoint                  |
+| [Default Headers](https://start.ktor.io/p/default-headers)             | Adds a default set of headers to HTTP responses                                    |
+| [AsyncAPI](https://start.ktor.io/p/asyncapi)                           | Generates and serves AsyncAPI documentation                                        |
+| [Swagger](https://start.ktor.io/p/swagger)                             | Serves Swagger UI for your project                                                 |
 
 ## Building & Running
 

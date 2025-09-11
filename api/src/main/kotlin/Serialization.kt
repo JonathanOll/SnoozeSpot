@@ -28,32 +28,13 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import org.slf4j.event.*
 
-fun Application.configureRouting() {
-    install(StatusPages) {
-        exception<Throwable> { call, cause ->
-            call.respondText(text = "500: $cause" , status = HttpStatusCode.InternalServerError)
-        }
-    }
-    install(Resources)
-    install(RequestValidation) {
-        validate<String> { bodyText ->
-            if (!bodyText.startsWith("Hello"))
-                ValidationResult.Invalid("Body text should start with 'Hello'")
-            else ValidationResult.Valid
-        }
+fun Application.configureSerialization() {
+    install(ContentNegotiation) {
+        json()
     }
     routing {
-        get("/") {
-            call.respondText("Hello World!")
-        }
-        // Static plugin. Try to access `/static/index.html`
-        staticResources("/static", "static")
-        get<Articles> { article ->
-            // Get all articles ...
-            call.respond("List of articles sorted starting from ${article.sort}")
+        get("/json/kotlinx-serialization") {
+            call.respond(mapOf("hello" to "world"))
         }
     }
 }
-@Serializable
-@Resource("/articles")
-class Articles(val sort: String? = "new")
