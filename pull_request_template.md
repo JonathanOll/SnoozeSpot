@@ -1,6 +1,6 @@
 # Titre du Commit
 
-## Liste des symboles et mots à décommenter si nécessaire
+## Liste des types de changements (enlever les non nécessaires)
 - 🔨 `refactor` : Refactorisation du code
 - 🛠️ `fix` : Correction de bugs
 - 📝 `docs` : Mise à jour de la documentation
@@ -11,10 +11,10 @@
 - 🔒 `security` : Améliorations de sécurité
 
 ## Description des changements
-// Mettre une description claire et concise des modifications apportées
+Mettre une description claire et concise des modifications apportées
 
 ## Lien vers le ticket Trello
-// Lien direct vers le ticket Trello ou la tâche associée à ce commit
+Lien direct vers le ticket Trello ou la tâche associée à ce commit
 
 ## Checklist
 - [ ] Je me suis self-review
@@ -23,5 +23,5 @@
 - [ ] Le code a été relu par un autre membre de l'équipe
 
 ## Comment tester les changements ?
-- Décrire les étapes pour tester les changements (par exemple, démarrer l'application, exécuter des tests spécifiques, etc.)
-- Ajouter des instructions spécifiques si des configurations sont nécessaires (par exemple, des variables d'environnement, des scripts de setup, etc.)
+Décrire les étapes pour tester les changements (par exemple, démarrer l'application, exécuter des tests spécifiques, etc.)
+Ajouter des instructions spécifiques si des configurations sont nécessaires (par exemple, des variables d'environnement, des scripts de setup, etc.)
