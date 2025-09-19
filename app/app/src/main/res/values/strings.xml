@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">SnoozeSpot</string>
+    <string name="app_name" translatable="false">SnoozeSpot</string>
+    <string name="comments">Commentaires</string>
+    <string name="global">Global</string>
 </resources>

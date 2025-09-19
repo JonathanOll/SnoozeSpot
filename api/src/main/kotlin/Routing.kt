@@ -49,6 +49,23 @@ fun Application.configureRouting() {
             call.respond(DataTest("Ktor"))
         }
 
+        get("/users") {
+            call.respondText("""
+                {
+                    "user_id": 1,
+                    "first_name": "Benji",
+                    "last_name": "Cade",
+                    "age": 84,
+                    "email": "bcade0@google.de",
+                    "country": "Thailand",
+                    "postal_code": 34260,
+                    "favorite_color": "red",
+                    "nap_duration": 35,
+                    "nap_location": "08786 Moulton Street"
+                }
+            """.trimIndent())
+        }
+
         get("/") {
             call.respondText("Hello World!")
         }
