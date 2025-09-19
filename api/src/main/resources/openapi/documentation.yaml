@@ -1,14 +1,40 @@
-openapi: "3.0.3"
+openapi: "3.1.0"
 info:
-  title: "Application API"
-  description: "Application API"
+  title: "ktor_sample API"
+  description: "ktor_sample API"
   version: "1.0.0"
 servers:
-  - url: "http://0.0.0.0:8080"
+  - url: "https://ktor_sample"
 paths:
+  /protected/route/basic:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /protected/route/form:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
   /:
     get:
-      description: "Hello World!"
+      description: ""
       responses:
         "200":
           description: "OK"
@@ -19,5 +45,61 @@ paths:
               examples:
                 Example#1:
                   value: "Hello World!"
+  /articles:
+    get:
+      description: ""
+      parameters:
+        - name: "sort"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK <br> Get all articles ..."
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+  /name:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DataTest"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    name: "Ktor"
+  /json/kotlinx-serialization:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
 components:
-  schemas: {}
+  schemas:
+    DataTest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+      required:
+        - "name"
+    Map:
+      type: "object"
+      properties: { }
+    Map_String:
+      type: "string"

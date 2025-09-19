@@ -25,8 +25,10 @@ import io.ktor.server.request.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.swagger.v3.oas.annotations.Operation
 import kotlinx.serialization.Serializable
 import org.slf4j.event.*
+import javax.xml.crypto.Data
 
 fun Application.configureRouting() {
     install(StatusPages) {
@@ -43,6 +45,10 @@ fun Application.configureRouting() {
         }
     }
     routing {
+        get("/name") {
+            call.respond(DataTest("Ktor"))
+        }
+
         get("/") {
             call.respondText("Hello World!")
         }
@@ -54,6 +60,7 @@ fun Application.configureRouting() {
         }
     }
 }
+
 @Serializable
 @Resource("/articles")
 class Articles(val sort: String? = "new")
