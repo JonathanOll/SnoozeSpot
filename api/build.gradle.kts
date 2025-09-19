@@ -2,8 +2,6 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktor)
     alias(libs.plugins.kotlin.plugin.serialization)
-    id("io.ktor.server.application")
-    id("org.openapi.generator") version "5.3.1"
 }
 
 group = "com.example"

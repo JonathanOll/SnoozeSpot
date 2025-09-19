@@ -79,6 +79,16 @@ paths:
                   description: ""
                   value:
                     name: "Ktor"
+  /users:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
   /json/kotlinx-serialization:
     get:
       description: ""

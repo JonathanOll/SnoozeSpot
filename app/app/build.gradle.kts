@@ -87,6 +87,13 @@ dependencies {
     implementation(libs.coil.network.okhttp)
 
     implementation(libs.androidx.ui.text.google.fonts)
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.androidx.material.v160)
+    implementation(libs.androidx.runtime.livedata.v160)
+    implementation(libs.androidx.lifecycle.runtime.ktx.v294)
+    implementation(libs.androidx.lifecycle.viewmodel.compose.v294)
 }
 
 openApiGenerate {
