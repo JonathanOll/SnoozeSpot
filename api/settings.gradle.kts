@@ -1,4 +1,4 @@
-rootProject.name = "ktor-sample"
+rootProject.name = "snoozespot-api"
 
 dependencyResolutionManagement {
     repositories {

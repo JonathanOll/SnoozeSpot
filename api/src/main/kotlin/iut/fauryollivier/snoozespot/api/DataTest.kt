@@ -1,4 +1,4 @@
-package com.example
+package iut.fauryollivier.snoozespot.api
 
 import kotlinx.serialization.Serializable
 

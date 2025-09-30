@@ -1,10 +1,10 @@
 openapi: "3.1.0"
 info:
-  title: "ktor_sample API"
-  description: "ktor_sample API"
+  title: "snoozespot_api API"
+  description: "snoozespot_api API"
   version: "1.0.0"
 servers:
-  - url: "https://ktor_sample"
+  - url: "https://snoozespot_api"
 paths:
   /protected/route/basic:
     get:

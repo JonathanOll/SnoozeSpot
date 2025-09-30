@@ -69,3 +69,4 @@ obj/
 
 # Ne pas ignorer Api.kt dans le dossier api du front
 !/app/app/src/main/java/iut/fauryollivier/snoozespot/api/Api.kt
+database/database.db

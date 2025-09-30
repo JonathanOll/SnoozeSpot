@@ -1,0 +1,149 @@
+@startuml
+
+entity "user" {
+  id INTEGER PRIMARY KEY
+  username TEXT NOT NULL UNIQUE
+  email TEXT NOT NULL UNIQUE
+  password TEXT NOT NULL
+  profile_picture_id INTEGER
+  role_id INTEGER NOT NULL
+  karma INTEGER NOT NULL DEFAULT 0
+  can_connect INTEGER NOT NULL DEFAULT 1 -- BOOLEAN
+  created_at TEXT NOT NULL -- DATETIME en ISO8601
+  deleted_at TEXT -- DATETIME en ISO8601
+}
+
+entity "role" {
+  id INTEGER PRIMARY KEY
+  name TEXT NOT NULL UNIQUE
+  description TEXT
+}
+
+entity "permission" {
+  id INTEGER PRIMARY KEY
+  name TEXT NOT NULL UNIQUE
+  description TEXT
+}
+
+entity "role_permission" {
+  role_id INTEGER NOT NULL
+  permission_id INTEGER NOT NULL
+  PRIMARY KEY (role_id, permission_id)
+}
+
+entity "file" {
+  id INTEGER PRIMARY KEY
+  name TEXT NOT NULL
+  path TEXT NOT NULL UNIQUE
+  type TEXT NOT NULL
+  can_be_used INTEGER NOT NULL DEFAULT 1 -- BOOLEAN 
+  created_at TEXT NOT NULL -- DATETIME en ISO8601
+  deleted_at TEXT -- DATETIME en ISO8601
+}
+
+entity "spot_attribute" {
+  id INTEGER PRIMARY KEY
+  name TEXT NOT NULL UNIQUE
+  icon_id INTEGER
+}
+
+entity "spot_attribute_link" {
+  spot_id INTEGER NOT NULL
+  attribute_id INTEGER NOT NULL
+  PRIMARY KEY (spot_id, attribute_id)
+}
+
+entity "spot" {
+  id INTEGER PRIMARY KEY
+  creator_id INTEGER NOT NULL
+  name TEXT NOT NULL
+  description TEXT NOT NULL
+  latitude REAL NOT NULL
+  longitude REAL NOT NULL
+  can_be_displayed INTEGER NOT NULL DEFAULT 1
+  created_at TEXT NOT NULL -- DATETIME en ISO8601
+  deleted_at TEXT -- DATETIME en ISO8601
+}
+
+entity "spot_picture" {
+  spot_id INTEGER NOT NULL
+  file_id INTEGER NOT NULL
+  PRIMARY KEY (spot_id, file_id)
+}
+
+entity "spot_comment" {
+  id INTEGER PRIMARY KEY
+  user_id INTEGER NOT NULL
+  spot_id INTEGER NOT NULL
+  description TEXT NOT NULL
+  rating INTEGER NOT NULL
+  created_at TEXT NOT NULL -- DATETIME en ISO8601
+  deleted_at TEXT -- DATETIME en ISO8601
+}
+
+entity "spot_like" {
+  user_id INTEGER NOT NULL
+  spot_id INTEGER NOT NULL
+  PRIMARY KEY (user_id, spot_id)
+}
+
+entity "post" {
+  id INTEGER PRIMARY KEY
+  user_id INTEGER NOT NULL
+  content TEXT NOT NULL
+  like_count INTEGER INTEGER NOT NULL DEFAULT 0
+  can_be_displayed INTEGER NOT NULL DEFAULT 1
+  created_at TEXT NOT NULL -- DATETIME en ISO8601
+  deleted_at TEXT -- DATETIME en ISO8601
+}
+
+entity "post_picture" {
+  post_id INTEGER NOT NULL
+  file_id INTEGER NOT NULL
+  PRIMARY KEY (post_id, file_id)
+}
+
+entity "post_comment" {
+  id INTEGER PRIMARY KEY
+  user_id INTEGER NOT NULL
+  post_id INTEGER NOT NULL
+  content TEXTNOT NULL
+  created_at TEXT NOT NULL -- DATETIME en ISO8601
+  deleted_at TEXT -- DATETIME en ISO8601
+}
+
+entity "post_like" {
+  user_id INTEGER NOT NULL
+  post_id INTEGER NOT NULL
+  PRIMARY KEY (user_id, post_id)
+}
+
+entity "following" {
+  follower_id INTEGER NOT NULL
+  followed_id INTEGER NOT NULL
+  PRIMARY KEY (follower_id, followed_id)
+}
+
+user }-- role
+role_permission }-- role
+role_permission }-- permission
+user }-- file
+spot_attribute }-- file
+spot_attribute_link }-- spot
+spot_attribute_link }-- spot_attribute
+spot_picture }-- spot
+spot_picture }-- file
+post }-- user
+post_picture }-- post
+post_picture }-- file
+post_comment }-- user
+post_comment }-- post
+spot_comment }-- user
+spot_comment }-- spot
+spot_like }-- user
+spot_like }-- spot
+post_like }-- user
+post_like }-- post
+following }-- user
+
+@enduml

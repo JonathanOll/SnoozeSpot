@@ -15,7 +15,7 @@ import com.example.compose.SnoozeSpotTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import iut.fauryollivier.snoozespot.app.components.BottomBar
 import iut.fauryollivier.snoozespot.app.components.TopBar
-import iut.fauryollivier.snoozespot.app.pages.feed.NavGraphs
+import iut.fauryollivier.snoozespot.app.pages.NavGraphs
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

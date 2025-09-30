@@ -76,6 +76,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.logging.interceptor)
 
     implementation(libs.compose.destinations.core)
     ksp(libs.compose.destinations.ksp)
@@ -105,4 +106,14 @@ openApiGenerate {
     outputDir = file("${rootDir.absolutePath}/app/src/main/java/iut/fauryollivier/snoozespot/api").absolutePath
     apiPackage = "iut.fauryollivier.snoozespot.api"
     modelPackage = "iut.fauryollivier.snoozespot.api.model"
+
+    configOptions.set(
+        mapOf(
+            "useCoroutines" to "true",
+            //"generateRoomModels" to "true",
+            "serializableModel" to "true",
+            "sortModelPropertiesByRequiredFlag" to "true",
+            "sortParamsByRequiredFlag" to "true",
+        )
+    )
 }
