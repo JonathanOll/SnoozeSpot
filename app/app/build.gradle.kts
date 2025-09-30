@@ -103,9 +103,9 @@ openApiGenerate {
     generateModelTests = false
     generateApiTests = false
     inputSpec = file("${rootDir.absolutePath}/../api/src/main/resources/openapi/documentation.yaml").toURI().toString()
-    outputDir = file("${rootDir.absolutePath}/app/src/main/java/iut/fauryollivier/snoozespot/api").absolutePath
-    apiPackage = "iut.fauryollivier.snoozespot.api"
-    modelPackage = "iut.fauryollivier.snoozespot.api.model"
+    outputDir = file("${rootDir.absolutePath}/app/src/main/java/iut/fauryollivier/snoozespot/api/generated").absolutePath
+    apiPackage = "iut.fauryollivier.snoozespot.generated.api"
+    modelPackage = "iut.fauryollivier.snoozespot.generated.api.model"
 
     configOptions.set(
         mapOf(

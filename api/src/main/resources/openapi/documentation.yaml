@@ -79,6 +79,29 @@ paths:
                   description: ""
                   value:
                     name: "Ktor"
+  /spots/1:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Spot"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    id: 1
+                    creatorId: 42
+                    name: "Chill Spot in the Woods"
+                    description: "A quiet and peaceful place surrounded by trees."
+                    latitude: 45.764043
+                    longitude: 4.835659
+                    canBeDisplayed: true
+                    createdAt: "null"
+                    deletedAt: "null"
   /users:
     get:
       description: ""
@@ -108,6 +131,43 @@ components:
           type: "string"
       required:
         - "name"
+    Spot:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        creatorId:
+          type: "integer"
+          format: "int32"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        latitude:
+          type: "number"
+          format: "double"
+        longitude:
+          type: "number"
+          format: "double"
+        canBeDisplayed:
+          type: "boolean"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        deletedAt:
+          type: "string"
+          format: "date-time"
+          nullable: true
+      required:
+        - "id"
+        - "creatorId"
+        - "name"
+        - "description"
+        - "latitude"
+        - "longitude"
+        - "canBeDisplayed"
+        - "createdAt"
     Map:
       type: "object"
       properties: { }

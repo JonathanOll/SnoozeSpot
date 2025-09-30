@@ -10,7 +10,9 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import iut.fauryollivier.snoozespot.models.Spot
 import kotlinx.serialization.Serializable
+import java.time.LocalDateTime
 
 fun Application.configureRouting() {
     install(StatusPages) {
@@ -51,6 +53,23 @@ fun Application.configureRouting() {
         get("/") {
             call.respondText("Hello World!")
         }
+
+        get("/spots/1") {
+            val mockSpot = Spot(
+                id = 1,
+                creatorId = 42,
+                name = "Chill Spot in the Woods",
+                description = "A quiet and peaceful place surrounded by trees.",
+                latitude = 45.764043,
+                longitude = 4.835659,
+                canBeDisplayed = true,
+                createdAt = LocalDateTime.now().minusDays(5),
+                deletedAt = null
+            )
+
+            call.respond(mockSpot)
+        }
+
         // Static plugin. Try to access `/static/index.html`
         staticResources("/static", "static")
         get<Articles> { article ->

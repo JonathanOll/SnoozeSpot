@@ -65,8 +65,7 @@ obj/
 .externalNativeBuild
 
 #Generated Api Code
-/app/app/src/main/java/iut/fauryollivier/snoozespot/api
+/app/app/src/main/java/iut/fauryollivier/snoozespot/api/generated/
 
-# Ne pas ignorer Api.kt dans le dossier api du front
-!/app/app/src/main/java/iut/fauryollivier/snoozespot/api/Api.kt
+# La bd sqlite
 database/database.db
