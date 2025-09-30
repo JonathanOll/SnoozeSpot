@@ -14,6 +14,11 @@ import iut.fauryollivier.snoozespot.models.Spot
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
+
+@Serializable
+@Resource("spot/{id}")
+data class SpotById(val id: Int)
+
 fun Application.configureRouting() {
     install(StatusPages) {
         exception<Throwable> { call, cause ->
@@ -54,9 +59,9 @@ fun Application.configureRouting() {
             call.respondText("Hello World!")
         }
 
-        get("/spots/1") {
+        get<SpotById> { params ->
             val mockSpot = Spot(
-                id = 1,
+                id = params.id,
                 creatorId = 42,
                 name = "Chill Spot in the Woods",
                 description = "A quiet and peaceful place surrounded by trees.",

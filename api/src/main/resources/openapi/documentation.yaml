@@ -79,9 +79,16 @@ paths:
                   description: ""
                   value:
                     name: "Ktor"
-  /spots/1:
+  /spot/{id}:
     get:
       description: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
       responses:
         "200":
           description: "OK"
@@ -93,7 +100,7 @@ paths:
                 Example#1:
                   description: ""
                   value:
-                    id: 1
+                    id: "null"
                     creatorId: 42
                     name: "Chill Spot in the Woods"
                     description: "A quiet and peaceful place surrounded by trees."
