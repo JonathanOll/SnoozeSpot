@@ -2,8 +2,8 @@ package iut.fauryollivier.snoozespot.api.repositories
 
 import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.models.User
-import org.jetbrains.exposed.v1.jdbc.selectAll
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class UserRepository {
     fun getAll(): List<User> = transaction {

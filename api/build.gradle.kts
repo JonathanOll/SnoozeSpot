@@ -38,11 +38,11 @@ dependencies {
     implementation(libs.logback.classic)
 
     // Database (Exposed + JDBC drivers)
-    implementation(libs.exposed.core)
-    implementation(libs.exposed.jdbc)
-    implementation("org.jetbrains.exposed:exposed-java-time:1.0.0-rc-1")
-    implementation(libs.h2)
+    implementation("org.jetbrains.exposed:exposed-core:0.41.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.41.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")
     implementation("org.xerial:sqlite-jdbc:3.41.2.2")
+    implementation("org.jetbrains.exposed:exposed-java-time:0.41.1")
 
     // AsyncAPI
     implementation(libs.kotlin.asyncapi.ktor)
