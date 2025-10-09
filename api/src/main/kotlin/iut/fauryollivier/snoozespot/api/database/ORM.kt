@@ -30,7 +30,7 @@ fun insertDefault () {
         }
 
         Tables.Posts.insert {
-            it[userId] = user
+            it[userId] = user.value
             it[content] = "This is a sample post content"
             it[likeCount] = 123
             it[createdAt] = LocalDateTime.now().minusDays(3)

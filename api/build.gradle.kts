@@ -12,31 +12,43 @@ application {
 }
 
 dependencies {
-    implementation(libs.ktor.server.di)
-    implementation(libs.ktor.server.content.negotiation)
+    // Ktor Core & Server
     implementation(libs.ktor.server.core)
-    implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.ktor.server.call.logging)
+    implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.host.common)
+    implementation(libs.ktor.server.call.logging)
     implementation(libs.ktor.server.status.pages)
+    implementation(libs.ktor.server.default.headers)
+    implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.resources)
     implementation(libs.ktor.server.request.validation)
     implementation(libs.ktor.server.auth)
     implementation(libs.ktor.server.auth.jwt)
-    implementation(libs.ktor.server.openapi)
     implementation(libs.ktor.server.http.redirect)
-    implementation(libs.ktor.server.default.headers)
-    implementation(libs.kotlin.asyncapi.ktor)
+    implementation(libs.ktor.server.openapi)
     implementation(libs.ktor.server.swagger)
-    implementation(libs.ktor.server.netty)
-    implementation(libs.logback.classic)
     implementation(libs.ktor.server.config.yaml)
-    testImplementation(libs.ktor.server.test.host)
-    testImplementation(libs.kotlin.test.junit)
+
+    // Dependency Injection (Koin)
+    implementation("io.insert-koin:koin-ktor:3.4.0")
+    implementation("io.insert-koin:koin-logger-slf4j:3.4.0")
+
+    // Logging
+    implementation(libs.logback.classic)
+
+    // Database (Exposed + JDBC drivers)
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
     implementation("org.jetbrains.exposed:exposed-java-time:1.0.0-rc-1")
     implementation(libs.h2)
     implementation("org.xerial:sqlite-jdbc:3.41.2.2")
+
+    // AsyncAPI
+    implementation(libs.kotlin.asyncapi.ktor)
+
+    // Testing
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.kotlin.test.junit)
 }
 

@@ -7,10 +7,10 @@ import java.time.LocalDateTime
 @Serializable
 data class Post(
     val id: Int,
-    val userId: Int,
+    val user: User,
     val content: String,
-    val likeCount: Int = 0,
-    val canBeDisplayed: Boolean = true,
+    val likeCount: Int,
     @Contextual val createdAt: LocalDateTime,
-    @Contextual val deletedAt: LocalDateTime? = null
+    val pictures: List<File> = emptyList(),
+    val comments: List<PostComment> = emptyList()
 )

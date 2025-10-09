@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.models
+package iut.fauryollivier.snoozespot.api.models
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
@@ -7,12 +7,15 @@ import java.time.LocalDateTime
 @Serializable
 data class Spot(
     val id: Int,
-    val creatorId: Int,
+    val creator: User,
     val name: String,
     val description: String,
     val latitude: Double,
     val longitude: Double,
-    val canBeDisplayed: Boolean = true,
+    val canBeDisplayed: Int, // 1 or 0
+    val likeCount: Int,
     @Contextual val createdAt: LocalDateTime,
-    @Contextual val deletedAt: LocalDateTime? = null
+    val pictures: List<File> = emptyList(),
+    val attributes: List<SpotAttribute> = emptyList(),
+    val comments: List<SpotComment> = emptyList(),
 )
