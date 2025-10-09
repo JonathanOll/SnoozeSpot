@@ -6,6 +6,7 @@ import org.jetbrains.exposed.v1.jdbc.SchemaUtils
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.insertAndGetId
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import java.time.LocalDateTime
 
 fun resetDatabase() {
     transaction {
@@ -20,13 +21,23 @@ fun insertDefault () {
             it[name] = "User"
         }
 
-        Tables.Users.insert {
+        val user = Tables.Users.insertAndGetId {
             it[id] = 1
             it[username] = "Template"
             it[email] = "template@gmail.com"
             it[password] = "password"
             it[this.roleId] = roleId.value
         }
+
+        Tables.Posts.insert {
+            it[userId] = user
+            it[content] = "This is a sample post content"
+            it[likeCount] = 123
+            it[createdAt] = LocalDateTime.now().minusDays(3)
+            it[deletedAt] = null
+        }
+
+
     }
 }
 

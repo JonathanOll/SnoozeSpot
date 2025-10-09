@@ -6,7 +6,6 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,9 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Comment
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Comment
@@ -33,13 +30,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.ramcosta.composedestinations.annotation.Destination
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.models.Post
+import iut.fauryollivier.snoozespot.models.PostModel
 
 
 @Composable
-fun FeedElement(post: Post) {
+fun FeedElement(postModel: PostModel) {
     Column(
         modifier = Modifier
             .border(1.dp, Color(0xFFEDEDED))
@@ -58,7 +54,7 @@ fun FeedElement(post: Post) {
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                Text(post.user.name)
+                Text(postModel.user.name)
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -74,18 +70,18 @@ fun FeedElement(post: Post) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = post.content,
+            text = postModel.content,
             fontSize = 16.sp
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        if (post.medias.isNotEmpty())
+        if (postModel.medias.isNotEmpty())
             Row(
                 modifier = Modifier
                     .horizontalScroll(rememberScrollState())
             ) {
-                post.medias.forEachIndexed { index, it ->
+                postModel.medias.forEachIndexed { index, it ->
                     AsyncImage(
                         model = it,
                         contentDescription = "Picture $index",
@@ -131,7 +127,7 @@ fun FeedElement(post: Post) {
                     .height(40.dp)
             ) {
                 Text(
-                    "${post.likesCount}",
+                    "${postModel.likesCount}",
                     color = Color(0xFF49454F)
                 )
 

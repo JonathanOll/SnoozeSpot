@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.api
+package iut.fauryollivier.snoozespot.api.config
 
 import com.asyncapi.kotlinasyncapi.context.service.AsyncApiExtension
 import com.asyncapi.kotlinasyncapi.ktor.AsyncApiPlugin

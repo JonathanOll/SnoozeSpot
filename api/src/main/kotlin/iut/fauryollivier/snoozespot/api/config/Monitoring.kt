@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.api
+package iut.fauryollivier.snoozespot.api.config
 
 import io.ktor.server.application.*
 import io.ktor.server.plugins.calllogging.*

@@ -10,14 +10,22 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import iut.fauryollivier.snoozespot.api.database.Tables
+import iut.fauryollivier.snoozespot.api.models.Post
 import iut.fauryollivier.snoozespot.models.Spot
 import kotlinx.serialization.Serializable
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.select
 import java.time.LocalDateTime
 
 
 @Serializable
 @Resource("spot/{id}")
 data class SpotById(val id: Int)
+
+@Serializable
+@Resource("post/{id}")
+data class PostById(val id: Int)
 
 fun Application.configureRouting() {
     install(StatusPages) {
@@ -34,27 +42,6 @@ fun Application.configureRouting() {
         }
     }
     routing {
-        get("/name") {
-            call.respond(DataTest("Ktor"))
-        }
-
-        get("/users") {
-            call.respondText("""
-                {
-                    "user_id": 1,
-                    "first_name": "Benji",
-                    "last_name": "Cade",
-                    "age": 84,
-                    "email": "bcade0@google.de",
-                    "country": "Thailand",
-                    "postal_code": 34260,
-                    "favorite_color": "red",
-                    "nap_duration": 35,
-                    "nap_location": "08786 Moulton Street"
-                }
-            """.trimIndent())
-        }
-
         get("/") {
             call.respondText("Hello World!")
         }
@@ -73,6 +60,31 @@ fun Application.configureRouting() {
             )
 
             call.respond(mockSpot)
+        }
+
+        get<PostById> { params ->
+
+            val data = Tables.Posts
+                        .leftJoin(Tables.Users)
+                        .select(Tables.Posts.content, Tables.Posts.id, Tables.Users.id, Tables.Posts.createdAt, Tables.Users.username)
+                        .where { Tables.Posts.id eq params.id }
+            println(data)
+            call.respond(data)
+            //TODO: finir ça
+
+
+            // Mock data for the post
+            val mockPost = Post(
+                id = params.id,
+                userId = 1,
+                content = "This is a sample post content",
+                likeCount = 123,
+                createdAt = LocalDateTime.now().minusDays(3),
+                deletedAt = null
+            )
+
+            // Respond with the mock post
+            call.respond(mockPost)
         }
 
         // Static plugin. Try to access `/static/index.html`

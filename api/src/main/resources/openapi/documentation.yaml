@@ -79,6 +79,34 @@ paths:
                   description: ""
                   value:
                     name: "Ktor"
+  /post/{id}:
+    get:
+      description: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK <br> Respond with the mock post"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Post"
+              examples:
+                Example#1:
+                  description: "Mock data for the post"
+                  value:
+                    id: "null"
+                    userId: 1
+                    content: "This is a sample post content"
+                    likeCount: 123
+                    canBeDisplayed: true
+                    createdAt: "null"
+                    deletedAt: "null"
   /spot/{id}:
     get:
       description: ""
@@ -138,6 +166,37 @@ components:
           type: "string"
       required:
         - "name"
+    Post:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        userId:
+          type: "integer"
+          format: "int32"
+        content:
+          type: "string"
+        likeCount:
+          type: "integer"
+          format: "int32"
+          default: "0"
+        canBeDisplayed:
+          type: "boolean"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        deletedAt:
+          type: "string"
+          format: "date-time"
+          nullable: true
+      required:
+        - "id"
+        - "userId"
+        - "content"
+        - "likeCount"
+        - "canBeDisplayed"
+        - "createdAt"
     Spot:
       type: "object"
       properties:
