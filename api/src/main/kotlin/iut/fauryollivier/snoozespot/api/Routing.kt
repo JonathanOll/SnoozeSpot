@@ -9,16 +9,19 @@ import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import iut.fauryollivier.snoozespot.api.routes.userRoutes
+import iut.fauryollivier.snoozespot.api.database.Tables
+import iut.fauryollivier.snoozespot.api.models.Post
+import iut.fauryollivier.snoozespot.api.routes.postRoutes
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import java.time.LocalDateTime
+import kotlin.Int
 
 
 @Serializable
 @Resource("spot/{id}")
 data class SpotById(val id: Int)
 
-@Serializable
-@Resource("post/{id}")
-data class PostById(val id: Int)
 
 fun Application.configureRouting() {
     install(StatusPages) {
@@ -34,9 +37,15 @@ fun Application.configureRouting() {
             else ValidationResult.Valid
         }
     }
-
     routing {
+        get("/") {
+            call.respondText("Hello World!")
+        }
+
+
+
         userRoutes()
+        postRoutes()
 
         // Static plugin. Try to access `/static/index.html`
         // staticResources("/static", "static")

@@ -11,6 +11,6 @@ data class Post(
     val content: String,
     val likeCount: Int,
     @Contextual val createdAt: LocalDateTime,
-    val pictures: List<File> = emptyList(),
+    val pictures: List<StoredFile> = emptyList(),
     val comments: List<PostComment> = emptyList()
 )

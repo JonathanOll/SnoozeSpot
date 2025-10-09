@@ -109,6 +109,7 @@ openApiGenerate {
 
     configOptions.set(
         mapOf(
+            "dateLibrary" to "string",
             "useCoroutines" to "true",
             //"generateRoomModels" to "true",
             "serializableModel" to "true",

@@ -19,7 +19,6 @@ Lien direct vers le ticket Trello ou la tâche associée à ce commit
 ## Checklist
 - [ ] Je me suis self-review
 - [ ] Je m'assure que le code compile des deux côtés (front-end et back-end)
-- [ ] J'ai ajouté les scripts SQL nécessaires
 - [ ] Le code a été relu par un autre membre de l'équipe
 
 ## Comment tester les changements ?

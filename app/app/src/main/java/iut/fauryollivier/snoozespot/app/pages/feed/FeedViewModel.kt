@@ -1,5 +1,6 @@
-package iut.fauryollivier.snoozespot.app.pages
+package iut.fauryollivier.snoozespot.app.pages.feed
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import iut.fauryollivier.snoozespot.api.data.repositories.PostsRepository
@@ -16,9 +17,9 @@ class FeedViewModel : ViewModel() {
 
     fun fetchPosts() {
         viewModelScope.launch {
-            val post = PostsRepository.getPost(1)
-            if(post != null)
-                postsState.value = listOf(post)
+            val posts = PostsRepository.getPosts()
+            if(posts != null)
+                postsState.value = posts
         }
     }
 

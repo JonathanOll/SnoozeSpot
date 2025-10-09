@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -14,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import iut.fauryollivier.snoozespot.app.pages.FeedViewModel
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
 import iut.fauryollivier.snoozespot.generated.api.model.Post
 import iut.fauryollivier.snoozespot.models.PostModel
@@ -32,30 +30,9 @@ fun FeedScreen(navigator: DestinationsNavigator, modifier: Modifier = Modifier, 
     }
 
     LazyColumn {
-
         items(posts) {
-            // TODO: FeedElement
-            Text(it.content)
+            FeedElement(it)
         }
-    }
-
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-    ) {
-
-
-
-        for (i in 1..10)
-            FeedElement(
-                PostModel(User("Jonatan"),
-                "Nice snooze!",
-                    listOf(
-                        "https://upload.wikimedia.org/wikipedia/commons/6/60/Leonhard_Euler_2.jpg",
-                        "https://upload.wikimedia.org/wikipedia/commons/6/60/Leonhard_Euler_2.jpg",
-                        "https://upload.wikimedia.org/wikipedia/commons/6/60/Leonhard_Euler_2.jpg"
-                    )
-                ))
     }
 
 }

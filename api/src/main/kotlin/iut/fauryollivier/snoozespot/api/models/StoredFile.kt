@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
 @Serializable
-data class File(
+data class StoredFile(
     val id: Int,
     val name: String,
     val path: String,

@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class SpotAttribute(
     val id: Int,
     val name: String,
-    val icon: File?
+    val icon: StoredFile?
 )

@@ -15,26 +15,29 @@ fun resetDatabase() {
     }
 }
 
-fun insertDefault() {
+fun insertDefault () {
     transaction {
         val roleId = Tables.Roles.insertAndGetId {
             it[name] = "User"
         }
 
-        val userId = Tables.Users.insertAndGetId {
+        val user = Tables.Users.insertAndGetId {
+            it[id] = 1
             it[username] = "Template"
             it[email] = "template@gmail.com"
             it[password] = "password"
             it[this.roleId] = roleId.value
         }
 
-        Tables.Posts.insert {
-            it[this.userId] = userId.value
-            it[content] = "This is a sample post content"
-            it[likeCount] = 123
-            it[createdAt] = LocalDateTime.now().minusDays(3)
-            it[deletedAt] = null
-        }
+        for (i in 1..100)
+            Tables.Posts.insert {
+                it[this.userId] = user.value
+                it[content] = "This is a sample post content [$i]"
+                it[likeCount] = 123
+                it[createdAt] = LocalDateTime.now().minusDays(3)
+                it[deletedAt] = null
+            }
+
     }
 }
 

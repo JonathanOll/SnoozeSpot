@@ -9,7 +9,7 @@ data class User(
     val id: Int,
     val username: String,
     val email: String,
-    val profilePicture: File?,
+    val profilePicture: StoredFile?,
     val karma: Int,
     @Contextual val createdAt: LocalDateTime,
     val spots: List<Spot> = emptyList(),

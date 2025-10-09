@@ -31,7 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import iut.fauryollivier.snoozespot.R
+import iut.fauryollivier.snoozespot.generated.api.model.Post
 import iut.fauryollivier.snoozespot.models.PostModel
+import iut.fauryollivier.snoozespot.models.User
 
 
 @Composable
@@ -143,4 +145,16 @@ fun FeedElement(postModel: PostModel) {
             }
         }
     }
+}
+
+@Composable
+fun FeedElement(post: Post) {
+    FeedElement(
+        PostModel(
+            User("TODO"),
+            post.content,
+            emptyList(),
+            post.likeCount
+        )
+    )
 }

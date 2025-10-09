@@ -69,3 +69,6 @@ obj/
 
 # La bd sqlite
 database/database.db
+
+# la doc generee par openapi
+api/docs/**

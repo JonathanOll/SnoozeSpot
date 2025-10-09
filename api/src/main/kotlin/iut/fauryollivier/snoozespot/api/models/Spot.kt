@@ -15,7 +15,7 @@ data class Spot(
     val canBeDisplayed: Int, // 1 or 0
     val likeCount: Int,
     @Contextual val createdAt: LocalDateTime,
-    val pictures: List<File> = emptyList(),
+    val pictures: List<StoredFile> = emptyList(),
     val attributes: List<SpotAttribute> = emptyList(),
     val comments: List<SpotComment> = emptyList(),
 )
