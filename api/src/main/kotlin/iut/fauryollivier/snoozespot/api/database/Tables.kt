@@ -97,15 +97,13 @@ object Tables {
         override val primaryKey = PrimaryKey(userId, spotId)
     }
 
-    object Posts : Table("post") {
-        val id = integer("id").autoIncrement()
+    object Posts : IntIdTable("post") {
         val userId = integer("user_id").references(Users.id)
         val content = varchar("content", 5000)
         val likeCount = integer("like_count").default(0)
         val canBeDisplayed = integer("can_be_displayed").default(1)
         val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
         val deletedAt = datetime("deleted_at").nullable()
-        override val primaryKey = PrimaryKey(id)
     }
 
     object PostPictures : Table("post_picture") {
@@ -114,14 +112,12 @@ object Tables {
         override val primaryKey = PrimaryKey(postId, fileId)
     }
 
-    object PostComments : Table("post_comment") {
-        val id = integer("id").autoIncrement()
+    object PostComments : IntIdTable("post_comment") {
         val userId = integer("user_id").references(Users.id)
         val postId = integer("post_id").references(Posts.id)
         val content = varchar("content", 2000)
         val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
         val deletedAt = datetime("deleted_at").nullable()
-        override val primaryKey = PrimaryKey(id)
     }
 
     object PostLikes : Table("post_like") {

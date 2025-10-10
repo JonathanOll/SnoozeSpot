@@ -17,12 +17,6 @@ import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 import kotlin.Int
 
-
-@Serializable
-@Resource("spot/{id}")
-data class SpotById(val id: Int)
-
-
 fun Application.configureRouting() {
     install(StatusPages) {
         exception<Throwable> { call, cause ->
@@ -42,8 +36,6 @@ fun Application.configureRouting() {
             call.respondText("Hello World!")
         }
 
-
-
         userRoutes()
         postRoutes()
 
@@ -51,7 +43,3 @@ fun Application.configureRouting() {
         // staticResources("/static", "static")
     }
 }
-
-@Serializable
-@Resource("/articles")
-class Articles(val sort: String? = "new")

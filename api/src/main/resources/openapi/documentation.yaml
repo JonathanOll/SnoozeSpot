@@ -22,6 +22,13 @@ paths:
   /posts:
     get:
       description: ""
+      parameters:
+        - name: "page"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
       responses:
         "200":
           description: "OK"
@@ -31,6 +38,39 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/Post"
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePostRequest"
+        required: true
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Post"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Post creation failed"
   /posts/{id}:
     get:
       description: ""
@@ -301,3 +341,10 @@ components:
         - "createdAt"
         - "pictures"
         - "comments"
+    CreatePostRequest:
+      type: "object"
+      properties:
+        content:
+          type: "string"
+      required:
+        - "content"

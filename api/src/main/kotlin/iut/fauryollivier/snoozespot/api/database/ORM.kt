@@ -29,14 +29,24 @@ fun insertDefault () {
             it[this.roleId] = roleId.value
         }
 
-        for (i in 1..100)
-            Tables.Posts.insert {
-                it[this.userId] = user.value
+        for (i in 1..100) {
+            val post = Tables.Posts.insertAndGetId {
+                it[userId] = user.value
                 it[content] = "This is a sample post content [$i]"
                 it[likeCount] = 123
                 it[createdAt] = LocalDateTime.now().minusDays(3)
                 it[deletedAt] = null
             }
+
+            for (j in 1..3)
+                Tables.PostComments.insert {
+                    it[userId] = user.value
+                    it[postId] = post.value
+                    it[content] = "This is a sample post comment [$j] for post [$i]"
+                    it[createdAt] = LocalDateTime.now().minusDays(3)
+                }
+
+        }
 
     }
 }

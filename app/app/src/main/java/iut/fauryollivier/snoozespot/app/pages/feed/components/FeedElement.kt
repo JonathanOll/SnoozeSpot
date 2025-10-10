@@ -32,17 +32,16 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.generated.api.model.Post
-import iut.fauryollivier.snoozespot.models.PostModel
-import iut.fauryollivier.snoozespot.models.User
+import iut.fauryollivier.snoozespot.generated.api.model.PostComment
 
 
 @Composable
-fun FeedElement(postModel: PostModel) {
+fun FeedElement(post: Post, isComment: Boolean = false, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
-            .border(1.dp, Color(0xFFEDEDED))
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+        modifier = modifier
+                    .border(1.dp, Color(0xFFEDEDED))
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Row (verticalAlignment = Alignment.CenterVertically) {
@@ -56,7 +55,7 @@ fun FeedElement(postModel: PostModel) {
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                Text(postModel.user.name)
+                Text(post.user.username)
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -72,89 +71,97 @@ fun FeedElement(postModel: PostModel) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = postModel.content,
+            text = post.content,
             fontSize = 16.sp
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        if(!isComment) {
+            Spacer(modifier = Modifier.height(8.dp))
 
-        if (postModel.medias.isNotEmpty())
-            Row(
-                modifier = Modifier
-                    .horizontalScroll(rememberScrollState())
-            ) {
-                postModel.medias.forEachIndexed { index, it ->
-                    AsyncImage(
-                        model = it,
-                        contentDescription = "Picture $index",
-                        modifier = Modifier
-                            .size(160.dp)
-                            .padding(end = 4.dp),
-                        placeholder = painterResource(id = R.drawable.ic_launcher_background),
-                        error = painterResource(id = R.drawable.lobster)
+            if (post.pictures.isNotEmpty())
+                Row(
+                    modifier = Modifier
+                        .horizontalScroll(rememberScrollState())
+                ) {
+                    post.pictures.forEachIndexed { index, it ->
+                        AsyncImage(
+                            model = it,
+                            contentDescription = "Picture $index",
+                            modifier = Modifier
+                                .size(160.dp)
+                                .padding(end = 4.dp),
+                            placeholder = painterResource(id = R.drawable.ic_launcher_background),
+                            error = painterResource(id = R.drawable.lobster)
+                        )
+                    }
+                }
+
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Row {
+                OutlinedButton(
+                    onClick = { /* TODO() */ },
+                    modifier = Modifier
+                        .height(40.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Comment, contentDescription = "Comment the post",
+                        tint = Color(0xFF49454F)
+                    )
+
+                    Spacer(
+                        modifier = Modifier.width(8.dp)
+                    )
+
+                    Text(
+                        stringResource(R.string.comments),
+                        color = Color(0xFF49454F),
+                        fontSize = 14.sp
+                    )
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                OutlinedButton(
+                    onClick = { /* TODO() */ },
+                    modifier = Modifier
+                        .height(40.dp)
+                ) {
+                    Text(
+                        "${post.likeCount}",
+                        color = Color(0xFF49454F)
+                    )
+
+                    Spacer(
+                        modifier = Modifier.width(2.dp)
+                    )
+
+                    Icon(
+                        imageVector = Icons.Default.FavoriteBorder,
+                        contentDescription = "Like the post",
+                        tint = Color(0xFF49454F)
                     )
                 }
             }
-
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Row {
-            OutlinedButton(
-                onClick = { /* TODO() */ },
-                modifier = Modifier
-                    .height(40.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Comment, contentDescription = "Comment the post",
-                    tint = Color(0xFF49454F)
-                )
-
-                Spacer(
-                    modifier = Modifier.width(8.dp)
-                )
-
-                Text(
-                    stringResource(R.string.comments),
-                    color = Color(0xFF49454F),
-                    fontSize = 14.sp
-                )
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            OutlinedButton(
-                onClick = { /* TODO() */ },
-                modifier = Modifier
-                    .height(40.dp)
-            ) {
-                Text(
-                    "${postModel.likesCount}",
-                    color = Color(0xFF49454F)
-                )
-
-                Spacer(
-                    modifier = Modifier.width(2.dp)
-                )
-
-                Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = "Like the post",
-                    tint = Color(0xFF49454F)
-                )
-            }
         }
+
     }
 }
 
 @Composable
-fun FeedElement(post: Post) {
+fun FeedElement(postComment: PostComment, modifier: Modifier = Modifier) {
     FeedElement(
-        PostModel(
-            User("TODO"),
-            post.content,
+        Post(
+            -1,
+            postComment.user,
+            postComment.content,
+            -1,
+            postComment.createdAt,
             emptyList(),
-            post.likeCount
-        )
+            emptyList()
+        ),
+        isComment = true,
+        modifier = modifier
     )
 }

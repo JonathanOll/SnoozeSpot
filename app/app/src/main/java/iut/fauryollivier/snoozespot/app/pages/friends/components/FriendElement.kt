@@ -11,10 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.models.User
+import iut.fauryollivier.snoozespot.generated.api.model.User
 
 @Composable
-fun FriendElement(user: User) {
+fun FriendElement(userModel: User) {
 
     Row {
         Row {
@@ -22,7 +22,7 @@ fun FriendElement(user: User) {
                 painterResource(R.drawable.lobster),
                 contentDescription = "User's profile picture"
             )
-            Text(user.name)
+            Text(userModel.username)
         }
 
         Spacer(modifier = Modifier.weight(1f))
