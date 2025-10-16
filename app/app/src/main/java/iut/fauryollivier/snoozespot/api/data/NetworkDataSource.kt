@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.data
 
-import iut.fauryollivier.snoozespot.generated.api.DefaultApi
+import iut.fauryollivier.snoozespot.api.generated.api.DefaultApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

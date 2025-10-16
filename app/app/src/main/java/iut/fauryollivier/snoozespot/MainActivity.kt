@@ -17,6 +17,9 @@ import iut.fauryollivier.snoozespot.app.pages.NavGraphs
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
         enableEdgeToEdge()
         setContent {
             SnoozeSpotTheme {

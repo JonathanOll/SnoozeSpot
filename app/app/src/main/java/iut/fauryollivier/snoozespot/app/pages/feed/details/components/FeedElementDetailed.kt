@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import iut.fauryollivier.snoozespot.api.generated.model.Post
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
-import iut.fauryollivier.snoozespot.generated.api.model.Post
 
 @Composable
 fun FeedElementDetailed(post: Post, modifier: Modifier = Modifier) {

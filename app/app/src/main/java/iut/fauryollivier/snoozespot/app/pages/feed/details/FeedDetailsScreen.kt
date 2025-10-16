@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
+import iut.fauryollivier.snoozespot.api.generated.model.Post
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
 import iut.fauryollivier.snoozespot.app.pages.feed.details.components.FeedElementDetailed
 import iut.fauryollivier.snoozespot.generated.api.model.Post

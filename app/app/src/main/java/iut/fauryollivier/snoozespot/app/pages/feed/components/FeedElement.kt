@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.generated.api.model.Post
-import iut.fauryollivier.snoozespot.generated.api.model.PostComment
+import iut.fauryollivier.snoozespot.api.generated.model.Post
+import iut.fauryollivier.snoozespot.api.generated.model.PostComment
 
 
 @Composable
