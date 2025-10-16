@@ -33,7 +33,7 @@ fun TopBar() {
             ) {
                 Icon(
                     imageVector = Icons.Default.Language,
-                    contentDescription = "Global",
+                    contentDescription = stringResource(R.string.global),
                     modifier = Modifier
                         .padding(end = 4.dp)
                         .size(28.dp)
@@ -41,7 +41,7 @@ fun TopBar() {
                 Text(stringResource(R.string.global))
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowDown,
-                    contentDescription = "Others"
+                    contentDescription = stringResource(R.string.others)
                 )
             }
         },

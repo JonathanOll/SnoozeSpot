@@ -7,6 +7,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.api.data.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.app.pages.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.generated.api.model.Post
+import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +20,7 @@ class FeedViewModel : ViewModel() {
         val posts: List<Post> = emptyList(),
         val isLoading: Boolean = false,
         val isRefreshing: Boolean = false,
-        val error: String = "",
+        val error: ErrorMessage? = null,
         val page: Int = -1,
         val endReached: Boolean = false
     )
@@ -32,7 +33,7 @@ class FeedViewModel : ViewModel() {
     }
 
     private fun refreshingState() {
-        _state.update { it.copy(isRefreshing = true, error = "") }
+        _state.update { it.copy(isRefreshing = true, error = null) }
     }
 
     private fun successState(newPostList: List<Post>, newPage: Int) {
@@ -40,7 +41,7 @@ class FeedViewModel : ViewModel() {
             it.copy(
                 isLoading = false,
                 isRefreshing = false,
-                error = "",
+                error = null,
                 posts = it.posts + newPostList,
                 page = newPage,
                 endReached = newPostList.isEmpty()
@@ -48,11 +49,11 @@ class FeedViewModel : ViewModel() {
         }
     }
 
-    private fun errorState() {
+    private fun errorState(errorMessage: ErrorMessage = ErrorMessage.LOADING_ERROR) {
         _state.update {
             it.copy(
                 isLoading = false,
-                error = "Unexpected error occured"
+                error = errorMessage
             )
         }
     }
@@ -65,7 +66,6 @@ class FeedViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val nextPage = _state.value.page + 1
-                Log.d("jonathan", "" +nextPage)
                 val response = PostsRepository.getPosts(page = nextPage)
 
                 if (response.isSuccessful && response.body() != null) {
@@ -74,7 +74,6 @@ class FeedViewModel : ViewModel() {
                     errorState()
                 }
             } catch(e: Exception) {
-                Log.e("FeedViewModel", "Error loading posts", e)
                 errorState()
             }
         }
@@ -87,7 +86,7 @@ class FeedViewModel : ViewModel() {
             it.copy(
                 posts = emptyList(),
                 page = -1,
-                error = "",
+                error = null,
                 endReached = false
             )
         }
@@ -101,7 +100,6 @@ class FeedViewModel : ViewModel() {
                     errorState()
                 }
             } catch(e: Exception) {
-                Log.e("FeedViewModel", "Error refreshing posts", e)
                 errorState()
             }
         }
@@ -112,12 +110,9 @@ class FeedViewModel : ViewModel() {
             try {
                 val response = PostsRepository.createPost(content)
                 if(response.isSuccessful) {
-                    Log.d("jonathan", response.toString())
                     navigator.navigate(FeedDetailsScreenDestination(response.body()?.id!!))
                 }
             } catch(e: Exception) {
-                Log.e("FeedViewModel", "Error creating post", e)
-
                 // TODO: afficher un toast d'erreur
             }
         }

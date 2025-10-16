@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.compose.primaryContainerLight
 import com.example.compose.primaryLight
@@ -24,18 +25,19 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
 import com.ramcosta.composedestinations.result.ResultRecipient
+import iut.fauryollivier.snoozespot.R
 
 @Destination
 @Composable
 fun NewPostScreen(navigator: DestinationsNavigator, resultBackNavigatior: ResultBackNavigator<String>) {
-    var text by remember { mutableStateOf("Hello") }
+    var text by remember { mutableStateOf("") }
 
     Box {
         Column {
             OutlinedTextField(
                 value = text,
                 onValueChange = { text = it },
-                label = { Text("Label") }
+                label = { Text(stringResource(R.string.post_content)) }
             )
         }
 
@@ -45,7 +47,7 @@ fun NewPostScreen(navigator: DestinationsNavigator, resultBackNavigatior: Result
             contentColor = primaryLight,
             modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 16.dp)
         ) {
-            Icon(Icons.Filled.Check, "Post")
+            Icon(Icons.Filled.Check, stringResource(R.string.post))
         }
     }
 }

@@ -37,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.SnoozeSpotTheme
@@ -81,13 +82,13 @@ fun BottomBar(selectedIndex: Int = -1) {
                         .size(64.dp)) {
                         if (index == selectedIndex) Image(
                             painter = painterResource(R.drawable.selected),
-                            contentDescription = "Navbar selector",
+                            contentDescription = stringResource(R.string.navbar_selector),
                             modifier = Modifier.align(Alignment.Center)
                         )
 
                         Icon(
                             (if (index == selectedIndex) invertedIcons else icons)[index],
-                            contentDescription = "Feed icon $index",
+                            contentDescription = stringResource(R.string.icon_n, index),
                             modifier = Modifier
                                 .size(32.dp)
                                 .align(Alignment.Center)

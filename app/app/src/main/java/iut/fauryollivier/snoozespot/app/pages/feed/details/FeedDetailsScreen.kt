@@ -9,18 +9,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
 import iut.fauryollivier.snoozespot.app.pages.feed.details.components.FeedElementDetailed
 import iut.fauryollivier.snoozespot.generated.api.model.Post
+import iut.fauryollivier.snoozespot.utils.ErrorMessage
 
 @Destination
 @Composable
 fun FeedDetailsScreen(postId: Int, vm: FeedDetailsViewModel = viewModel()){
     val post: Post? by vm.post.collectAsState()
-    val errorMessage: String? by vm.errorMessage.collectAsState()
+    val errorMessage: ErrorMessage? by vm.errorMessage.collectAsState()
 
     LaunchedEffect(true) {
         vm.fetchPost(postId)
@@ -30,7 +32,7 @@ fun FeedDetailsScreen(postId: Int, vm: FeedDetailsViewModel = viewModel()){
             modifier= Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(errorMessage!!)
+            Text(stringResource(errorMessage!!.stringId))
         }
     } else {
         if(post != null)

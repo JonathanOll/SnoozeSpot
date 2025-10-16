@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="post_content">Contenu</string>
+    <string name="comments">Commentaires</string>
+    <string name="global">Global</string>
+    <string name="loading">Chargement...</string>
+    <string name="unexpected_error">Une erreur inattendue s\'est produite</string>
+    <string name="loading_error">Une erreur s\'est produite pendant le chargement des données</string>
+    <string name="new_post">Nouveau post</string>
+    <string name="post">Post</string>
+    <string name="others">Autres</string>
+    <string name="fetch_error">Impossible de charger les données</string>
+    <string name="navbar_selector">Selecteur navbar</string>
+    <string name="user_profile_picture">Photo de profil de l\'utilisateur</string>
+    <string name="more">Plus</string>
+    <string name="profile_picture">Photo de profil</string>
+    <string name="comment_post">Ajouter un commentaire</string>
+    <string name="more_options">Plus d\'options</string>
+    <string name="like_post">Aimer le post</string>
+    <string name="icon_n">Icone %1$s</string>
+    <string name="picture_n">Photo %1$s</string>
+</resources>

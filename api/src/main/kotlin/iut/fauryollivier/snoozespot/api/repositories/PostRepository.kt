@@ -1,6 +1,7 @@
 package iut.fauryollivier.snoozespot.api.repositories
 
 import iut.fauryollivier.snoozespot.api.database.Tables
+import iut.fauryollivier.snoozespot.api.database.selectVisible
 import iut.fauryollivier.snoozespot.api.models.Post
 import iut.fauryollivier.snoozespot.api.models.PostComment
 import iut.fauryollivier.snoozespot.api.models.User
@@ -15,7 +16,7 @@ class PostRepository(private val userRepository: UserRepository) {
 
 
     fun getAll(from: Int = -1, to: Int = -1): List<Post> = transaction {
-        var query = Tables.Posts.selectAll().orderBy(Tables.Posts.createdAt, SortOrder.DESC)
+        var query = Tables.Posts.selectVisible().orderBy(Tables.Posts.createdAt, SortOrder.DESC)
 
         if(from >= 0 && to >= 0 && to >= from) {
             query = query.limit(to - from + 1, from.toLong())
@@ -34,7 +35,7 @@ class PostRepository(private val userRepository: UserRepository) {
 
     fun getById(id: Int) = transaction {
 
-        Tables.Posts.leftJoin(Tables.PostComments).select { Tables.Posts.id eq id }.map { it ->
+        Tables.Posts.leftJoin(Tables.PostComments).select { Tables.Posts.id eq id }.selectVisible().map { it ->
             Post(
                 id = it[Tables.Posts.id].value,
                 user = userRepository.getById(it[Tables.Posts.userId])!!,

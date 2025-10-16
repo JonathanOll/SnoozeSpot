@@ -47,7 +47,7 @@ fun FeedElement(post: Post, isComment: Boolean = false, modifier: Modifier = Mod
             Row (verticalAlignment = Alignment.CenterVertically) {
                 Image(
                     painterResource(R.drawable.lobster),
-                    "Profile picture",
+                    stringResource(R.string.profile_picture),
                     modifier = Modifier
                         .size(50.dp)
                         .clip(CircleShape)
@@ -62,7 +62,7 @@ fun FeedElement(post: Post, isComment: Boolean = false, modifier: Modifier = Mod
 
             Icon(
                 imageVector = Icons.Default.MoreVert,
-                contentDescription = "More options",
+                contentDescription = stringResource(R.string.more_options),
                 tint = Color(0xFF49454F)
             )
 
@@ -86,7 +86,7 @@ fun FeedElement(post: Post, isComment: Boolean = false, modifier: Modifier = Mod
                     post.pictures.forEachIndexed { index, it ->
                         AsyncImage(
                             model = it,
-                            contentDescription = "Picture $index",
+                            contentDescription = stringResource(R.string.picture_n, index),
                             modifier = Modifier
                                 .size(160.dp)
                                 .padding(end = 4.dp),
@@ -106,7 +106,7 @@ fun FeedElement(post: Post, isComment: Boolean = false, modifier: Modifier = Mod
                         .height(40.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Comment, contentDescription = "Comment the post",
+                        imageVector = Icons.Outlined.Comment, contentDescription = stringResource(R.string.comment_post),
                         tint = Color(0xFF49454F)
                     )
 
@@ -129,7 +129,7 @@ fun FeedElement(post: Post, isComment: Boolean = false, modifier: Modifier = Mod
                         .height(40.dp)
                 ) {
                     Text(
-                        "${post.likeCount}",
+                        post.likeCount.toString(),
                         color = Color(0xFF49454F)
                     )
 
@@ -139,7 +139,7 @@ fun FeedElement(post: Post, isComment: Boolean = false, modifier: Modifier = Mod
 
                     Icon(
                         imageVector = Icons.Default.FavoriteBorder,
-                        contentDescription = "Like the post",
+                        contentDescription = stringResource(R.string.like_post),
                         tint = Color(0xFF49454F)
                     )
                 }

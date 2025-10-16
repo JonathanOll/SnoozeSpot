@@ -1,9 +1,22 @@
 package iut.fauryollivier.snoozespot.api.database
 
+import kotlinx.datetime.LocalDateTime
 import org.jetbrains.exposed.dao.id.IntIdTable
+import org.jetbrains.exposed.sql.Alias
+import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.ColumnSet
+import org.jetbrains.exposed.sql.Join
+import org.jetbrains.exposed.sql.Op
+import org.jetbrains.exposed.sql.Query
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.isNull
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.javatime.CurrentDateTime
 import org.jetbrains.exposed.sql.javatime.datetime
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 
 object Tables {
 
@@ -151,3 +164,51 @@ object Tables {
         Following
     )
 }
+
+fun Table.selectVisible(): Query {
+    val deletedAtColumn = columns.find { it.name == "deleted_at" } as? Column<LocalDateTime?>
+    val canBeDisplayedColumn = columns.find { it.name == "can_be_displayed" } as? Column<Int>
+
+    val conditions = mutableListOf<Op<Boolean>>()
+
+    if (deletedAtColumn != null) {
+        conditions += deletedAtColumn.isNull()
+    }
+
+    if (canBeDisplayedColumn != null) {
+        conditions += canBeDisplayedColumn eq 1
+    }
+
+    return if (conditions.isNotEmpty()) {
+        select { conditions.reduce { acc, op -> acc and op } }
+    } else {
+        selectAll()
+    }
+}
+
+fun Query.selectVisible(): Query {
+    val table = this.set.source
+
+    // On récupère les colonnes deleted_at et can_be_displayed s'ils existent dans la table source
+    val deletedAtColumn = table.columns.find { it.name == "deleted_at" } as? Column<LocalDateTime?>
+    val canBeDisplayedColumn = table.columns.find { it.name == "can_be_displayed" } as? Column<Int>
+
+    val conditions = mutableListOf<Op<Boolean>>()
+
+    if (deletedAtColumn != null) {
+        conditions += deletedAtColumn.isNull()
+    }
+
+    if (canBeDisplayedColumn != null) {
+        conditions += canBeDisplayedColumn eq 1
+    }
+
+    // Si on a des conditions, on les ajoute avec andWhere
+    return if (conditions.isNotEmpty()) {
+        this.andWhere { conditions.reduce { acc, op -> acc and op } }
+    } else {
+        this
+    }
+}
+
+

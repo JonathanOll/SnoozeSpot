@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.compose.primaryContainerLight
@@ -32,6 +33,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.NavResult
 import com.ramcosta.composedestinations.result.ResultRecipient
+import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.pages.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
@@ -65,17 +67,18 @@ fun FeedScreen(
 
     Box(modifier = modifier) {
 
-        if(state.error.isNotEmpty()) {
+        if(state.error != null) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(state.error)
+                Text(stringResource(state.error!!.stringId))
             }
         } else {
             PullToRefreshBox(
                 isRefreshing = state.isRefreshing,
-                onRefresh = { vm.refresh() }
+                onRefresh = { vm.refresh() },
+                modifier = Modifier.fillMaxSize()
             ) {
                 LazyColumn (state = listState) {
                     items(state.posts) { post ->
@@ -90,7 +93,7 @@ fun FeedScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("Loading...")
+                                Text(stringResource(R.string.loading))
                             }
                         }
                     }
@@ -105,7 +108,7 @@ fun FeedScreen(
             contentColor = primaryLight,
             modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 16.dp)
         ) {
-            Icon(Icons.Filled.Add, "New post")
+            Icon(Icons.Filled.Add, stringResource(R.string.new_post))
         }
 
     }

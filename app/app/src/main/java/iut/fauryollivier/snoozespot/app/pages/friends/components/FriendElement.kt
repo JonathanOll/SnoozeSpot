@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.generated.api.model.User
 
@@ -20,7 +21,7 @@ fun FriendElement(userModel: User) {
         Row {
             Image(
                 painterResource(R.drawable.lobster),
-                contentDescription = "User's profile picture"
+                contentDescription = stringResource(R.string.user_profile_picture)
             )
             Text(userModel.username)
         }
@@ -29,7 +30,7 @@ fun FriendElement(userModel: User) {
 
         Icon(
             Icons.Default.MoreVert,
-            contentDescription = "More"
+            contentDescription = stringResource(R.string.more)
         )
     }
 
