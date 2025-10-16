@@ -7,7 +7,6 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.api.data.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.Post
 import iut.fauryollivier.snoozespot.app.pages.destinations.FeedDetailsScreenDestination
-import iut.fauryollivier.snoozespot.generated.api.model.Post
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
