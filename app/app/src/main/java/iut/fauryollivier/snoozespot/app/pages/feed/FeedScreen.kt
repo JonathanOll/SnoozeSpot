@@ -1,5 +1,6 @@
 package iut.fauryollivier.snoozespot.app.pages.feed
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +35,9 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.NavResult
 import com.ramcosta.composedestinations.result.ResultRecipient
 import iut.fauryollivier.snoozespot.R
+import iut.fauryollivier.snoozespot.app.components.FeedTopBar
+import iut.fauryollivier.snoozespot.ScaffoldController
+import iut.fauryollivier.snoozespot.app.components.BottomBar
 import iut.fauryollivier.snoozespot.app.pages.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
@@ -45,10 +49,16 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @Composable
 fun FeedScreen(
     navigator: DestinationsNavigator,
+    scaffoldController: ScaffoldController,
     modifier: Modifier = Modifier,
     resultRecipient: ResultRecipient<NewPostScreenDestination, String>,
     vm: FeedViewModel = viewModel()
 ) {
+
+    LaunchedEffect(true) {
+        scaffoldController.topBar.value = { FeedTopBar() }
+        scaffoldController.showBottomBar.value = true
+    }
 
     val state by vm.screenState.collectAsState()
     val listState = remember { LazyListState() }
@@ -106,7 +116,9 @@ fun FeedScreen(
             onClick = { navigator.navigate(NewPostScreenDestination) },
             backgroundColor = primaryContainerLight,
             contentColor = primaryLight,
-            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 16.dp)
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 16.dp, bottom = 16.dp)
         ) {
             Icon(Icons.Filled.Add, stringResource(R.string.new_post))
         }

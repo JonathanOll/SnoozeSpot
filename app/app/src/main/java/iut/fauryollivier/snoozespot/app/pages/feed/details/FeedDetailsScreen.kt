@@ -10,17 +10,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.api.generated.model.Post
-import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
+import iut.fauryollivier.snoozespot.app.components.BackTopBar
+import iut.fauryollivier.snoozespot.ScaffoldController
+import iut.fauryollivier.snoozespot.app.components.BottomBar
 import iut.fauryollivier.snoozespot.app.pages.feed.details.components.FeedElementDetailed
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 
 @Destination
 @Composable
-fun FeedDetailsScreen(postId: Int, vm: FeedDetailsViewModel = viewModel()){
+fun FeedDetailsScreen(navigator: DestinationsNavigator, postId: Int, scaffoldController: ScaffoldController, vm: FeedDetailsViewModel = viewModel()){
+    LaunchedEffect(true) {
+        scaffoldController.topBar.value = { BackTopBar(navigator) }
+        scaffoldController.showBottomBar.value = false
+    }
+
     val post: Post? by vm.post.collectAsState()
     val errorMessage: ErrorMessage? by vm.errorMessage.collectAsState()
 
@@ -29,7 +36,7 @@ fun FeedDetailsScreen(postId: Int, vm: FeedDetailsViewModel = viewModel()){
     }
     if(errorMessage != null) {
         Box(
-            modifier= Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             Text(stringResource(errorMessage!!.stringId))

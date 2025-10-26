@@ -8,9 +8,9 @@ import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
@@ -24,12 +24,19 @@ import com.example.compose.primaryLight
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
-import com.ramcosta.composedestinations.result.ResultRecipient
 import iut.fauryollivier.snoozespot.R
+import iut.fauryollivier.snoozespot.app.components.BackTopBar
+import iut.fauryollivier.snoozespot.ScaffoldController
+import iut.fauryollivier.snoozespot.app.components.BottomBar
 
 @Destination
 @Composable
-fun NewPostScreen(navigator: DestinationsNavigator, resultBackNavigatior: ResultBackNavigator<String>) {
+fun NewPostScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, resultBackNavigatior: ResultBackNavigator<String>) {
+    LaunchedEffect(true) {
+        scaffoldController.topBar.value = { BackTopBar(navigator) }
+        scaffoldController.showBottomBar.value = false
+    }
+
     var text by remember { mutableStateOf("") }
 
     Box {

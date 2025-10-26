@@ -19,4 +19,5 @@
     <string name="like_post">Like the post</string>
     <string name="icon_n">Icon %1$s</string>
     <string name="picture_n">Picture %1$s</string>
+    <string name="back">Back</string>
 </resources>

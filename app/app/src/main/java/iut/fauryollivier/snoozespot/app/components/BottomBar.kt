@@ -1,5 +1,6 @@
 package iut.fauryollivier.snoozespot.app.components
 
+import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateIntOffsetAsState
 import androidx.compose.animation.core.tween
@@ -30,9 +31,11 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,13 +43,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.compose.SnoozeSpotTheme
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
+import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import iut.fauryollivier.snoozespot.R
+import iut.fauryollivier.snoozespot.app.pages.destinations.AccountScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.FeedScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.FriendsScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.MapScreenDestination
 
 @Composable
-fun BottomBar(selectedIndex: Int = -1) {
+fun BottomBar(navController: NavHostController) {
 
-    var selectedIndex by remember { mutableIntStateOf(selectedIndex) }
+    val currentDestination = navController.currentDestinationAsState()
 
     val icons = listOf(
         Icons.Outlined.ChatBubbleOutline,
@@ -58,6 +70,14 @@ fun BottomBar(selectedIndex: Int = -1) {
     val invertedIcons = listOf(
         Icons.Filled.ChatBubble, Icons.Filled.Map, Icons.Filled.Group, Icons.Filled.AccountCircle
     )
+
+    val destinations = listOf(
+        FeedScreenDestination,
+        MapScreenDestination,
+        FriendsScreenDestination,
+        AccountScreenDestination,
+    )
+
 
     BottomAppBar(
         modifier = Modifier.navigationBarsPadding(),
@@ -78,16 +98,28 @@ fun BottomBar(selectedIndex: Int = -1) {
 
                     Box(modifier = Modifier
                         .fillMaxHeight()
-                        .clickable { selectedIndex = index }
+                        .clickable {
+                            navController.navigate(destinations[index].route) {
+                                launchSingleTop = true
+                                restoreState = true
+                                popUpTo(navController.graph.startDestinationId) {
+                                    saveState = true
+                                }
+                            }
+                        }
                         .size(64.dp)) {
-                        if (index == selectedIndex) Image(
-                            painter = painterResource(R.drawable.selected),
-                            contentDescription = stringResource(R.string.navbar_selector),
-                            modifier = Modifier.align(Alignment.Center)
-                        )
+                        if (currentDestination.value?.route == destinations[index].route)
+                            Image(
+                                painter = painterResource(R.drawable.selected),
+                                contentDescription = stringResource(R.string.navbar_selector),
+                                modifier = Modifier.align(Alignment.Center)
+                            )
 
                         Icon(
-                            (if (index == selectedIndex) invertedIcons else icons)[index],
+                            (if (currentDestination.value?.route == destinations[index].route)
+                                invertedIcons
+                            else
+                                icons) [index],
                             contentDescription = stringResource(R.string.icon_n, index),
                             modifier = Modifier
                                 .size(32.dp)
@@ -107,6 +139,5 @@ fun BottomBar(selectedIndex: Int = -1) {
 @Composable
 fun GreetingPreview() {
     SnoozeSpotTheme {
-        BottomBar()
     }
 }
