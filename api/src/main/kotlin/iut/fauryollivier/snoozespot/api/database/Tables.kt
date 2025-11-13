@@ -22,7 +22,7 @@ import kotlin.uuid.Uuid
 object Tables {
 
     object Users : IntIdTable("user") {
-        val uuid = uuid("uuid").autoGenerate()
+        val uuid = uuid("uuid").autoGenerate().uniqueIndex()
         val username = varchar("username", 50).uniqueIndex()
         val email = varchar("email", 320).uniqueIndex().nullable()
         val password = varchar("password", 64)

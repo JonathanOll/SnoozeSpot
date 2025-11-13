@@ -73,3 +73,6 @@ database/database.db
 # la doc generee par openapi
 api/docs/**
 app/secrets.properties
+
+# auto-signed certificate
+app/app/src/main/res/raw/auto_signed_api_certificate.cer

@@ -1,3 +1,5 @@
+package iut.fauryollivier.snoozespot.api.routes
+
 import io.ktor.server.routing.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -13,6 +15,8 @@ import kotlin.getOrThrow
 @Serializable
 class AuthResponse(val accessToken: String, val expiresIn: Long)
 
+
+//  route("/auth")
 fun Route.authRoutes() {
     val authService by inject<AuthService>()
 

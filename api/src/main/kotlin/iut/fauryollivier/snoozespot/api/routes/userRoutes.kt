@@ -5,12 +5,11 @@ import io.ktor.server.routing.*
 import iut.fauryollivier.snoozespot.api.services.UserService
 import org.koin.ktor.ext.inject
 
+// route("/users")
 fun Route.userRoutes() {
     val userService by inject<UserService>()
 
-    route("/users") {
-        get {
-            call.respond(userService.getAll())
-        }
+    get {
+        call.respond(userService.getAll())
     }
 }

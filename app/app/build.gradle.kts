@@ -1,12 +1,11 @@
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
-import java.io.File
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.devtools.ksp)
-    id("org.openapi.generator") version "7.16.0"
+    id("org.openapi.generator") version "7.17.0"
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
@@ -300,4 +299,27 @@ tasks.register("cleanupAndMergeGenerated") {
 tasks.register("openApiGenerateAll") {
     dependsOn("openApiGenerateRetrofit", "openApiGenerateRoom", "updateRetrofitModel", "updateRoomModel", "cleanupAndMergeGenerated")
     group = "openapi"
+}
+
+tasks.register("copyCertificate") {
+    doLast {
+        val certificatePath = "${rootDir.absolutePath}/../api/build/exportedCertificateForAndroid.cer"
+        val certificateFile = file(certificatePath)
+        val targetDir = file("src/main/res/raw")
+        val targetFile = File(targetDir, "auto_signed_api_certificate.cer")
+
+        if (!certificateFile.exists()) {
+            println("Certificate not found at: $certificatePath")
+            return@doLast
+        }
+
+        targetDir.mkdirs()
+        certificateFile.copyTo(targetFile, overwrite = true)
+
+        println("Certificate copied to: ${targetFile.absolutePath}")
+    }
+}
+
+tasks.named("preBuild") {
+    dependsOn("copyCertificate", "openApiGenerateAll")
 }

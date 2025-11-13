@@ -1,6 +1,5 @@
 package iut.fauryollivier.snoozespot.api.auth
 
-import authRoutes
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -8,6 +7,7 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import iut.fauryollivier.snoozespot.api.repositories.UserRepository
+import iut.fauryollivier.snoozespot.api.routes.authRoutes
 import org.koin.dsl.module
 import org.koin.ktor.ext.inject
 import java.util.UUID
@@ -24,10 +24,6 @@ fun Application.configureSecurity() {
             }
             challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized, "Invalid or missing token") }
         }
-    }
-
-    routing {
-        route("/auth") { authRoutes() }
     }
 }
 

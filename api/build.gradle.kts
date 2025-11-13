@@ -54,5 +54,8 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jwt-jvm:2.0")
     implementation("com.auth0:java-jwt:4.0")
     implementation("org.mindrot:jbcrypt:0.4")
+
+    //Dev certificate
+    implementation("io.ktor:ktor-network-tls-certificates")
 }
 

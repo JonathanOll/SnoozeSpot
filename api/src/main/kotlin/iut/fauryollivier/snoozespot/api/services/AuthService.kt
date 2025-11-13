@@ -1,7 +1,7 @@
 package iut.fauryollivier.snoozespot.api.services
 
 
-import AuthResponse
+import iut.fauryollivier.snoozespot.api.routes.AuthResponse
 import iut.fauryollivier.snoozespot.api.auth.JWTService
 import iut.fauryollivier.snoozespot.api.auth.Password
 import iut.fauryollivier.snoozespot.api.auth.model.UserAuthRequest

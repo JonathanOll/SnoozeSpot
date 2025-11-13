@@ -1,7 +1,6 @@
 # SnoozeSpot  
 Where naps meet the map.
 
-
 ---
 
 # ⚙️ Api Setup Guide (`/api`)
@@ -20,6 +19,13 @@ This guide explains how to run the mobile api located in the `api` subdirectory 
 
 *Optional: override these environment variables for production.*
 
+#### Default SSL auto-signed certificate settings:
+
+- SSL_CERTIFICATE_ALIAS="certificateAlias"
+- SSL_CERTIFICATE_PASSWORD="my-best-password"
+- SSL_CERTIFICATE_FILE_PASSWORD="my-second-best-password"
+
+*Optional: override these environment variables for production.*
 
 ---
 
@@ -37,12 +43,17 @@ You can do this either by running the command manually or by configuring Android
 
 3. In the **Before launch** section, click **Add**, then select **Run Gradle task**.
 
-4. Select the Gradle project `app:app` and enter `openApiGenerateAll` in the Tasks field.
+4. Select the Gradle project `app:app` and enter `preBuild` in the Tasks field.
+
+5. Put the created task before the build
 
 6. At the root of the `app` directory, create a file called secret.properties in which you include your Google Map API Key (format: `MAPS_API_KEY=my_key`)
 
 7. Launch the app.
 
+*In debug mode, the API uses a self-signed certificate. This certificate is copied into the Android res/raw directory so the app can explicitly trust it. If the API is restarted, run the copyCertificate Gradle task and then restart the app — this task is automatically included in the preBuild step.*
+
+---
 
 # Internal Notes
 app de note de lieux de sieste
