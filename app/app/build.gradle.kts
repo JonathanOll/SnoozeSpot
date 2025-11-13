@@ -100,6 +100,8 @@ dependencies {
 
     implementation(libs.openapi.generator)
     implementation(libs.androidx.room.runtime)
+
+    implementation("com.airbnb.android:lottie-compose:6.6.10")
 }
 
 configurations.all {

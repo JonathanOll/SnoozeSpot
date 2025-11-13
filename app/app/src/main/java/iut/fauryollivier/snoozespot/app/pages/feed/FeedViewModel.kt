@@ -1,12 +1,11 @@
 package iut.fauryollivier.snoozespot.app.pages.feed
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.api.data.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.Post
-import iut.fauryollivier.snoozespot.app.pages.destinations.FeedDetailsScreenDestination
+import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

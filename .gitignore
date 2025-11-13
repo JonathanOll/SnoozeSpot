@@ -72,3 +72,4 @@ database/database.db
 
 # la doc generee par openapi
 api/docs/**
+app/secrets.properties
