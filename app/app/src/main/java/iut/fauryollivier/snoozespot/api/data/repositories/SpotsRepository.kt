@@ -11,13 +11,12 @@ import java.math.BigDecimal
 
 object SpotsRepository {
 
-    suspend fun getSpot(i: Int): Spot? {
+    suspend fun getSpot(i: Int): Response<Spot> {
         try {
-//            val spot = NetworkDataSource.api.spotIdGet(i)
-//            return spot.body()
-            return null
+            val post = NetworkDataSource.api.spotsSpotsIdGet(i)
+            return Response.success(post.body())
         } catch(e: Exception) {
-            return null
+            return Response.error(500, ResponseBody.EMPTY)
         }
     }
 
@@ -29,8 +28,6 @@ object SpotsRepository {
                 BigDecimal(bottomRight.latitude),
                 BigDecimal(bottomRight.longitude)
             )
-
-            Log.d("jonathan", spots.toString())
             return Response.success(spots.body())
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)

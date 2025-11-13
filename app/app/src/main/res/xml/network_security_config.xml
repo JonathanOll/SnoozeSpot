@@ -3,11 +3,14 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">10.0.2.2</domain>
     </domain-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+    </domain-config>
 
     <debug-overrides>
         <trust-anchors>
             <certificates src="system" />
-            <certificates src="@raw/auto_signed_api_certificate" />
+           <certificates src="@raw/auto_signed_api_certificate" />
         </trust-anchors>
     </debug-overrides>
 </network-security-config>

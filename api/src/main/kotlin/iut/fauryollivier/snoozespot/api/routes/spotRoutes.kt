@@ -57,3 +57,4 @@ fun Route.spotRoutes() {
     }
 }
 
+

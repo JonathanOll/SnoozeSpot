@@ -26,6 +26,11 @@ import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.components.DefaultTopBar
 import iut.fauryollivier.snoozespot.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.BottomBar
+import iut.fauryollivier.snoozespot.app.components.PlusTopBar
+import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestination
+import iut.fauryollivier.snoozespot.app.destinations.FeedScreenDestination
+import iut.fauryollivier.snoozespot.app.destinations.NewSpotScreenDestination
+import iut.fauryollivier.snoozespot.app.destinations.SpotDetailsScreenDestination
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 
@@ -35,7 +40,7 @@ import kotlinx.coroutines.flow.debounce
 @Composable
 fun MapScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, modifier: Modifier = Modifier, vm: MapViewModel = viewModel()) {
     LaunchedEffect(true) {
-        scaffoldController.topBar.value = { DefaultTopBar() }
+        scaffoldController.topBar.value = { PlusTopBar { navigator.navigate(NewSpotScreenDestination) } }
         scaffoldController.showBottomBar.value = true
     }
 
@@ -63,13 +68,11 @@ fun MapScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldCont
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState,
     ) {
-        state.spots.forEach {
+        state.spots.forEach { spot ->
             Marker(
-                state = MarkerState(position = LatLng(it.latitude, it.longitude)),
-                title = it.name,
-                snippet = it.description,
+                state = MarkerState(position = LatLng(spot.latitude, spot.longitude)),
                 onClick = {
-                    Log.d("jonathan", "")
+                    navigator.navigate(SpotDetailsScreenDestination(spot.id))
                     true
                 }
             )

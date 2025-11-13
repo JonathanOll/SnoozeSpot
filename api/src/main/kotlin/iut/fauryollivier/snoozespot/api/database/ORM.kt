@@ -48,13 +48,40 @@ fun insertDefault () {
 
         }
 
-        Tables.Spots.insert {
-            it[id] = 1
+        val spotId = Tables.Spots.insertAndGetId {
             it[creatorId] = 1
             it[name] = "Terrasse de N2JSoft"
             it[description] = "Une belle terrasse avec vue sur le lac, idéale pour des réunions ou des moments de détente."
             it[latitude] = 46.17048
             it[longitude] = 5.29052
+            it[canBeDisplayed] = 1
+        }.value
+
+        Tables.SpotComments.insert {
+            it[userId] = 1
+            it[Tables.SpotComments.spotId] = spotId
+            it[description] = "Super endroit pour bosser en plein air, calme et agréable."
+            it[rating] = 5
+        }
+
+        Tables.SpotComments.insert {
+            it[userId] = 1
+            it[Tables.SpotComments.spotId] = spotId
+            it[description] = "Vue magnifique, mais un peu trop de vent parfois."
+            it[rating] = 4
+        }
+
+        Tables.SpotLikes.insert {
+            it[userId] = 1
+            it[Tables.SpotComments.spotId] = spotId
+        }
+
+        Tables.Spots.insert {
+            it[creatorId] = 1
+            it[name] = "Mairie de montcuq"
+            it[description] = "trop marrant mdr."
+            it[latitude] = 44.354128
+            it[longitude] = 1.203491
             it[canBeDisplayed] = 1
         }
 

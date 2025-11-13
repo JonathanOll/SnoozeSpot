@@ -6,6 +6,62 @@ info:
 servers:
   - url: "https://snoozespot_api"
 paths:
+  /auth/login:
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAuthRequest"
+        required: true
+      responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /auth/signup:
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAuthRequest"
+        required: true
+      responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/User"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "object"
   /posts:
     get:
       description: ""
@@ -184,64 +240,29 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/User"
-  /auth/login:
-    post:
-      description: ""
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserAuthRequest"
-        required: true
-      responses:
-        "401":
-          description: "Unauthorized"
-          content:
-            '*/*':
-              schema:
-                type: "object"
-        "201":
-          description: "Created"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/AuthResponse"
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "object"
-  /auth/signup:
-    post:
-      description: ""
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserAuthRequest"
-        required: true
-      responses:
-        "401":
-          description: "Unauthorized"
-          content:
-            '*/*':
-              schema:
-                type: "object"
-        "201":
-          description: "Created"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/User"
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "object"
 components:
   schemas:
+    UserAuthRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
+      required:
+        - "username"
+        - "password"
+    AuthResponse:
+      type: "object"
+      properties:
+        accessToken:
+          type: "string"
+        expiresIn:
+          type: "integer"
+          format: "int64"
+      required:
+        - "accessToken"
+        - "expiresIn"
     StoredFile:
       type: "object"
       properties:
@@ -324,6 +345,10 @@ components:
         likeCount:
           type: "integer"
           format: "int32"
+        rating:
+          type: "number"
+          format: "float"
+          nullable: true
         createdAt:
           type: "string"
           format: "date-time"
@@ -351,51 +376,6 @@ components:
         - "pictures"
         - "attributes"
         - "comments"
-    User:
-      type: "object"
-      properties:
-        uuid:
-          type: "string"
-          format: "uuid"
-        username:
-          type: "string"
-        email:
-          type: "string"
-          nullable: true
-        profilePicture:
-          nullable: true
-          $ref: "#/components/schemas/StoredFile"
-        karma:
-          type: "integer"
-          format: "int32"
-        createdAt:
-          type: "string"
-          format: "date-time"
-        spots:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Spot"
-        posts:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Post"
-        following:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/User"
-        follower:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/User"
-      required:
-        - "uuid"
-        - "username"
-        - "karma"
-        - "createdAt"
-        - "spots"
-        - "posts"
-        - "following"
-        - "follower"
     PostComment:
       type: "object"
       properties:
@@ -446,6 +426,51 @@ components:
         - "createdAt"
         - "pictures"
         - "comments"
+    User:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          format: "uuid"
+        username:
+          type: "string"
+        email:
+          type: "string"
+          nullable: true
+        profilePicture:
+          nullable: true
+          $ref: "#/components/schemas/StoredFile"
+        karma:
+          type: "integer"
+          format: "int32"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        spots:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Spot"
+        posts:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Post"
+        following:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/User"
+        follower:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/User"
+      required:
+        - "uuid"
+        - "username"
+        - "karma"
+        - "createdAt"
+        - "spots"
+        - "posts"
+        - "following"
+        - "follower"
     CreatePostRequest:
       type: "object"
       properties:
@@ -453,24 +478,3 @@ components:
           type: "string"
       required:
         - "content"
-    UserAuthRequest:
-      type: "object"
-      properties:
-        username:
-          type: "string"
-        password:
-          type: "string"
-      required:
-        - "username"
-        - "password"
-    AuthResponse:
-      type: "object"
-      properties:
-        accessToken:
-          type: "string"
-        expiresIn:
-          type: "integer"
-          format: "int64"
-      required:
-        - "accessToken"
-        - "expiresIn"

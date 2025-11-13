@@ -14,6 +14,7 @@ data class Spot(
     val longitude: Double,
     val canBeDisplayed: Int? = null, // 1 or 0
     val likeCount: Int,
+    val rating: Float? = null,
     @Contextual val createdAt: LocalDateTime,
     val pictures: List<StoredFile> = emptyList(),
     val attributes: List<SpotAttribute> = emptyList(),

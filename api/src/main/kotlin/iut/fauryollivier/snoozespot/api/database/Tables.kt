@@ -76,8 +76,7 @@ object Tables {
         override val primaryKey = PrimaryKey(spotId, attributeId)
     }
 
-    object Spots : Table("spot") {
-        val id = integer("id").autoIncrement()
+    object Spots : IntIdTable("spot") {
         val creatorId = integer("creator_id").references(Users.id)
         val name = varchar("name", 255)
         val description = varchar("description", 1000)
@@ -86,7 +85,6 @@ object Tables {
         val canBeDisplayed = integer("can_be_displayed").default(1)
         val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
         val deletedAt = datetime("deleted_at").nullable()
-        override val primaryKey = PrimaryKey(id)
     }
 
     object SpotPictures : Table("spot_picture") {
