@@ -55,7 +55,7 @@ fun Application.configureORM() {
     Database.connect("jdbc:sqlite:../database/database.db", driver = "org.sqlite.JDBC")
 
     resetDatabase()
-    insertDefault()
+    //insertDefault()
 
     println("Database initialized")
 }

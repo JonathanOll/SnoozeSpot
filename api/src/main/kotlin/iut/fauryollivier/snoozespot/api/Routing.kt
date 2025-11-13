@@ -1,5 +1,6 @@
 package iut.fauryollivier.snoozespot.api
 
+import authRoutes
 import io.ktor.http.*
 import io.ktor.resources.*
 import io.ktor.server.application.*
@@ -31,11 +32,8 @@ fun Application.configureRouting() {
             else ValidationResult.Valid
         }
     }
-    routing {
-        get("/") {
-            call.respondText("Hello World!")
-        }
 
+    routing {
         userRoutes()
         postRoutes()
 

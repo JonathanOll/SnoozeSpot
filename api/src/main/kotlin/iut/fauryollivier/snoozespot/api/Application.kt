@@ -6,8 +6,8 @@ import io.ktor.server.netty.EngineMain
 import iut.fauryollivier.snoozespot.api.config.configureHTTP
 import iut.fauryollivier.snoozespot.api.config.configureKoin
 import iut.fauryollivier.snoozespot.api.config.configureMonitoring
-import iut.fauryollivier.snoozespot.api.config.configureSecurity
-import iut.fauryollivier.snoozespot.api.config.configureSerialization
+import iut.fauryollivier.snoozespot.api.auth.configureSecurity
+import iut.fauryollivier.snoozespot.api.config.serialisation.configureSerialization
 
 fun main(args: Array<String>) {
     EngineMain.main(args)

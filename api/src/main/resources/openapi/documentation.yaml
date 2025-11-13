@@ -4,21 +4,8 @@ info:
   description: "snoozespot_api API"
   version: "1.0.0"
 servers:
-  - url: "https://snoozespot_api"
+  - url: "http://127.0.0.1:8080"
 paths:
-  /:
-    get:
-      description: ""
-      responses:
-        "200":
-          description: "OK"
-          content:
-            text/plain:
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Hello World!"
   /posts:
     get:
       description: ""
@@ -47,6 +34,12 @@ paths:
               $ref: "#/components/schemas/CreatePostRequest"
         required: true
       responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "object"
         "500":
           description: "Internal Server Error"
           content:
@@ -109,32 +102,50 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/User"
-  /protected/route/basic:
-    get:
+  /auth/login:
+    post:
       description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAuthRequest"
+        required: true
       responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "object"
         "200":
           description: "OK"
           content:
-            text/plain:
+            '*/*':
               schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
-  /protected/route/form:
-    get:
+                $ref: "#/components/schemas/AuthResponse"
+  /auth/signup:
+    post:
       description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAuthRequest"
+        required: true
       responses:
-        "200":
-          description: "OK"
+        "400":
+          description: "Bad Request"
           content:
-            text/plain:
+            '*/*':
               schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
+                type: "object"
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/User"
 components:
   schemas:
     StoredFile:
@@ -256,6 +267,7 @@ components:
           type: "string"
         email:
           type: "string"
+          nullable: true
         profilePicture:
           nullable: true
           $ref: "#/components/schemas/StoredFile"
@@ -284,7 +296,6 @@ components:
       required:
         - "id"
         - "username"
-        - "email"
         - "karma"
         - "createdAt"
         - "spots"
@@ -348,3 +359,24 @@ components:
           type: "string"
       required:
         - "content"
+    UserAuthRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
+      required:
+        - "username"
+        - "password"
+    AuthResponse:
+      type: "object"
+      properties:
+        accessToken:
+          type: "string"
+        expiresIn:
+          type: "integer"
+          format: "int64"
+      required:
+        - "accessToken"
+        - "expiresIn"

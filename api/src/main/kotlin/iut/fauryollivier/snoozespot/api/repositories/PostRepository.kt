@@ -25,7 +25,7 @@ class PostRepository(private val userRepository: UserRepository) {
         query.map {
             Post(
                 id = it[Tables.Posts.id].value,
-                user = userRepository.getById(it[Tables.Posts.userId])!!,
+                user = userRepository.getById(it[Tables.Posts.userId]).getOrThrow(),
                 content = it[Tables.Posts.content],
                 likeCount = it[Tables.Posts.likeCount],
                 createdAt = it[Tables.Posts.createdAt],
@@ -38,7 +38,7 @@ class PostRepository(private val userRepository: UserRepository) {
         Tables.Posts.leftJoin(Tables.PostComments).select { Tables.Posts.id eq id }.selectVisible().map { it ->
             Post(
                 id = it[Tables.Posts.id].value,
-                user = userRepository.getById(it[Tables.Posts.userId])!!,
+                user = userRepository.getById(it[Tables.Posts.userId]).getOrThrow(),
                 content = it[Tables.Posts.content],
                 likeCount = it[Tables.Posts.likeCount],
                 createdAt = it[Tables.Posts.createdAt],
@@ -47,7 +47,7 @@ class PostRepository(private val userRepository: UserRepository) {
                         id = it[Tables.PostComments.id].value,
                         content = it[Tables.PostComments.content],
                         createdAt = it[Tables.PostComments.createdAt],
-                        user = userRepository.getById(it[Tables.PostComments.userId])!!
+                        user = userRepository.getById(it[Tables.PostComments.userId]).getOrThrow()
                     )
                 }
             )

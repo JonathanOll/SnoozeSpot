@@ -34,9 +34,6 @@ dependencies {
     implementation("io.insert-koin:koin-ktor:3.4.0")
     implementation("io.insert-koin:koin-logger-slf4j:3.4.0")
 
-    // Logging
-    implementation(libs.logback.classic)
-
     // Database (Exposed + JDBC drivers)
     implementation("org.jetbrains.exposed:exposed-core:0.41.1")
     implementation("org.jetbrains.exposed:exposed-dao:0.41.1")
@@ -50,5 +47,12 @@ dependencies {
     // Testing
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
+
+    //JWT
+    implementation("io.ktor:ktor-server-core-jvm:2.0")
+    implementation("io.ktor:ktor-server-netty-jvm:2.0")
+    implementation("io.ktor:ktor-server-auth-jwt-jvm:2.0")
+    implementation("com.auth0:java-jwt:4.0")
+    implementation("org.mindrot:jbcrypt:0.4")
 }
 

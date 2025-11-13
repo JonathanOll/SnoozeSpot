@@ -1,18 +1,13 @@
 package iut.fauryollivier.snoozespot.api.routes
 
-import io.ktor.http.HttpStatusCode
-import io.ktor.resources.Resource
-import io.ktor.server.request.receive
+import io.ktor.http.*
+import io.ktor.resources.*
+import io.ktor.server.auth.*
+import io.ktor.server.request.*
+import io.ktor.server.resources.*
 import io.ktor.server.response.*
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.get
-import io.ktor.server.resources.get
-import io.ktor.server.routing.post
-import io.ktor.server.routing.route
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.Schema
-import io.swagger.v3.oas.annotations.parameters.RequestBody
+import io.ktor.server.routing.*
+import iut.fauryollivier.snoozespot.api.auth.currentUserId
 import iut.fauryollivier.snoozespot.api.services.PostService
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
@@ -47,14 +42,17 @@ fun Route.postRoutes() {
             }
         }
 
-        post("") {
-            val request = call.receive<CreatePostRequest>()
-            try {
-                val post = postService.createPost(1, request.content)
-                call.respond(HttpStatusCode.Created, post!!)
-            } catch (e: Exception) {
-                print(e.toString())
-                call.respond(HttpStatusCode.BadRequest, "Post creation failed")
+        authenticate("jwtAuth") {
+            post("") {
+                val userId = call.currentUserId().getOrThrow()
+                val request = call.receive<CreatePostRequest>()
+                try {
+                    val post = postService.createPost(userId, request.content)
+                    call.respond(HttpStatusCode.Created, post!!)
+                } catch (e: Exception) {
+                    print(e.toString())
+                    call.respond(HttpStatusCode.BadRequest, "Post creation failed")
+                }
             }
         }
     }

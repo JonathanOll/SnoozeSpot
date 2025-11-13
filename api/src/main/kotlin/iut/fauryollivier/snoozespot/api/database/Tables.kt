@@ -17,12 +17,14 @@ import org.jetbrains.exposed.sql.javatime.CurrentDateTime
 import org.jetbrains.exposed.sql.javatime.datetime
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
+import kotlin.uuid.Uuid
 
 object Tables {
 
     object Users : IntIdTable("user") {
+        val uuid = uuid("uuid").autoGenerate()
         val username = varchar("username", 50).uniqueIndex()
-        val email = varchar("email", 320).uniqueIndex()
+        val email = varchar("email", 320).uniqueIndex().nullable()
         val password = varchar("password", 64)
         val profilePictureId = integer("profile_picture_id").references(Files.id).nullable()
         val roleId = integer("role_id").references(Roles.id)
@@ -204,6 +206,29 @@ fun Query.selectVisible(): Query {
     }
 
     // Si on a des conditions, on les ajoute avec andWhere
+    return if (conditions.isNotEmpty()) {
+        this.andWhere { conditions.reduce { acc, op -> acc and op } }
+    } else {
+        this
+    }
+}
+
+fun Query.selectActive(): Query {
+    val table = this.set.source
+
+    val deletedAtColumn = table.columns.find { it.name == "deleted_at" } as? Column<LocalDateTime?>
+    val canConnectColumn = table.columns.find { it.name == "can_connect" } as? Column<Int>
+
+    val conditions = mutableListOf<Op<Boolean>>()
+
+    if (deletedAtColumn != null) {
+        conditions += deletedAtColumn.isNull()
+    }
+
+    if (canConnectColumn != null) {
+        conditions += canConnectColumn eq 1
+    }
+
     return if (conditions.isNotEmpty()) {
         this.andWhere { conditions.reduce { acc, op -> acc and op } }
     } else {
