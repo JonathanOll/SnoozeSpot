@@ -19,7 +19,9 @@ You can do this either by running the command manually or by configuring Android
 
 4. Select the Gradle project `app:app` and enter `openApiGenerate` in the Tasks field.
 
-5. Launch the app.
+6. At the root of the `app` directory, create a file called secret.properties in which you include your Google Map API Key (format: `MAPS_API_KEY=my_key`)
+
+7. Launch the app.
 
 
 # Internal Notes
