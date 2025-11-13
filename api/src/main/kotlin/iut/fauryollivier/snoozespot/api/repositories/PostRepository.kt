@@ -14,7 +14,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class PostRepository(private val userRepository: UserRepository) {
 
-
     fun getAll(from: Int = -1, to: Int = -1): List<Post> = transaction {
         var query = Tables.Posts.selectVisible().orderBy(Tables.Posts.createdAt, SortOrder.DESC)
 

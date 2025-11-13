@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.api.config.serialisation
+package iut.fauryollivier.snoozespot.api.config.serialization
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind

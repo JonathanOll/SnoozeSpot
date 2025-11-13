@@ -48,6 +48,17 @@ fun insertDefault () {
 
         }
 
+        Tables.Spots.insert {
+            it[id] = 1
+            it[creatorId] = 1
+            it[name] = "Terrasse de N2JSoft"
+            it[description] = "Une belle terrasse avec vue sur le lac, idéale pour des réunions ou des moments de détente."
+            it[latitude] = 46.17048
+            it[longitude] = 5.29052
+            it[canBeDisplayed] = 1
+        }
+
+
     }
 }
 

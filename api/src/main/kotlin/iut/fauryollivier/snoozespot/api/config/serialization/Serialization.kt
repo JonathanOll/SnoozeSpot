@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.api.config.serialisation
+package iut.fauryollivier.snoozespot.api.config.serialization
 
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

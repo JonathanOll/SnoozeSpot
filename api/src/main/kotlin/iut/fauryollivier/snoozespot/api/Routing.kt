@@ -13,6 +13,7 @@ import iut.fauryollivier.snoozespot.api.routes.userRoutes
 import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.models.Post
 import iut.fauryollivier.snoozespot.api.routes.postRoutes
+import iut.fauryollivier.snoozespot.api.routes.spotRoutes
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
@@ -36,6 +37,7 @@ fun Application.configureRouting() {
     routing {
         userRoutes()
         postRoutes()
+        spotRoutes()
 
         // Static plugin. Try to access `/static/index.html`
         // staticResources("/static", "static")

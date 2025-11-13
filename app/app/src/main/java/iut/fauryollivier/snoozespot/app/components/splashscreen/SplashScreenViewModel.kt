@@ -17,7 +17,7 @@ class SplashScreenViewModel : ViewModel() {
     fun load() {
         viewModelScope.launch {
             // TODO: charger le profil à partir du token, ...
-            delay(5000)
+            delay(500)
             _loaded.value = true
         }
     }

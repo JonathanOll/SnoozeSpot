@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.api.config.serialisation
+package iut.fauryollivier.snoozespot.api.config.serialization
 
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*

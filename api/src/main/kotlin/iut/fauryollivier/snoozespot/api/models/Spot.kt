@@ -12,7 +12,7 @@ data class Spot(
     val description: String,
     val latitude: Double,
     val longitude: Double,
-    val canBeDisplayed: Int, // 1 or 0
+    val canBeDisplayed: Int? = null, // 1 or 0
     val likeCount: Int,
     @Contextual val createdAt: LocalDateTime,
     val pictures: List<StoredFile> = emptyList(),
