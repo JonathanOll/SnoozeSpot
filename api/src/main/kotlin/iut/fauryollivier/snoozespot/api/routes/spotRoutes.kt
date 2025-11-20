@@ -1,6 +1,7 @@
 package iut.fauryollivier.snoozespot.api.routes
 
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.*
 import io.ktor.server.routing.Route
@@ -11,9 +12,18 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.parameters.RequestBody
+import iut.fauryollivier.snoozespot.api.auth.currentUserId
 import iut.fauryollivier.snoozespot.api.services.SpotService
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
+
+@Serializable
+data class CreateSpotRequest(
+    val name: String,
+    val description: String,
+    val latitude: Double,
+    val longitude: Double,
+)
 
 // route("/spots")
 fun Route.spotRoutes() {
@@ -60,6 +70,20 @@ fun Route.spotRoutes() {
                 return@get
             }
             call.respond(spotResult.getOrThrow())
+        }
+    }
+
+    authenticate("jwtAuth") {
+        post {
+            val userId = call.currentUserId().getOrThrow()
+            val request = call.receive<CreateSpotRequest>()
+            try {
+                val post = spotService.createSpot(userId, request)
+                call.respond(HttpStatusCode.Created, post!!)
+            } catch (e: Exception) {
+                print(e.toString())
+                call.respond(HttpStatusCode.BadRequest, "Post creation failed")
+            }
         }
     }
 }

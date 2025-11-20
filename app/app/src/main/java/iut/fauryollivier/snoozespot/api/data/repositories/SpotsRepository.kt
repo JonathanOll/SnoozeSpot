@@ -1,5 +1,6 @@
 package iut.fauryollivier.snoozespot.api.data.repositories
 
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO

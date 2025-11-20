@@ -11,7 +11,7 @@ import kotlin.Result
 
 class AuthService(private val userRepository:UserRepository, private val jwtService: JWTService) {
 
-     fun create(userAuth:UserAuthRequest): Result<UserDTO> {
+     fun create(userAuth:UserAuthRequest): Result<AuthResponseDTO> {
          val userResult = userRepository.getByUsername(userAuth.username)
          if(userResult.isSuccess) { //User already exists
              return Result.failure(Exception("Invalid credentials"))
@@ -21,8 +21,9 @@ class AuthService(private val userRepository:UserRepository, private val jwtServ
          if(result.isFailure) return Result.failure(Exception("Invalid credentials"))
 
          val user = userRepository.getById(result.getOrThrow())
-         if(user.isFailure) return Result.failure(Exception("User create but not found"))
-         return Result.success(user.getOrThrow().toDTO())
+         if(user.isFailure) return Result.failure(Exception("User created but not found"))
+         val token = jwtService.generateToken(user.getOrThrow().uuid)
+         return Result.success(AuthResponseDTO(token, jwtService.expirationSeconds,user.getOrThrow().toDTO()))
      }
 
      fun login(request: UserAuthRequest): Result<AuthResponseDTO> {
@@ -34,6 +35,6 @@ class AuthService(private val userRepository:UserRepository, private val jwtServ
          val userResult = userRepository.getByUsername(request.username)
          if(userResult.isFailure) return Result.failure(Exception("Invalid credentials"))
          val token = jwtService.generateToken(userResult.getOrThrow().uuid)
-         return Result.success(AuthResponseDTO(token, jwtService.expirationSeconds))
+         return Result.success(AuthResponseDTO(token, jwtService.expirationSeconds, userResult.getOrThrow().toDTO()))
      }
 }

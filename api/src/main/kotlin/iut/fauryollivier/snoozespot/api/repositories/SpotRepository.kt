@@ -8,16 +8,20 @@ import iut.fauryollivier.snoozespot.api.entities.Spot
 import iut.fauryollivier.snoozespot.api.entities.SpotAttribute
 import iut.fauryollivier.snoozespot.api.entities.SpotComment
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
+import iut.fauryollivier.snoozespot.api.routes.CreateSpotRequest
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.andWhere
+import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class SpotRepository(
     private val userRepository: UserRepository,
     private val spotCommentRepository: SpotCommentRepository
-
 ) : RepositoryBase() {
 
     override fun ResultRow.toEntity(
@@ -105,5 +109,18 @@ class SpotRepository(
             }
         }
         return Result.success(list)
+    }
+
+    fun createSpot(userId: Int, data: CreateSpotRequest): Result<Int> {
+        val id = transaction {
+            Tables.Spots.insertAndGetId {
+                it[this.creatorId] = userId
+                it[this.name] = data.name
+                it[this.description] = data.description
+                it[this.latitude] = data.latitude
+                it[this.longitude] = data.longitude
+            }
+        }
+        return Result.success(id.value)
     }
 }

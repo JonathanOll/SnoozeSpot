@@ -27,11 +27,10 @@ import com.ramcosta.composedestinations.result.ResultBackNavigator
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.ScaffoldController
-import iut.fauryollivier.snoozespot.app.components.BottomBar
 
 @Destination
 @Composable
-fun NewPostScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, resultBackNavigatior: ResultBackNavigator<String>) {
+fun NewPostScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, resultBackNavigator: ResultBackNavigator<String>) {
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { BackTopBar(navigator) }
         scaffoldController.showBottomBar.value = false
@@ -49,7 +48,7 @@ fun NewPostScreen(navigator: DestinationsNavigator, scaffoldController: Scaffold
         }
 
         FloatingActionButton(
-            onClick = { resultBackNavigatior.navigateBack(text) },
+            onClick = { resultBackNavigator.navigateBack(text) },
             backgroundColor = primaryContainerLight,
             contentColor = primaryLight,
             modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 16.dp)

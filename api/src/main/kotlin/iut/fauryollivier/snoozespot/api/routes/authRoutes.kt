@@ -13,7 +13,8 @@ import org.koin.ktor.ext.inject
 import kotlin.getOrThrow
 
 @Serializable
-class AuthResponseDTO(val accessToken: String, val expiresIn: Long)
+class AuthResponseDTO(val accessToken: String, val expiresIn: Long, val user: UserDTO)
+
 
 //  route("/auth")
 fun Route.authRoutes() {
@@ -22,7 +23,7 @@ fun Route.authRoutes() {
     @Tag(name = "Auth Service")
     post("/signup") {
         val request = call.receive<UserAuthRequest>()
-        val result: Result<UserDTO>
+        val result: Result<AuthResponseDTO>
         try {
             result = authService.create(request)
             if(result.isFailure) call.respond(HttpStatusCode.Unauthorized)

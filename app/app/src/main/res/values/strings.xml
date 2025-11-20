@@ -20,4 +20,13 @@
     <string name="icon_n">Icon %1$s</string>
     <string name="picture_n">Picture %1$s</string>
     <string name="back">Back</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="couldNotLogin">Could not log in</string>
+    <string name="logout">Logout</string>
+    <string name="registerInstead">No account? Register instead</string>
+    <string name="register">Register</string>
+    <string name="loginInstead">Already got an account? Login instead</string>
+    <string name="email">Email address</string>
 </resources>

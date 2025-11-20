@@ -4,7 +4,7 @@ info:
   description: "snoozespot_api API"
   version: "1.0.0"
 servers:
-  - url: "https://127.0.0.1:80"
+  - url: "https://snoozespot_api"
 paths:
   /auth/login:
     post:
@@ -55,7 +55,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/UserDTO"
+                $ref: "#/components/schemas/AuthResponseDTO"
         "500":
           description: "Internal Server Error"
           content:
@@ -155,6 +155,39 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/SpotDTO"
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSpotRequest"
+        required: true
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TypeInfo"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Post creation failed"
   /spots/spots/{id}:
     get:
       description: ""
@@ -387,6 +420,51 @@ components:
         - "pictures"
         - "attributes"
         - "comments"
+    UserDTO:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          format: "uuid"
+        username:
+          type: "string"
+        email:
+          type: "string"
+          nullable: true
+        profilePicture:
+          nullable: true
+          $ref: "#/components/schemas/StoredFileDTO"
+        karma:
+          type: "integer"
+          format: "int32"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        spots:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SpotDTO"
+        posts:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PostDTO"
+        following:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/UserDTO"
+        followers:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/UserDTO"
+      required:
+        - "uuid"
+        - "username"
+        - "karma"
+        - "createdAt"
+        - "spots"
+        - "posts"
+        - "following"
+        - "followers"
     PostCommentDTO:
       type: "object"
       properties:
@@ -437,51 +515,6 @@ components:
         - "createdAt"
         - "pictures"
         - "comments"
-    UserDTO:
-      type: "object"
-      properties:
-        uuid:
-          type: "string"
-          format: "uuid"
-        username:
-          type: "string"
-        email:
-          type: "string"
-          nullable: true
-        profilePicture:
-          nullable: true
-          $ref: "#/components/schemas/StoredFileDTO"
-        karma:
-          type: "integer"
-          format: "int32"
-        createdAt:
-          type: "string"
-          format: "date-time"
-        spots:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/SpotDTO"
-        posts:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/PostDTO"
-        following:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/UserDTO"
-        followers:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/UserDTO"
-      required:
-        - "uuid"
-        - "username"
-        - "karma"
-        - "createdAt"
-        - "spots"
-        - "posts"
-        - "following"
-        - "followers"
     CreatePostRequest:
       type: "object"
       properties:
@@ -489,3 +522,34 @@ components:
           type: "string"
       required:
         - "content"
+    CreateSpotRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        description:
+          type: "string"
+        latitude:
+          type: "number"
+          format: "double"
+        longitude:
+          type: "number"
+          format: "double"
+      required:
+        - "name"
+        - "description"
+        - "latitude"
+        - "longitude"
+    KType:
+      type: "object"
+      properties: { }
+    TypeInfo:
+      type: "object"
+      properties:
+        type:
+          type: "object"
+        kotlinType:
+          nullable: true
+          $ref: "#/components/schemas/KType"
+      required:
+        - "type"

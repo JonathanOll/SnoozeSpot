@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.google.devtools.ksp)
     id("org.openapi.generator") version "7.17.0"
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.21"
 }
 
 android {
@@ -121,6 +122,11 @@ dependencies {
     implementation(libs.maps.compose)
 
     implementation("com.airbnb.android:lottie-compose:6.6.10")
+
+    implementation(libs.androidx.datastore)
+    implementation(libs.kotlinx.serialization.json)
+    implementation (libs.androidx.datastore.preferences.rxjava2)
+    implementation(libs.androidx.datastore.preferences.rxjava3)
 }
 
 configurations.all {
