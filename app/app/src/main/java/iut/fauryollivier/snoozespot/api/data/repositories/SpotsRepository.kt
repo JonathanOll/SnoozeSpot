@@ -1,17 +1,15 @@
 package iut.fauryollivier.snoozespot.api.data.repositories
 
-import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
-import iut.fauryollivier.snoozespot.api.generated.model.Post
-import iut.fauryollivier.snoozespot.api.generated.model.Spot
+import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import okhttp3.ResponseBody
 import retrofit2.Response
 import java.math.BigDecimal
 
 object SpotsRepository {
 
-    suspend fun getSpot(i: Int): Response<Spot> {
+    suspend fun getSpot(i: Int): Response<SpotDTO> {
         try {
             val post = NetworkDataSource.api.spotsSpotsIdGet(i)
             return Response.success(post.body())
@@ -20,7 +18,7 @@ object SpotsRepository {
         }
     }
 
-    suspend fun getSpotsZone(topLeft: LatLng, bottomRight: LatLng): Response<List<Spot>> {
+    suspend fun getSpotsZone(topLeft: LatLng, bottomRight: LatLng): Response<List<SpotDTO>> {
         try {
             val spots = NetworkDataSource.api.spotsZoneGet(
                 BigDecimal(topLeft.latitude),

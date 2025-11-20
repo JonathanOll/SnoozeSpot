@@ -1,15 +1,14 @@
 package iut.fauryollivier.snoozespot.api.data.repositories
 
-import android.util.Log
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
-import iut.fauryollivier.snoozespot.api.generated.model.Post
 import iut.fauryollivier.snoozespot.api.generated.model.CreatePostRequest
+import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import okhttp3.ResponseBody
 import retrofit2.Response
 
 object PostsRepository {
 
-    suspend fun getPost(i: Int): Response<Post> {
+    suspend fun getPost(i: Int): Response<PostDTO> {
         try {
             val post = NetworkDataSource.api.postsIdGet(i)
             return Response.success(post.body())
@@ -18,7 +17,7 @@ object PostsRepository {
         }
     }
 
-    suspend fun getPosts(page: Int = 0): Response<List<Post>> {
+    suspend fun getPosts(page: Int = 0): Response<List<PostDTO>> {
         try {
             val posts = NetworkDataSource.api.postsGet(page)
             return Response.success(posts.body())
@@ -27,7 +26,7 @@ object PostsRepository {
         }
     }
 
-    suspend fun createPost(content: String): Response<Post> {
+    suspend fun createPost(content: String): Response<PostDTO> {
         try {
             val post = NetworkDataSource.api.postsPost(CreatePostRequest(content))
             return Response.success(post.body())

@@ -30,29 +30,33 @@ fun Route.postRoutes() {
     val postService by inject<PostService>()
 
     get<Posts> { params ->
-        call.respond(postService.getAll(params.page * 20, (params.page + 1) * 20 - 1))
+        val postsResult = postService.getAll(params.page * 20, (params.page + 1) * 20 - 1)
+        if (postsResult.isFailure) {
+            call.respond(HttpStatusCode.InternalServerError)
+            return@get
+        }
+        call.respond(postsResult.getOrThrow())
     }
 
     get<PostById> { params ->
-        val post = postService.getById(params.id)
-        if (post == null) {
+        val postResult = postService.getById(params.id)
+        if (postResult.isFailure) {
             call.respond(HttpStatusCode.NotFound, "Post not found")
-        } else {
-            call.respond(post)
+            return@get
         }
+        call.respond(postResult.getOrThrow())
     }
 
     authenticate("jwtAuth") {
         post("") {
             val userId = call.currentUserId().getOrThrow()
             val request = call.receive<CreatePostRequest>()
-            try {
-                val post = postService.createPost(userId, request.content)
-                call.respond(HttpStatusCode.Created, post!!)
-            } catch (e: Exception) {
-                print(e.toString())
+            val postResult = postService.createPost(userId, request.content)
+            if (postResult.isFailure) {
                 call.respond(HttpStatusCode.BadRequest, "Post creation failed")
+                return@post
             }
+            call.respond(HttpStatusCode.Created, postResult.getOrThrow())
         }
     }
 }

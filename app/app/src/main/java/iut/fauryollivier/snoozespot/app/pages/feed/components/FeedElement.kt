@@ -31,12 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.api.generated.model.Post
-import iut.fauryollivier.snoozespot.api.generated.model.PostComment
+import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
+import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 
 
 @Composable
-fun FeedElement(post: Post, isComment: Boolean = false, modifier: Modifier = Modifier) {
+fun FeedElement(postDTO: PostDTO, isComment: Boolean = false, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
                     .border(1.dp, Color(0xFFEDEDED))
@@ -55,7 +55,7 @@ fun FeedElement(post: Post, isComment: Boolean = false, modifier: Modifier = Mod
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                Text(post.user.username)
+                Text(postDTO.user.username)
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -71,19 +71,19 @@ fun FeedElement(post: Post, isComment: Boolean = false, modifier: Modifier = Mod
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = post.content,
+            text = postDTO.content,
             fontSize = 16.sp
         )
 
         if(!isComment) {
             Spacer(modifier = Modifier.height(8.dp))
 
-            if (post.pictures.isNotEmpty())
+            if (postDTO.pictures.isNotEmpty())
                 Row(
                     modifier = Modifier
                         .horizontalScroll(rememberScrollState())
                 ) {
-                    post.pictures.forEachIndexed { index, it ->
+                    postDTO.pictures.forEachIndexed { index, it ->
                         AsyncImage(
                             model = it,
                             contentDescription = stringResource(R.string.picture_n, index),
@@ -129,7 +129,7 @@ fun FeedElement(post: Post, isComment: Boolean = false, modifier: Modifier = Mod
                         .height(40.dp)
                 ) {
                     Text(
-                        post.likeCount.toString(),
+                        postDTO.likeCount.toString(),
                         color = Color(0xFF49454F)
                     )
 
@@ -150,9 +150,9 @@ fun FeedElement(post: Post, isComment: Boolean = false, modifier: Modifier = Mod
 }
 
 @Composable
-fun FeedElement(postComment: PostComment, modifier: Modifier = Modifier) {
+fun FeedElement(postComment: PostCommentDTO, modifier: Modifier = Modifier) {
     FeedElement(
-        Post(
+        PostDTO(
             -1,
             postComment.user,
             postComment.content,

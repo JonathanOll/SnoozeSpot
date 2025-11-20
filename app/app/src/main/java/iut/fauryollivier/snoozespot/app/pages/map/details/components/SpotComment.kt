@@ -8,24 +8,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.api.generated.model.SpotComment
+import iut.fauryollivier.snoozespot.api.generated.model.SpotCommentDTO
 import iut.fauryollivier.snoozespot.app.components.StarRating
 
 @Composable
-fun SpotComment(comment: SpotComment) {
+fun SpotComment(comment: SpotCommentDTO) {
     Column (modifier = Modifier.padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Row (verticalAlignment = Alignment.CenterVertically) {

@@ -14,7 +14,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material3.Text
@@ -28,12 +27,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -44,10 +41,8 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.ScaffoldController
-import iut.fauryollivier.snoozespot.api.generated.model.Post
-import iut.fauryollivier.snoozespot.api.generated.model.Spot
+import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import iut.fauryollivier.snoozespot.app.components.HorizontalLine
 import iut.fauryollivier.snoozespot.app.components.StarRating
 import iut.fauryollivier.snoozespot.app.components.TransparentBackTopBar
@@ -63,7 +58,7 @@ fun SpotDetailsScreen(navigator: DestinationsNavigator, spotId: Int, scaffoldCon
         scaffoldController.showBottomBar.value = false
     }
 
-    val spot: Spot? by vm.spot.collectAsState()
+    val spot: SpotDTO? by vm.spot.collectAsState()
     val errorMessage: ErrorMessage? by vm.errorMessage.collectAsState()
 
     val mapPositionState = rememberCameraPositionState()

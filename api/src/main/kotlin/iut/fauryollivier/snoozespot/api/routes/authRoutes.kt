@@ -6,15 +6,14 @@ import io.ktor.server.response.*
 import io.ktor.http.*
 import io.swagger.v3.oas.annotations.tags.Tag
 import iut.fauryollivier.snoozespot.api.auth.model.UserAuthRequest
-import iut.fauryollivier.snoozespot.api.models.User
+import iut.fauryollivier.snoozespot.api.dtos.UserDTO
 import iut.fauryollivier.snoozespot.api.services.AuthService
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 import kotlin.getOrThrow
 
 @Serializable
-class AuthResponse(val accessToken: String, val expiresIn: Long)
-
+class AuthResponseDTO(val accessToken: String, val expiresIn: Long)
 
 //  route("/auth")
 fun Route.authRoutes() {
@@ -23,7 +22,7 @@ fun Route.authRoutes() {
     @Tag(name = "Auth Service")
     post("/signup") {
         val request = call.receive<UserAuthRequest>()
-        val result: Result<User>
+        val result: Result<UserDTO>
         try {
             result = authService.create(request)
             if(result.isFailure) call.respond(HttpStatusCode.Unauthorized)

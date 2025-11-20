@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.api.generated.model.User
+import iut.fauryollivier.snoozespot.api.generated.model.UserDTO
 
 @Composable
-fun FriendElement(userModel: User) {
+fun FriendElement(userModel: UserDTO) {
 
     Row {
         Row {

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.api.data.repositories.PostsRepository
-import iut.fauryollivier.snoozespot.api.generated.model.Post
+import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 class FeedViewModel : ViewModel() {
 
     data class ScreenState(
-        val posts: List<Post> = emptyList(),
+        val posts: List<PostDTO> = emptyList(),
         val isLoading: Boolean = false,
         val isRefreshing: Boolean = false,
         val error: ErrorMessage? = null,
@@ -35,15 +35,15 @@ class FeedViewModel : ViewModel() {
         _state.update { it.copy(isRefreshing = true, error = null) }
     }
 
-    private fun successState(newPostList: List<Post>, newPage: Int) {
+    private fun successState(newPostDTOList: List<PostDTO>, newPage: Int) {
         _state.update {
             it.copy(
                 isLoading = false,
                 isRefreshing = false,
                 error = null,
-                posts = it.posts + newPostList,
+                posts = it.posts + newPostDTOList,
                 page = newPage,
-                endReached = newPostList.isEmpty()
+                endReached = newPostDTOList.isEmpty()
             )
         }
     }

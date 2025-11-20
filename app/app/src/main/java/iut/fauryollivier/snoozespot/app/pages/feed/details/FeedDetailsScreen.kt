@@ -13,10 +13,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import iut.fauryollivier.snoozespot.api.generated.model.Post
+import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.ScaffoldController
-import iut.fauryollivier.snoozespot.app.components.BottomBar
 import iut.fauryollivier.snoozespot.app.pages.feed.details.components.FeedElementDetailed
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 
@@ -28,7 +27,7 @@ fun FeedDetailsScreen(navigator: DestinationsNavigator, postId: Int, scaffoldCon
         scaffoldController.showBottomBar.value = false
     }
 
-    val post: Post? by vm.post.collectAsState()
+    val postDTO: PostDTO? by vm.postDTO.collectAsState()
     val errorMessage: ErrorMessage? by vm.errorMessage.collectAsState()
 
     LaunchedEffect(true) {
@@ -42,8 +41,8 @@ fun FeedDetailsScreen(navigator: DestinationsNavigator, postId: Int, scaffoldCon
             Text(stringResource(errorMessage!!.stringId))
         }
     } else {
-        if(post != null)
-            FeedElementDetailed(post!!)
+        if(postDTO != null)
+            FeedElementDetailed(postDTO!!)
     }
 
 }

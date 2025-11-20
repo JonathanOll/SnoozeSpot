@@ -1,18 +1,20 @@
 package iut.fauryollivier.snoozespot.api.services
 
-import iut.fauryollivier.snoozespot.api.models.Spot
+import iut.fauryollivier.snoozespot.api.dtos.SpotDTO
 import iut.fauryollivier.snoozespot.api.repositories.SpotRepository
-import org.koin.ktor.ext.inject
-import kotlin.IllegalArgumentException
 
 class SpotService(private val spotRepository: SpotRepository) {
 
-    fun getAll(): List<Spot> {
-        return spotRepository.getAll()
+    fun getAll(): Result<List<SpotDTO>> {
+        val result = spotRepository.getAll()
+        if (result.isFailure) return Result.failure(result.exceptionOrNull()!!)
+        return Result.success(result.getOrThrow().map { it.toDTO() })
     }
 
-    fun getById(id: Int): Spot? {
-        return spotRepository.getById(id)
+    fun getById(id: Int): Result<SpotDTO> {
+        val spotResult = spotRepository.getById(id)
+        if (spotResult.isFailure) return Result.failure(Exception("Spot not found"))
+        return Result.success(spotResult.getOrThrow().toDTO())
     }
 
     fun getAllInZone(
@@ -20,7 +22,9 @@ class SpotService(private val spotRepository: SpotRepository) {
         topLeftLongitude: Double,
         bottomRightLatitude: Double,
         bottomRightLongitude: Double
-    ): List<Spot> {
-        return spotRepository.getAllInZone(topLeftLatitude, topLeftLongitude, bottomRightLatitude, bottomRightLongitude)
+    ): Result<List<SpotDTO>> {
+        val result = spotRepository.getAllInZone(topLeftLatitude, topLeftLongitude, bottomRightLatitude, bottomRightLongitude)
+        if (result.isFailure) return Result.failure(result.exceptionOrNull()!!)
+        return Result.success(result.getOrThrow().map { it.toDTO() })
     }
 }

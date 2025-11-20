@@ -20,8 +20,12 @@ fun Route.spotRoutes() {
     val spotService by inject<SpotService>()
 
     get {
-        val spots = spotService.getAll() // Pagination simple
-        call.respond(spots)
+        val spotsResult = spotService.getAll() // Pagination simple
+        if (spotsResult.isFailure) {
+            call.respond(HttpStatusCode.InternalServerError)
+            return@get
+        }
+        call.respond(spotsResult.getOrThrow())
     }
 
     get("/zone") {
@@ -30,29 +34,32 @@ fun Route.spotRoutes() {
         val bottomRightLatitude = call.request.queryParameters["bottomRightLatitude"]?.toDoubleOrNull()
         val bottomRightLongitude = call.request.queryParameters["bottomRightLongitude"]?.toDoubleOrNull()
 
-        if (topLeftLatitude != null && topLeftLongitude != null && bottomRightLatitude != null && bottomRightLongitude != null) {
-            val spots = spotService.getAllInZone(
-                topLeftLatitude, topLeftLongitude, bottomRightLatitude, bottomRightLongitude
-            )
-            call.respond(spots)
-        } else {
-            call.respond(HttpStatusCode.BadRequest, "Invalid query parameters for the zone.")
+        if( topLeftLatitude == null || topLeftLongitude == null || bottomRightLatitude == null || bottomRightLongitude == null) {
+            call.respond(HttpStatusCode.BadRequest, "Missing query parameters for the zone.")
+            return@get
         }
+
+        val spotsResult = spotService.getAllInZone( topLeftLatitude, topLeftLongitude, bottomRightLatitude, bottomRightLongitude )
+        if (spotsResult.isFailure) {
+            call.respond(HttpStatusCode.InternalServerError)
+            return@get
+        }
+        call.respond(spotsResult.getOrThrow())
     }
 
     route("/spots/{id}") {
         get {
             val spotId = call.parameters["id"]?.toIntOrNull()
-            if (spotId != null) {
-                val spot = spotService.getById(spotId)
-                if (spot != null) {
-                    call.respond(spot)
-                } else {
-                    call.respond(HttpStatusCode.NotFound, "Spot not found")
-                }
-            } else {
+            if (spotId == null) {
                 call.respond(HttpStatusCode.BadRequest, "Invalid spot ID")
+                return@get
             }
+            val spotResult = spotService.getById(spotId)
+            if (spotResult.isFailure) {
+                call.respond(HttpStatusCode.NotFound, "Spot not found")
+                return@get
+            }
+            call.respond(spotResult.getOrThrow())
         }
     }
 }

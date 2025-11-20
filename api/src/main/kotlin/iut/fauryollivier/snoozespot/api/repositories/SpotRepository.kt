@@ -1,85 +1,87 @@
 package iut.fauryollivier.snoozespot.api.repositories
 
+import SpotCommentRepository
 import iut.fauryollivier.snoozespot.api.database.Tables
+import iut.fauryollivier.snoozespot.api.database.Tables.SpotComments.rating
 import iut.fauryollivier.snoozespot.api.database.selectVisible
-import iut.fauryollivier.snoozespot.api.models.Spot
-import iut.fauryollivier.snoozespot.api.models.SpotComment
-import iut.fauryollivier.snoozespot.api.models.User
+import iut.fauryollivier.snoozespot.api.entities.Spot
+import iut.fauryollivier.snoozespot.api.entities.SpotAttribute
+import iut.fauryollivier.snoozespot.api.entities.SpotComment
+import iut.fauryollivier.snoozespot.api.entities.StoredFile
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
 import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class SpotRepository(private val userRepository: UserRepository) {
+class SpotRepository(
+    private val userRepository: UserRepository,
+    private val spotCommentRepository: SpotCommentRepository
 
-    fun getAll(): List<Spot> = transaction {
-        val query = Tables.Spots.selectVisible().orderBy(Tables.Spots.createdAt, SortOrder.DESC)
+) : RepositoryBase() {
 
-        query.map { row ->
-            val spotId = row[Tables.Spots.id].value
+    override fun ResultRow.toEntity(
+        loadRelations: Boolean
+    ): Spot {
+        val id = this[Tables.Spots.id].value
 
-            val likeCount = Tables.SpotLikes
-                .select { Tables.SpotLikes.spotId eq spotId }
-                .count()
+        val likeCount = getLikeCount(id).getOrThrow()
+        val creator = if (loadRelations) userRepository.getById(this[Tables.Spots.creatorId]).getOrThrow() else null
+        val pictures = if (loadRelations) emptyList() else emptyList<StoredFile>() //TODO: load pictures
+        val attributes = if (loadRelations) emptyList() else emptyList<SpotAttribute>() //TODO: load attributes
+        val comments = if (loadRelations) spotCommentRepository.getBySpotId(id).getOrThrow() else emptyList()
 
-            Spot(
-                id = spotId,
-                creator = userRepository.getById(row[Tables.Spots.creatorId]).getOrThrow(),
-                name = row[Tables.Spots.name],
-                description = row[Tables.Spots.description],
-                latitude = row[Tables.Spots.latitude],
-                longitude = row[Tables.Spots.longitude],
-                createdAt = row[Tables.Spots.createdAt],
-                likeCount = likeCount.toInt()
-            )
-        }
+        val averageRating = comments.map { it.rating }.takeIf { it.isNotEmpty() }?.average()?.toFloat()
+
+        return Spot(
+            id = id,
+            creator = creator,
+            name = this[Tables.Spots.name],
+            description = this[Tables.Spots.description],
+            latitude = this[Tables.Spots.latitude],
+            longitude = this[Tables.Spots.longitude],
+            canBeDisplayed = this[Tables.Spots.canBeDisplayed],
+            likeCount = likeCount,
+            rating = averageRating,
+            createdAt = this[Tables.Spots.createdAt],
+            updatedAt = null,
+            deletedAt = null,
+            pictures = pictures,
+            attributes = attributes,
+            comments = comments
+        )
     }
 
-
-    fun getById(id: Int): Spot? = transaction {
-        val comments = Tables.SpotComments
-            .select { Tables.SpotComments.spotId eq id }
-            .map { commentRow ->
-                SpotComment(
-                    id = commentRow[Tables.SpotComments.id],
-                    user = userRepository.getById(commentRow[Tables.SpotComments.userId]).getOrThrow(),
-                    description = commentRow[Tables.SpotComments.description],
-                    rating = commentRow[Tables.SpotComments.rating],
-                    createdAt = commentRow[Tables.SpotComments.createdAt]
-                )
-            }
-
+    fun getLikeCount(spotId: Int): Result<Int> {
         val likeCount = Tables.SpotLikes
-            .select { Tables.SpotLikes.spotId eq id }
+            .select { Tables.SpotLikes.spotId eq spotId }
             .count()
+        return Result.success(likeCount.toInt())
+    }
 
-        val averageRating = comments
-            .map { it.rating }
-            .takeIf { it.isNotEmpty() }
-            ?.average()
-            ?.toFloat()
+    fun getAll(): Result<List<Spot>> {
+        val list = transaction {
+            val query = Tables.Spots.selectVisible().orderBy(Tables.Spots.createdAt, SortOrder.DESC)
 
-        Tables.Spots
-            .select { Tables.Spots.id eq id }
-            .selectVisible()
-            .map { row ->
-                Spot(
-                    id = row[Tables.Spots.id].value,
-                    creator = userRepository.getById(row[Tables.Spots.creatorId]).getOrThrow(),
-                    name = row[Tables.Spots.name],
-                    description = row[Tables.Spots.description],
-                    latitude = row[Tables.Spots.latitude],
-                    longitude = row[Tables.Spots.longitude],
-                    createdAt = row[Tables.Spots.createdAt],
-                    comments = comments,
-                    likeCount = likeCount.toInt(),
-                    rating = averageRating
-                )
+            query.map {
+                it.toEntity(loadRelations = true)
             }
-            .firstOrNull()
+        }
+        return Result.success(list)
+    }
+
+    fun getById(id: Int): Result<Spot>{
+        val spot = transaction {
+            Tables.Spots.leftJoin(Tables.SpotComments)
+                .select { Tables.Spots.id eq id }
+                .selectVisible()
+                .map { row ->
+                    row.toEntity(loadRelations = true)
+                }
+                .firstOrNull()
+        }
+        if(spot == null) return Result.failure(Throwable("Spot not found"))
+        return Result.success(spot)
     }
 
     fun getAllInZone(
@@ -87,27 +89,21 @@ class SpotRepository(private val userRepository: UserRepository) {
         topLeftLongitude: Double,
         bottomRightLatitude: Double,
         bottomRightLongitude: Double,
-    ): List<Spot> = transaction {
-        var query = Tables.Spots
-            .select {
-                Tables.Spots.latitude greaterEq bottomRightLatitude and
-                        (Tables.Spots.latitude lessEq topLeftLatitude) and
-                        (Tables.Spots.longitude greaterEq topLeftLongitude) and
-                        (Tables.Spots.longitude lessEq bottomRightLongitude)
-            }
-            .orderBy(Tables.Spots.createdAt, SortOrder.DESC)
+    ): Result<List<Spot>> {
+        val list = transaction {
+            val query = Tables.Spots
+                .select {
+                    Tables.Spots.latitude greaterEq bottomRightLatitude and
+                            (Tables.Spots.latitude lessEq topLeftLatitude) and
+                            (Tables.Spots.longitude greaterEq topLeftLongitude) and
+                            (Tables.Spots.longitude lessEq bottomRightLongitude)
+                }
+                .orderBy(Tables.Spots.createdAt, SortOrder.DESC)
 
-        query.map {
-            Spot(
-                id = it[Tables.Spots.id].value,
-                creator = userRepository.getById(it[Tables.Spots.creatorId]).getOrThrow(),
-                name = it[Tables.Spots.name],
-                description = it[Tables.Spots.description],
-                latitude = it[Tables.Spots.latitude],
-                longitude = it[Tables.Spots.longitude],
-                createdAt = it[Tables.Spots.createdAt],
-                likeCount = 0
-            )
+            query.map {
+                it.toEntity(loadRelations = true)
+            }
         }
+        return Result.success(list)
     }
 }
