@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class UserAuthRequest(
     val username: String,
     val password: String,
+    val email: String? = null,
 )

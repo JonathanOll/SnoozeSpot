@@ -38,6 +38,12 @@ fun RegisterScreen(
         verticalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
+            value = vm.email,
+            onValueChange = { vm.onEmailChanged(it) },
+            label = { Text(stringResource(R.string.email)) }
+        )
+
+        OutlinedTextField(
             value = vm.username,
             onValueChange = { vm.onUsernameChanged(it) },
             label = { Text(stringResource(R.string.username)) }
@@ -51,7 +57,7 @@ fun RegisterScreen(
         )
 
         Button(
-            onClick = { vm.login(context, navigator) }
+            onClick = { vm.register(context, navigator) }
         ) {
             Text(stringResource(R.string.register))
         }

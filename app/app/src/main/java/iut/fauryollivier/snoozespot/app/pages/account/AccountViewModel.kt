@@ -11,6 +11,7 @@ class AccountViewModel: ViewModel() {
     fun logout(context: Context) {
         viewModelScope.launch {
             LocalStorage(context).saveAuthToken(null)
+            LocalStorage(context).saveUser(null)
             // TODO envoyer une requête à l'api pour invalider le token
         }
     }

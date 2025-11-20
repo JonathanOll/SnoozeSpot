@@ -1,17 +1,21 @@
 package iut.fauryollivier.snoozespot.app.pages.account
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.gson.Gson
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
@@ -20,6 +24,7 @@ import iut.fauryollivier.snoozespot.app.components.AnonymousOnly
 import iut.fauryollivier.snoozespot.app.components.AuthOnly
 import iut.fauryollivier.snoozespot.app.components.DefaultTopBar
 import iut.fauryollivier.snoozespot.app.destinations.LoginScreenDestination
+import iut.fauryollivier.snoozespot.datastore.LocalStorage
 
 @Destination
 @Composable
@@ -40,10 +45,14 @@ fun AccountScreen(navigator: DestinationsNavigator, scaffoldController: Scaffold
     }
 
     AuthOnly {
-        Button(
-            onClick = { vm.logout(context) },
-        ) {
-            Text(stringResource(R.string.logout))
+        val user by LocalStorage(LocalContext.current).getUser.collectAsState(null)
+        Column {
+            Text(Gson().toJson(user))
+            Button(
+                onClick = { vm.logout(context) },
+            ) {
+                Text(stringResource(R.string.logout))
+            }
         }
     }
     // TODO

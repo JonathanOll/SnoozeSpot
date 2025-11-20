@@ -164,21 +164,12 @@ paths:
               $ref: "#/components/schemas/CreateSpotRequest"
         required: true
       responses:
-        "500":
-          description: "Internal Server Error"
-          content:
-            text/plain:
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
         "201":
           description: "Created"
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/TypeInfo"
+                $ref: "#/components/schemas/Object"
         "400":
           description: "Bad Request"
           content:
@@ -293,6 +284,9 @@ components:
     UserAuthRequest:
       type: "object"
       properties:
+        email:
+          type: "string"
+          nullable: true
         username:
           type: "string"
         password:
@@ -300,17 +294,6 @@ components:
       required:
         - "username"
         - "password"
-    AuthResponseDTO:
-      type: "object"
-      properties:
-        accessToken:
-          type: "string"
-        expiresIn:
-          type: "integer"
-          format: "int64"
-      required:
-        - "accessToken"
-        - "expiresIn"
     StoredFileDTO:
       type: "object"
       properties:
@@ -420,51 +403,6 @@ components:
         - "pictures"
         - "attributes"
         - "comments"
-    UserDTO:
-      type: "object"
-      properties:
-        uuid:
-          type: "string"
-          format: "uuid"
-        username:
-          type: "string"
-        email:
-          type: "string"
-          nullable: true
-        profilePicture:
-          nullable: true
-          $ref: "#/components/schemas/StoredFileDTO"
-        karma:
-          type: "integer"
-          format: "int32"
-        createdAt:
-          type: "string"
-          format: "date-time"
-        spots:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/SpotDTO"
-        posts:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/PostDTO"
-        following:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/UserDTO"
-        followers:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/UserDTO"
-      required:
-        - "uuid"
-        - "username"
-        - "karma"
-        - "createdAt"
-        - "spots"
-        - "posts"
-        - "following"
-        - "followers"
     PostCommentDTO:
       type: "object"
       properties:
@@ -515,6 +453,65 @@ components:
         - "createdAt"
         - "pictures"
         - "comments"
+    UserDTO:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          format: "uuid"
+        username:
+          type: "string"
+        email:
+          type: "string"
+          nullable: true
+        profilePicture:
+          nullable: true
+          $ref: "#/components/schemas/StoredFileDTO"
+        karma:
+          type: "integer"
+          format: "int32"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        spots:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SpotDTO"
+        posts:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PostDTO"
+        following:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/UserDTO"
+        followers:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/UserDTO"
+      required:
+        - "uuid"
+        - "username"
+        - "karma"
+        - "createdAt"
+        - "spots"
+        - "posts"
+        - "following"
+        - "followers"
+    AuthResponseDTO:
+      type: "object"
+      properties:
+        accessToken:
+          type: "string"
+        expiresIn:
+          type: "integer"
+          format: "int64"
+        user:
+          $ref: "#/components/schemas/UserDTO"
+      required:
+        - "accessToken"
+        - "expiresIn"
+        - "user"
     CreatePostRequest:
       type: "object"
       properties:
@@ -540,16 +537,6 @@ components:
         - "description"
         - "latitude"
         - "longitude"
-    KType:
+    Object:
       type: "object"
       properties: { }
-    TypeInfo:
-      type: "object"
-      properties:
-        type:
-          type: "object"
-        kotlinType:
-          nullable: true
-          $ref: "#/components/schemas/KType"
-      required:
-        - "type"

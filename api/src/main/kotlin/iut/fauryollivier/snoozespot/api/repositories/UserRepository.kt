@@ -42,6 +42,7 @@ class UserRepository : RepositoryBase() {
     fun create(user: UserAuthRequest): Result<Int> {
         val id = transaction {
             Tables.Users.insertAndGetId {
+                it[email] = user.email
                 it[username] = user.username
                 it[password] = Password.hash(user.password)
                 it[roleId] = 0

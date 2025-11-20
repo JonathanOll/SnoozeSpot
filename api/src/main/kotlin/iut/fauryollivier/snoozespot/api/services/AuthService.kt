@@ -14,11 +14,11 @@ class AuthService(private val userRepository:UserRepository, private val jwtServ
      fun create(userAuth:UserAuthRequest): Result<AuthResponseDTO> {
          val userResult = userRepository.getByUsername(userAuth.username)
          if(userResult.isSuccess) { //User already exists
-             return Result.failure(Exception("Invalid credentials"))
+             return Result.failure(Exception("Could not create user"))
          }
 
          val result = userRepository.create(userAuth)
-         if(result.isFailure) return Result.failure(Exception("Invalid credentials"))
+         if(result.isFailure) return Result.failure(Exception("Could not create user"))
 
          val user = userRepository.getById(result.getOrThrow())
          if(user.isFailure) return Result.failure(Exception("User created but not found"))

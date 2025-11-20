@@ -33,8 +33,9 @@ class LoginViewModel : ViewModel() {
         viewModelScope.launch {
             val response = NetworkDataSource.api.authLoginPost(UserAuthRequest(username, password))
             if (response.isSuccessful) {
-                val token = response.body()!!.accessToken
-                LocalStorage(context).saveAuthToken(token)
+                val data = response.body()!!
+                LocalStorage(context).saveAuthToken(data.accessToken)
+                LocalStorage(context).saveUser(data.user)
                 navigator.navigateUp()
             } else {
                 Toast.makeText(context, context.getString(R.string.couldNotLogin), Toast.LENGTH_LONG).show()
