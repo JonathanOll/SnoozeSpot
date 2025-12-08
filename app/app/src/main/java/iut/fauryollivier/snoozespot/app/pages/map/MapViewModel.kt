@@ -28,7 +28,7 @@ class MapViewModel : ViewModel() {
 
         val result = SpotsRepository.getSpotsZone(topLeft, bottomRight)
 
-        if (result.isSuccessful) {
+        if (result.isSuccessful && result.body() != null) {
             _state.update {
                 it.copy(spots = result.body()!!)
             }

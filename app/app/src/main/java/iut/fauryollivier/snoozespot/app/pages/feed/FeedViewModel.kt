@@ -3,9 +3,11 @@ package iut.fauryollivier.snoozespot.app.pages.feed
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.data.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -104,10 +106,10 @@ class FeedViewModel : ViewModel() {
         }
     }
 
-    fun newPost(navigator: DestinationsNavigator, content: String) {
+    fun newPost(navigator: DestinationsNavigator, data: NewPostResult) {
         viewModelScope.launch {
             try {
-                val response = PostsRepository.createPost(content)
+                val response = PostsRepository.createPost(data.content)
                 if(response.isSuccessful) {
                     navigator.navigate(FeedDetailsScreenDestination(response.body()?.id!!))
                 }

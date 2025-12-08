@@ -1,17 +1,12 @@
 package iut.fauryollivier.snoozespot.app.pages.feed
 
-import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -28,14 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.compose.primaryContainerLight
 import com.example.compose.primaryLight
 import com.ramcosta.composedestinations.annotation.Destination
@@ -45,12 +35,11 @@ import com.ramcosta.composedestinations.result.ResultRecipient
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.components.Loader
 import iut.fauryollivier.snoozespot.app.components.FeedTopBar
-import iut.fauryollivier.snoozespot.app.components.BottomBar
-import iut.fauryollivier.snoozespot.app.components.FeedTopBar
 import iut.fauryollivier.snoozespot.ScaffoldController
 import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
+import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 
@@ -61,7 +50,7 @@ fun FeedScreen(
     navigator: DestinationsNavigator,
     scaffoldController: ScaffoldController,
     modifier: Modifier = Modifier,
-    resultRecipient: ResultRecipient<NewPostScreenDestination, String>,
+    resultRecipient: ResultRecipient<NewPostScreenDestination, NewPostResult>,
     vm: FeedViewModel = viewModel()
 ) {
 

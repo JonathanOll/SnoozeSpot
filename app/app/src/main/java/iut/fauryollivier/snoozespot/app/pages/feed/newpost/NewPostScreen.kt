@@ -1,7 +1,9 @@
 package iut.fauryollivier.snoozespot.app.pages.feed.newpost
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -12,6 +14,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -27,28 +30,44 @@ import com.ramcosta.composedestinations.result.ResultBackNavigator
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.ScaffoldController
+import iut.fauryollivier.snoozespot.app.components.ImagePicker
+import java.io.Serializable
+
+data class NewPostResult(
+    val content: String,
+    val uris: List<String>
+) : Serializable
 
 @Destination
 @Composable
-fun NewPostScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, resultBackNavigator: ResultBackNavigator<String>) {
+fun NewPostScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, resultBackNavigator: ResultBackNavigator<NewPostResult>) {
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { BackTopBar(navigator) }
         scaffoldController.showBottomBar.value = false
     }
 
+    val pictures = remember { mutableStateListOf<Uri>() }
     var text by remember { mutableStateOf("") }
 
-    Box {
-        Column {
+    Box (modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
+            ImagePicker(pictures)
+
             OutlinedTextField(
                 value = text,
                 onValueChange = { text = it },
-                label = { Text(stringResource(R.string.post_content)) }
+                label = { Text(stringResource(R.string.post_content)) },
+                modifier = Modifier.fillMaxSize()
             )
+
+            pictures.forEach {
+                Text(it.toString())
+            }
         }
 
         FloatingActionButton(
-            onClick = { resultBackNavigator.navigateBack(text) },
+            onClick = {
+                resultBackNavigator.navigateBack(NewPostResult(text, pictures.map { it.toString() }.toList())) },
             backgroundColor = primaryContainerLight,
             contentColor = primaryLight,
             modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 16.dp)
@@ -57,3 +76,4 @@ fun NewPostScreen(navigator: DestinationsNavigator, scaffoldController: Scaffold
         }
     }
 }
+

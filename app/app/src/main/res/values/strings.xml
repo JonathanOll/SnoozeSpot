@@ -31,4 +31,12 @@
     <string name="email">Email address</string>
     <string name="follow">Follow</string>
     <string name="share">Share</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_title">Confirm</string>
+    <string name="confirm_pic_delete">Do you really want to delete this pic?</string>
+    <string name="place">Place</string>
+    <string name="name">Name</string>
+    <string name="details">Details</string>
+    <string name="description">Description</string>
 </resources>
