@@ -11,7 +11,7 @@ data class PostCommentDTO(
     val id: Int,
     val user: UserDTO,
     val content: String,
-    @Contextual val createdAt: LocalDateTime,
+    @Contextual val createdAt: LocalDateTime?,
 
 ) : DTOBase() {
 
@@ -19,7 +19,7 @@ data class PostCommentDTO(
         id = id,
         user = user.toEntity(),
         content = content,
-        createdAt = createdAt
+        createdAt = createdAt ?: LocalDateTime.now()
     )
 
 }

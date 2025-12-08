@@ -164,9 +164,9 @@ fun FeedElement(navigator: DestinationsNavigator, postComment: PostCommentDTO, m
             postComment.user,
             postComment.content,
             -1,
-            postComment.createdAt,
             emptyList(),
-            emptyList()
+            emptyList(),
+            postComment.createdAt,
         ),
         isComment = true,
         modifier = modifier

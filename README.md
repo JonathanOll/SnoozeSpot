@@ -11,6 +11,12 @@ This guide explains how to run the mobile api located in the `api` subdirectory 
 
 `cd api` -> `./gradlew run`
 
+#### Default stored file path settings:
+
+- STORED_FILE_PATH=".\\src\\main\\resources\\static\\files" **Must use \\\ as delimiter.**
+
+*Optional: override these environment variables for production.*
+
 #### Default JWT settings:
 
 - JWT_SECRET="dev-secret-to-change"

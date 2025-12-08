@@ -41,15 +41,15 @@ object Tables {
         override val primaryKey = PrimaryKey(roleId, permissionId)
     }
 
-    object Files : Table("file") {
-        val id = integer("id").autoIncrement()
-        val name = varchar("name", 255)
+    object Files : IntIdTable("file") {
+        val uuid = uuid("uuid").uniqueIndex()
+        val description = varchar("name", 255)
         val path = varchar("path", 512).uniqueIndex()
-        val type = varchar("type", 50)
+        val type = integer("type").default(0)
+        val usage = integer("usage").default(0)
         val canBeUsed = integer("can_be_used").default(1)
         val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
         val deletedAt = datetime("deleted_at").nullable()
-        override val primaryKey = PrimaryKey(id)
     }
 
     object SpotAttributes : Table("spot_attribute") {

@@ -12,7 +12,7 @@ data class SpotCommentDTO(
     val user: UserDTO,
     val description: String,
     val rating: Int,
-    @Contextual val createdAt: LocalDateTime,
+    @Contextual val createdAt: LocalDateTime?,
 
 ) : DTOBase() {
 
@@ -21,7 +21,7 @@ data class SpotCommentDTO(
         user = user.toEntity(),
         description = description,
         rating = rating,
-        createdAt = createdAt
+        createdAt = createdAt ?: LocalDateTime.now()
     )
 
 }

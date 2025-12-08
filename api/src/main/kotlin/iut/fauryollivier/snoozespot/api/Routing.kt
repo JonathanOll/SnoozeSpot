@@ -2,20 +2,18 @@ package iut.fauryollivier.snoozespot.api
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.plugins.requestvalidation.*
+import io.ktor.server.http.content.files
+import io.ktor.server.http.content.staticFileSystem
+import io.ktor.server.http.content.staticResources
 import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.resources.Resources
+import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import iut.fauryollivier.snoozespot.api.config.Config
 import iut.fauryollivier.snoozespot.api.routes.authRoutes
-import iut.fauryollivier.snoozespot.api.routes.userRoutes
 import iut.fauryollivier.snoozespot.api.routes.postRoutes
 import iut.fauryollivier.snoozespot.api.routes.spotRoutes
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
-import kotlin.Int
-import iut.fauryollivier.snoozespot.api.routes.spotRoutes
+import iut.fauryollivier.snoozespot.api.routes.userRoutes
 
 fun Application.configureRouting() {
     install(StatusPages) {
@@ -41,7 +39,6 @@ fun Application.configureRouting() {
 
         route("/users") { userRoutes() }
 
-        // Static plugin. Try to access `/static/index.html`
-        // staticResources("/static", "static")
+        staticFileSystem("/files", Config.STORED_FILE_PATH)
     }
 }
