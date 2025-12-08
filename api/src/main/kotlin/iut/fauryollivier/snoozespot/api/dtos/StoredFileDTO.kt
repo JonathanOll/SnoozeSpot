@@ -2,7 +2,7 @@ package iut.fauryollivier.snoozespot.api.dtos
 
 import iut.fauryollivier.snoozespot.api.config.Config
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
-import iut.fauryollivier.snoozespot.api.entities.StoredFile
+import iut.fauryollivier.snoozespot.api.model.StoredFileModel
 import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
@@ -21,13 +21,14 @@ data class StoredFileDTO(
 
     ) : DTOBase() {
 
-    override fun toEntity() = StoredFile(
+    override fun toModel() = StoredFileModel(
         id = null,
         uuid = uuid,
         description = description,
         path = Config.STORED_FILE_PATH + path,
         type = type,
         usage = usage,
+        canBeUsed = true,
         createdAt = createdAt ?: LocalDateTime.now()
     )
 

@@ -3,11 +3,7 @@ package iut.fauryollivier.snoozespot.api.config
 import PostCommentRepository
 import SpotCommentRepository
 import io.ktor.server.application.*
-import iut.fauryollivier.snoozespot.api.auth.JWTService
 import iut.fauryollivier.snoozespot.api.auth.jwtModule
-import iut.fauryollivier.snoozespot.api.config.Config
-import iut.fauryollivier.snoozespot.api.entities.Spot
-import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.repositories.PostRepository
 import iut.fauryollivier.snoozespot.api.repositories.SpotRepository
 import iut.fauryollivier.snoozespot.api.repositories.StoredFileRepository

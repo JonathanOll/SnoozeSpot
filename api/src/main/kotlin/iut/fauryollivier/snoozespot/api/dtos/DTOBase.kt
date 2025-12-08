@@ -1,8 +1,8 @@
 package iut.fauryollivier.snoozespot.api.dtos
 
-import iut.fauryollivier.snoozespot.api.entities.EntityBase
+import iut.fauryollivier.snoozespot.api.model.ModelBase
 
 abstract class DTOBase {
 
-    abstract fun toEntity() : EntityBase
+    abstract fun toModel() : ModelBase
 }

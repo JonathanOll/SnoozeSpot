@@ -1,23 +1,25 @@
 package iut.fauryollivier.snoozespot.api.entities
 
-import iut.fauryollivier.snoozespot.api.dtos.SpotAttributeDTO
+import iut.fauryollivier.snoozespot.api.model.SpotAttributeModel
 import java.time.LocalDateTime
 
 data class SpotAttribute(
 
     val id: Int,
     val name: String,
-    val icon: StoredFile?,
+    val iconId: Int?,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime? = null,
+    val updatedAt: LocalDateTime?,
     val deletedAt: LocalDateTime? = null
 
 ) : EntityBase() {
 
-    override fun toDTO() = SpotAttributeDTO(
-        id = id,
-        name = name,
-        icon = icon?.toDTO()
+    override fun toModel(): SpotAttributeModel = SpotAttributeModel(
+        id = this.id,
+        name = this.name,
+        iconId = this.iconId,
+        createdAt = this.createdAt,
+        updatedAt = this.updatedAt,
+        deletedAt = this.deletedAt,
     )
-
 }

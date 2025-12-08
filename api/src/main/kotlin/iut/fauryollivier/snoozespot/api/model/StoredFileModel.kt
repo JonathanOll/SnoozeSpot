@@ -1,17 +1,15 @@
-package iut.fauryollivier.snoozespot.api.entities
+package iut.fauryollivier.snoozespot.api.model
 
 import iut.fauryollivier.snoozespot.api.config.Config
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
 import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
 import iut.fauryollivier.snoozespot.api.entities.EntityBase
+import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
-import iut.fauryollivier.snoozespot.api.model.ModelBase
-import iut.fauryollivier.snoozespot.api.model.SpotModel
-import iut.fauryollivier.snoozespot.api.model.StoredFileModel
 import java.time.LocalDateTime
 import java.util.UUID
 
-data class StoredFile(
+data class StoredFileModel(
 
     val id: Int?,
     val uuid: UUID,
@@ -23,9 +21,9 @@ data class StoredFile(
     val createdAt: LocalDateTime,
     val deletedAt: LocalDateTime? = null
 
-) : EntityBase() {
+) : ModelBase() {
 
-    override fun toModel(): StoredFileModel = StoredFileModel(
+    override fun toEntity(): StoredFile = StoredFile(
         id = this.id,
         uuid = this.uuid,
         description = this.description,
@@ -37,4 +35,12 @@ data class StoredFile(
         deletedAt = this.deletedAt
     )
 
+    override fun toDTO() = StoredFileDTO(
+        uuid = uuid,
+        description = description,
+        path = Config.STORED_FILE_REMOTE_PATH + path.substringAfter(Config.STORED_FILE_PATH.substringAfterLast("\\")),
+        type = type,
+        usage = usage,
+        createdAt = createdAt
+    )
 }

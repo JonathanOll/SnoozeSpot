@@ -5,10 +5,10 @@ import io.ktor.utils.io.jvm.javaio.*
 import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.database.Tables.Files.description
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
+import iut.fauryollivier.snoozespot.api.model.StoredFileModel
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
 import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
 import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.experimental.suspendedTransactionAsync
@@ -26,32 +26,28 @@ class StoredFileRepository(private val uploadDir: String) : RepositoryBase() {
         Files.createDirectories(Paths.get(uploadDir))
     }
 
-    override fun ResultRow.toEntity(
-        loadRelations: Boolean
-    ): StoredFile {
+    override fun ResultRow.toEntity(): StoredFile = StoredFile(
+        id = this[Tables.Files.id].value,
+        uuid = this[Tables.Files.uuid],
+        description = this[description],
+        path = this[Tables.Files.path],
+        type = StoredFileType.fromInt( this[Tables.Files.type]) ?: StoredFileType.UNKNOW,
+        usage = StoredFileUsage.fromInt(this[Tables.Files.usage]) ?: StoredFileUsage.UNKNOW,
+        canBeUsed = this[Tables.Files.canBeUsed] == 1,
+        createdAt = this[Tables.Files.createdAt],
+        deletedAt = this[Tables.Files.deletedAt]
+    )
 
-        return StoredFile(
-            id = this[Tables.Files.id].value,
-            uuid = this[Tables.Files.uuid],
-            description = this[Tables.Files.description],
-            path = this[Tables.Files.path],
-            type = StoredFileType.fromInt( this[Tables.Files.type]) ?: StoredFileType.UNKNOW,
-            usage = StoredFileUsage.fromInt(this[Tables.Files.usage]) ?: StoredFileUsage.UNKNOW,
-            createdAt = this[Tables.Files.createdAt],
-            deletedAt = this[Tables.Files.deletedAt]
-        )
-    }
-
-    suspend fun getFileById(id: Int): Result<StoredFile> {
+    suspend fun getFileById(id: Int): Result<StoredFileModel> {
         val file = suspendedTransactionAsync {
             Tables.Files.select { Tables.Files.id eq id }
-                .map { it.toEntity(false) }
+                .map { it.toEntity() }
                 .singleOrNull()
         }.await()
         if ( file == null) {
             return Result.failure(Exception("File not found"))
         }
-        return Result.success(file)
+        return Result.success(file.toModel())
     }
 
     suspend fun saveFile(inputFile: PartData.FileItem, description: String, type: StoredFileType, usage: StoredFileUsage): Result<Int> {

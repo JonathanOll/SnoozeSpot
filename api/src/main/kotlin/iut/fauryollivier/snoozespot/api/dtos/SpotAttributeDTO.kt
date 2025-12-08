@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.dtos
 
-import iut.fauryollivier.snoozespot.api.entities.SpotAttribute
+import iut.fauryollivier.snoozespot.api.model.SpotAttributeModel
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
@@ -9,17 +9,18 @@ data class SpotAttributeDTO(
 
     val id: Int,
     val name: String,
-    val icon: StoredFileDTO?
+    val icon: StoredFileDTO? = null
 
 ) : DTOBase() {
 
-    override fun toEntity() = SpotAttribute(
+    override fun toModel() = SpotAttributeModel(
         id = id,
         name = name,
-        icon = icon?.toEntity(),
+        iconId = null,
         createdAt = LocalDateTime.now(),
-        updatedAt = null,
-        deletedAt = null
+        updatedAt = LocalDateTime.now(),
+        deletedAt = null,
+        icon = icon?.toModel()
     )
 
 }

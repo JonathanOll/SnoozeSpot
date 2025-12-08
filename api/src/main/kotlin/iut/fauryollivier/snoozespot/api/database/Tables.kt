@@ -28,11 +28,9 @@ object Tables {
         val description = varchar("description", 255).nullable()
     }
 
-    object Permissions : Table("permission") {
-        val id = integer("id").autoIncrement()
+    object Permissions : IntIdTable("permission") {
         val name = varchar("name", 50).uniqueIndex()
         val description = varchar("description", 255).nullable()
-        override val primaryKey = PrimaryKey(id)
     }
 
     object RolePermissions : Table("role_permission") {
@@ -52,11 +50,9 @@ object Tables {
         val deletedAt = datetime("deleted_at").nullable()
     }
 
-    object SpotAttributes : Table("spot_attribute") {
-        val id = integer("id").autoIncrement()
+    object SpotAttributes : IntIdTable("spot_attribute") {
         val name = varchar("name", 50).uniqueIndex()
         val iconId = integer("icon_id").references(Files.id).nullable()
-        override val primaryKey = PrimaryKey(id)
     }
 
     object SpotAttributeLinks : Table("spot_attribute_link") {
@@ -82,15 +78,13 @@ object Tables {
         override val primaryKey = PrimaryKey(spotId, fileId)
     }
 
-    object SpotComments : Table("spot_comment") {
-        val id = integer("id").autoIncrement()
+    object SpotComments : IntIdTable("spot_comment") {
         val userId = integer("user_id").references(Users.id)
         val spotId = integer("spot_id").references(Spots.id)
         val description = varchar("description", 2000)
         val rating = integer("rating")
         val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
         val deletedAt = datetime("deleted_at").nullable()
-        override val primaryKey = PrimaryKey(id)
     }
 
     object SpotLikes : Table("spot_like") {

@@ -1,8 +1,9 @@
 package iut.fauryollivier.snoozespot.api.entities
 
-import iut.fauryollivier.snoozespot.api.dtos.UserDTO
+import iut.fauryollivier.snoozespot.api.model.UserModel
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
+
 
 data class User(
 
@@ -10,29 +11,32 @@ data class User(
     val uuid: UUID,
     val username: String,
     val email: String?,
-    val profilePicture: StoredFile?,
+    val profilePicture: Int?,
     val karma: Int,
+    val canConnect: Boolean,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime? = null,
-    val deletedAt: LocalDateTime? = null,
-    val spots: List<Spot> = emptyList(),
-    val posts: List<Post> = emptyList(),
-    val following: List<User> = emptyList(),
-    val followers: List<User> = emptyList()
+    val deletedAt: LocalDateTime?,
+
+    val spots: List<Int>,
+    val posts: List<Int>,
+    val following: List<Int>,
+    val followers: List<Int>
 
 ) : EntityBase() {
 
-    override fun toDTO(): UserDTO = UserDTO(
+    override fun toModel(): UserModel = UserModel(
+        id = id,
         uuid = uuid,
         username = username,
         email = email,
-        profilePicture = profilePicture?.toDTO(),
+        profilePictureId = profilePicture,
         karma = karma,
+        canConnect = canConnect,
         createdAt = createdAt,
-        spots = spots.map { it.toDTO() },
-        posts = posts.map { it.toDTO() },
-        following = following.map { it.toDTO() },
-        followers = followers.map { it.toDTO() }
+        deletedAt = deletedAt,
+        spotsIds = spots,
+        postsIds = posts,
+        followingIds = following,
+        followersIds = followers,
     )
-
 }

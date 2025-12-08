@@ -1,12 +1,13 @@
 package iut.fauryollivier.snoozespot.api.entities
 
-import iut.fauryollivier.snoozespot.api.dtos.SpotCommentDTO
+import iut.fauryollivier.snoozespot.api.model.SpotCommentModel
 import java.time.LocalDateTime
 
 data class SpotComment(
 
     val id: Int,
-    val user: User,
+    val spotId: Int,
+    val userId: Int,
     val description: String,
     val rating: Int,
     val createdAt: LocalDateTime,
@@ -14,12 +15,13 @@ data class SpotComment(
 
 ) : EntityBase() {
 
-    override fun toDTO() = SpotCommentDTO(
-        id = id,
-        user = user.toDTO(),
-        description = description,
-        rating = rating,
-        createdAt = createdAt
+    override fun toModel(): SpotCommentModel = SpotCommentModel(
+        id = this.id,
+        spotId = this.spotId,
+        userId = this.userId,
+        description = this.description,
+        rating = this.rating,
+        createdAt = this.createdAt,
+        deletedAt = this.deletedAt,
     )
-
 }

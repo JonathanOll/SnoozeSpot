@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.dtos
 
-import iut.fauryollivier.snoozespot.api.entities.Spot
+import iut.fauryollivier.snoozespot.api.model.SpotModel
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
@@ -16,30 +16,31 @@ data class SpotDTO(
     val longitude: Double,
     val likeCount: Int,
     val rating: Float? = null,
-    @Contextual val createdAt: LocalDateTime?,
-    val pictures: List<StoredFileDTO> = emptyList(),
-    val attributes: List<SpotAttributeDTO> = emptyList(),
-    val comments: List<SpotCommentDTO> = emptyList(),
+    @Contextual val createdAt: LocalDateTime? = null,
+    val pictures: List<StoredFileDTO>? = null,
+    val attributes: List<SpotAttributeDTO>? = null,
+    val comments: List<SpotCommentDTO>? = null
 
 ) : DTOBase() {
 
-    override fun toEntity() = Spot(
+    override fun toModel() = SpotModel(
         id = id,
-        creator = creator?.toEntity(),
+        creatorId = null,
         name = name,
         description = description,
         latitude = latitude,
         longitude = longitude,
+        canBeDisplayed = 1,
         likeCount = likeCount,
         rating = rating,
         createdAt = createdAt ?: LocalDateTime.now(),
-        pictures = pictures.map { it.toEntity() },
-        attributes = attributes.map { it.toEntity() },
-        comments = comments.map { it.toEntity() },
-
-        canBeDisplayed = 1,
-        updatedAt = LocalDateTime.now(),
         deletedAt = null,
+        picturesIds = emptyList(),
+        attributesIds = emptyList(),
+        commentsIds = emptyList(),
+        creator = null, //creator?.toModel(),
+        pictures = pictures?.map { it.toModel() },
+        attributes = attributes?.map { it.toModel() },
+        comments = comments?.map { it.toModel() }
     )
-
 }

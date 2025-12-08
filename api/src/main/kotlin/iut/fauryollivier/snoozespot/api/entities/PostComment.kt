@@ -1,24 +1,23 @@
 package iut.fauryollivier.snoozespot.api.entities
 
-import iut.fauryollivier.snoozespot.api.dtos.PostCommentDTO
+import iut.fauryollivier.snoozespot.api.model.PostCommentModel
 import java.time.LocalDateTime
 
 data class PostComment(
 
     val id: Int,
-    val user: User,
+    val userId: Int,
     val content: String,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime? = null,
-    val deletedAt: LocalDateTime? = null
+    val deletedAt: LocalDateTime? = null,
 
 ) : EntityBase() {
 
-    override fun toDTO() = PostCommentDTO(
-        id = id,
-        user = user.toDTO(),
-        content = content,
-        createdAt = createdAt
+    override fun toModel(): PostCommentModel = PostCommentModel(
+        id = this.id,
+        userId = this.userId,
+        content = this.content,
+        createdAt = this.createdAt,
+        deletedAt = this.deletedAt,
     )
-
 }

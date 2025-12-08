@@ -4,9 +4,10 @@ import iut.fauryollivier.snoozespot.api.auth.Password
 import iut.fauryollivier.snoozespot.api.auth.model.UserAuthRequest
 import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.database.selectActive
-import iut.fauryollivier.snoozespot.api.entities.Post
-import iut.fauryollivier.snoozespot.api.entities.Spot
 import iut.fauryollivier.snoozespot.api.entities.User
+import iut.fauryollivier.snoozespot.api.model.PostModel
+import iut.fauryollivier.snoozespot.api.model.SpotModel
+import iut.fauryollivier.snoozespot.api.model.UserModel
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
@@ -16,27 +17,23 @@ import java.util.*
 
 class UserRepository : RepositoryBase() {
 
-    override fun ResultRow.toEntity(
-        loadRelations: Boolean
-    ): User {
-        val spots = if (loadRelations) emptyList() else emptyList<Spot>() //TODO: load spots
-        val posts = if (loadRelations) emptyList() else emptyList<Post>() //TODO: load posts
-        val following = if (loadRelations) emptyList() else emptyList<User>() //TODO: load following
-        val followers = if (loadRelations) emptyList() else emptyList<User>() //TODO
+    override fun ResultRow.toEntity(): User {
 
         return User(
             id = this[Tables.Users.id].value,
             uuid = this[Tables.Users.uuid],
             username = this[Tables.Users.username],
             email = this[Tables.Users.email],
-            profilePicture = null,
+            profilePicture = this[Tables.Users.profilePictureId],
             karma = this[Tables.Users.karma],
+            canConnect = this[Tables.Users.canConnect] == 1,
             createdAt = this[Tables.Users.createdAt],
             deletedAt = this[Tables.Users.deletedAt],
-            spots = spots,
-            posts = posts,
-            following = following,
-            followers = followers,
+
+            spots = emptyList(),
+            posts = emptyList(),
+            following = emptyList(),
+            followers = emptyList(),
         )
     }
 
@@ -81,26 +78,26 @@ class UserRepository : RepositoryBase() {
         return Result.success(password)
     }
 
-    fun getAll(): Result<List<User>> {
+    fun getAll(): Result<List<UserModel>> {
         val res = transaction {
             Tables.Users.selectAll().map {
-                it.toEntity(loadRelations = false)
+                it.toEntity()
             }
         }
-        return Result.success(res)
+        return Result.success(res.map { it.toModel() })
     }
 
-    fun getById(id: Int, loadRelations: Boolean = false) : Result<User> {
+    fun getById(id: Int, loadRelations: Boolean = false) : Result<UserModel> {
         val user = transaction {
             Tables.Users.select { Tables.Users.id eq id }.map {
-                it.toEntity(loadRelations = loadRelations)
+                it.toEntity()
             }
         }.firstOrNull()
         if(user == null) return Result.failure(Exception("User not found"))
-        return Result.success(user)
+        return Result.success(user.toModel())
     }
 
-    fun getByUsername(username: String) : Result<User> {
+    fun getByUsername(username: String) : Result<UserModel> {
         val id = transaction {
             Tables.Users
                 .select { Tables.Users.username eq username }

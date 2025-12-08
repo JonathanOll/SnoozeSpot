@@ -1,7 +1,6 @@
 package iut.fauryollivier.snoozespot.api.dtos
 
-import iut.fauryollivier.snoozespot.api.entities.User
-import iut.fauryollivier.snoozespot.api.repositories.UserRepository
+import iut.fauryollivier.snoozespot.api.model.UserModel
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
@@ -16,21 +15,33 @@ data class UserDTO(
     val profilePicture: StoredFileDTO?,
     val karma: Int,
     @Contextual val createdAt: LocalDateTime,
-    val spots: List<SpotDTO> = emptyList(),
-    val posts: List<PostDTO> = emptyList(),
-    val following: List<UserDTO> = emptyList(),
-    val followers: List<UserDTO> = emptyList()
+    val spots: List<SpotDTO>? = emptyList(),
+    val posts: List<PostDTO>? = emptyList(),
+    val following: List<UserDTO>? = emptyList(),
+    val followers: List<UserDTO>? = emptyList()
 
 ) : DTOBase() {
 
-    override fun toEntity() = User(
+    override fun toModel() = UserModel(
         id = null,
         uuid = uuid,
         username = username,
         email = email,
-        profilePicture = profilePicture?.toEntity(),
+        profilePictureId = null,
         karma = karma,
+        canConnect = false,
         createdAt = createdAt,
+        deletedAt = null,
+        spotsIds = emptyList(),
+        postsIds = emptyList(),
+        followingIds = emptyList(),
+        followersIds = emptyList(),
+
+        profilePicture = profilePicture?.toModel(),
+        spots = null, //spots?.map { it.toModel() },
+        posts = null, //posts?.map { it.toModel() },
+        following = emptyList(),
+        followers = emptyList()
     )
 
 }

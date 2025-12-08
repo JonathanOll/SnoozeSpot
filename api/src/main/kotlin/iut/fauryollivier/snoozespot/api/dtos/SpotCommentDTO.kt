@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.dtos
 
-import iut.fauryollivier.snoozespot.api.entities.SpotComment
+import iut.fauryollivier.snoozespot.api.model.SpotCommentModel
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
@@ -9,19 +9,22 @@ import java.time.LocalDateTime
 data class SpotCommentDTO(
 
     val id: Int,
-    val user: UserDTO,
+    val spot: SpotDTO? = null,
+    val user: UserDTO? = null,
     val description: String,
     val rating: Int,
-    @Contextual val createdAt: LocalDateTime?,
+    @Contextual val createdAt: LocalDateTime? = null
 
 ) : DTOBase() {
 
-    override fun toEntity() = SpotComment(
+    override fun toModel() = SpotCommentModel(
         id = id,
-        user = user.toEntity(),
+        spotId = spot?.id ?: 0,
+        userId = 0,
         description = description,
         rating = rating,
-        createdAt = createdAt ?: LocalDateTime.now()
+        createdAt = createdAt ?: LocalDateTime.now(),
+        user = null, //user?.toModel()
     )
 
 }
