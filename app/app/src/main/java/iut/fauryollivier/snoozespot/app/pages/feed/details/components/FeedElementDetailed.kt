@@ -16,10 +16,10 @@ import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
 
 @Composable
-fun FeedElementDetailed(navigator: DestinationsNavigator, postDTO: PostDTO, modifier: Modifier = Modifier) {
+fun FeedElementDetailed(navigator: DestinationsNavigator, postDTO: PostDTO, modifier: Modifier = Modifier, likePost: (post: PostDTO) -> Unit = {}) {
     LazyColumn (modifier = modifier) {
         item {
-            FeedElement(navigator, postDTO)
+            FeedElement(navigator, postDTO, likePost = likePost)
             Box(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).height(2.dp).border(1.dp, Color(0xFFDDDDDD)))
         }
 

@@ -107,7 +107,7 @@ fun FeedScreen(
                         items(state.posts) { post ->
                             FeedElement(navigator, post, modifier = Modifier.clickable {
                                 navigator.navigate(FeedDetailsScreenDestination(post.id))
-                            })
+                            }, likePost = { vm.likePost(it) })
                         }
                     }
                 }

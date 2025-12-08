@@ -43,23 +43,30 @@ fun Route.postRoutes() {
     val postService by inject<PostService>()
     val storedFileService by inject<StoredFileService>()
 
-    get<Posts> { params ->
-        val postsResult = postService.getAll(params.page * 20, (params.page + 1) * 20 - 1)
-        if (postsResult.isFailure) {
-            call.respond(HttpStatusCode.InternalServerError)
-            return@get
+    authenticate("jwtAuth", optional = true) {
+        get<Posts> { params ->
+            val userId = call.currentUserId().getOrNull()
+
+            val postsResult = postService.getAll(params.page * 20, (params.page + 1) * 20 - 1, userId)
+            if (postsResult.isFailure) {
+                call.respond(HttpStatusCode.InternalServerError)
+                return@get
+            }
+            call.respond(postsResult.getOrThrow())
         }
-        call.respond(postsResult.getOrThrow())
+
+        get<PostById> { params ->
+            val userId = call.currentUserId().getOrNull()
+
+            val postResult = postService.getById(params.id, userId)
+            if (postResult.isFailure) {
+                call.respond(HttpStatusCode.NotFound, "Post not found")
+                return@get
+            }
+            call.respond(postResult.getOrThrow())
+        }
     }
 
-    get<PostById> { params ->
-        val postResult = postService.getById(params.id)
-        if (postResult.isFailure) {
-            call.respond(HttpStatusCode.NotFound, "Post not found")
-            return@get
-        }
-        call.respond(postResult.getOrThrow())
-    }
 
     post("/image"){
         var description: String = "unknow description"
@@ -108,6 +115,26 @@ fun Route.postRoutes() {
                 return@post
             }
             call.respond(HttpStatusCode.Created, postResult.getOrThrow())
+        }
+
+        post("{id}/like") {
+            val userId = call.currentUserId().getOrNull()
+            val postId = call.parameters["id"]?.toIntOrNull()
+
+            if (postId == null) {
+                call.respond(HttpStatusCode.BadRequest, "Post not found")
+            }
+            val postResult = postService.getById(postId!!, userId)
+            if (postResult.isFailure) {
+                call.respond(HttpStatusCode.BadRequest, "Post not found")
+            }
+
+            val result = postService.likePost(postId, userId!!)
+            if (result.isFailure) {
+                call.respond(HttpStatusCode.BadRequest, "Could not like post $postId")
+                return@post
+            }
+            call.respond(HttpStatusCode.OK, result.getOrThrow())
         }
     }
 }

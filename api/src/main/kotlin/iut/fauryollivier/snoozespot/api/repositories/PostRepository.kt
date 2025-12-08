@@ -1,26 +1,31 @@
 package iut.fauryollivier.snoozespot.api.repositories
 
-import PostCommentRepository
 import iut.fauryollivier.snoozespot.api.database.Tables
-import iut.fauryollivier.snoozespot.api.database.Tables.PostComments.postId
 import iut.fauryollivier.snoozespot.api.database.selectVisible
 import iut.fauryollivier.snoozespot.api.entities.Post
 import iut.fauryollivier.snoozespot.api.entities.PostComment
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
+import iut.fauryollivier.snoozespot.api.entities.User
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class PostRepository(private val userRepository: UserRepository) : RepositoryBase() {
 
-    override fun ResultRow.toEntity(
-        loadRelations: Boolean
+    fun ResultRow.toEntity(
+        loadRelations: Boolean,
+        userId: Int?
     ): Post {
         val pictures = if (loadRelations) emptyList<StoredFile>() else emptyList<StoredFile>() //TODO: load pictures
         val comments = if (loadRelations) emptyList<PostComment>() else emptyList<PostComment>()
         val likeCount = getLikeCount(this[Tables.Posts.id].value).getOrThrow()
+        val likedByUser = userId != null && isLikedBy(this[Tables.Posts.id].value, userId).getOrThrow()
 
         return Post(
             id = this[Tables.Posts.id].value,
@@ -30,11 +35,17 @@ class PostRepository(private val userRepository: UserRepository) : RepositoryBas
             createdAt = this[Tables.Posts.createdAt],
             deletedAt = this[Tables.Posts.deletedAt],
             pictures = pictures,
-            comments = comments
+            comments = comments,
+            likedByUser = likedByUser
         )
     }
+    override fun ResultRow.toEntity(
+        loadRelations: Boolean
+    ): Post {
+        return this.toEntity(loadRelations, null)
+    }
 
-    fun getAll(from: Int = -1, to: Int = -1): Result<List<Post>> {
+    fun getAll(from: Int = -1, to: Int = -1, userId: Int?): Result<List<Post>> {
         if (from > to) return Result.failure(Exception("From must be before to"))
         val list = transaction {
             var query = Tables.Posts.selectVisible().orderBy(Tables.Posts.createdAt, SortOrder.DESC)
@@ -44,16 +55,16 @@ class PostRepository(private val userRepository: UserRepository) : RepositoryBas
             }
 
             query.map {
-                it.toEntity(loadRelations = false)
+                it.toEntity(loadRelations = false, userId)
             }
         }
         return Result.success(list)
     }
 
-    fun getById(id: Int): Result<Post> {
+    fun getById(id: Int, userId: Int?): Result<Post> {
         val post = transaction {
             Tables.Posts.select { Tables.Posts.id eq id }.selectVisible().map { it ->
-                it.toEntity(true)
+                it.toEntity(true, userId)
             }.firstOrNull()
         }
         if(post == null) return Result.failure(Exception("Post not found"))
@@ -85,5 +96,33 @@ class PostRepository(private val userRepository: UserRepository) : RepositoryBas
             .select { Tables.PostLikes.postId eq postId }
             .count()
         return Result.success(likeCount.toInt())
+    }
+
+    fun isLikedBy(postId: Int, userId: Int): Result<Boolean> {
+        val liked = transaction {
+            Tables.PostLikes
+                .select { (Tables.PostLikes.postId eq postId) and (Tables.PostLikes.userId eq userId) }
+                .any()
+        }
+        return Result.success(liked)
+    }
+
+    fun addLike(postId: Int, userId: Int): Result<Unit> {
+        transaction {
+            Tables.PostLikes.insert {
+                it[Tables.PostLikes.postId] = postId
+                it[Tables.PostLikes.userId] = userId
+            }
+        }
+        return Result.success(Unit)
+    }
+
+    fun removeLike(postId: Int, userId: Int): Result<Unit> {
+        transaction {
+            Tables.PostLikes.deleteWhere {
+                (Tables.PostLikes.postId eq postId) and (Tables.PostLikes.userId eq userId)
+            }
+        }
+        return Result.success(Unit)
     }
 }

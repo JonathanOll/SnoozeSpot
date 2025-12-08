@@ -42,7 +42,7 @@ fun FeedDetailsScreen(navigator: DestinationsNavigator, postId: Int, scaffoldCon
         }
     } else {
         if(postDTO != null)
-            FeedElementDetailed(navigator, postDTO!!)
+            FeedElementDetailed(navigator, postDTO!!, likePost = { vm.likePost(postDTO!!.id) })
     }
 
 }

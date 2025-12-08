@@ -14,7 +14,8 @@ data class PostDTO(
     val likeCount: Int,
     @Contextual val createdAt: LocalDateTime?,
     val pictures: List<StoredFileDTO> = emptyList(),
-    val comments: List<PostCommentDTO> = emptyList()
+    val comments: List<PostCommentDTO> = emptyList(),
+    val likedByUser: Boolean = false
 
 ) : DTOBase() {
 
@@ -25,7 +26,8 @@ data class PostDTO(
         likeCount = likeCount,
         createdAt = createdAt ?: LocalDateTime.now(),
         pictures = pictures.map { it.toEntity() },
-        comments = comments.map { it.toEntity() }
+        comments = comments.map { it.toEntity() },
+        likedByUser = likedByUser
     )
 
 }

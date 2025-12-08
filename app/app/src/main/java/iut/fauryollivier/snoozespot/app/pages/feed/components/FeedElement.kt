@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Comment
@@ -39,7 +40,7 @@ import iut.fauryollivier.snoozespot.app.destinations.AccountDetailsScreenDestina
 
 
 @Composable
-fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: Boolean = false, modifier: Modifier = Modifier) {
+fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: Boolean = false, modifier: Modifier = Modifier, likePost: (PostDTO) -> Unit) {
     Column(
         modifier = modifier
                     .border(1.dp, Color(0xFFEDEDED))
@@ -130,7 +131,7 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
                 Spacer(modifier = Modifier.weight(1f))
 
                 OutlinedButton(
-                    onClick = { /* TODO() */ },
+                    onClick = { likePost(postDTO) },
                     modifier = Modifier
                         .height(40.dp)
                 ) {
@@ -143,11 +144,19 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
                         modifier = Modifier.width(2.dp)
                     )
 
-                    Icon(
-                        imageVector = Icons.Default.FavoriteBorder,
-                        contentDescription = stringResource(R.string.like_post),
-                        tint = Color(0xFF49454F)
-                    )
+                    if (postDTO.likedByUser) {
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = stringResource(R.string.like_post),
+                            tint = Color(0xFFE53935)
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.FavoriteBorder,
+                            contentDescription = stringResource(R.string.like_post),
+                            tint = Color(0xFF49454F)
+                        )
+                    }
                 }
             }
         }
@@ -156,7 +165,7 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
 }
 
 @Composable
-fun FeedElement(navigator: DestinationsNavigator, postComment: PostCommentDTO, modifier: Modifier = Modifier) {
+fun FeedElement(navigator: DestinationsNavigator, postComment: PostCommentDTO, modifier: Modifier = Modifier, likePost: (post: PostDTO) -> Unit = {}) {
     FeedElement(
         navigator,
         PostDTO(
@@ -166,9 +175,11 @@ fun FeedElement(navigator: DestinationsNavigator, postComment: PostCommentDTO, m
             -1,
             emptyList(),
             emptyList(),
-            postComment.createdAt,
+            false,
+            postComment.createdAt
         ),
         isComment = true,
-        modifier = modifier
+        modifier = modifier,
+        likePost = likePost
     )
 }

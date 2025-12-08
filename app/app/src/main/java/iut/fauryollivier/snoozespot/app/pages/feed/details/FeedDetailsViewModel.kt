@@ -8,6 +8,7 @@ import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FeedDetailsViewModel : ViewModel() {
@@ -24,6 +25,23 @@ class FeedDetailsViewModel : ViewModel() {
                 postDTOState.value = post.body()!!
             else
                 errorMessageState.value = ErrorMessage.COULD_NOT_FETCH_ERROR
+        }
+    }
+
+    fun likePost(id: Int) {
+        viewModelScope.launch {
+            val result = PostsRepository.likePost(id)
+            if (result.isSuccessful) {
+                val liked = result.body()!!
+                postDTOState.update { current ->
+                    current?.copy(
+                        likedByUser = liked,
+                        likeCount = current.likeCount + (if (liked) 1 else -1)
+                    )
+                }
+            } else {
+                // TODO: afficher un toast d'erreur
+            }
         }
     }
 

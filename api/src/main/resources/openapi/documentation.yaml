@@ -137,6 +137,35 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/PostDTO"
+  /posts/{id}/like:
+    post:
+      description: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: "Post not found"
+                Example#3:
+                  value: "Post not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "boolean"
   /posts/image:
     post:
       description: ""
@@ -517,6 +546,8 @@ components:
           type: "array"
           items:
             $ref: "#/components/schemas/PostCommentDTO"
+        likedByUser:
+          type: "boolean"
       required:
         - "id"
         - "user"
@@ -524,6 +555,7 @@ components:
         - "likeCount"
         - "pictures"
         - "comments"
+        - "likedByUser"
     UserDTO:
       type: "object"
       properties:

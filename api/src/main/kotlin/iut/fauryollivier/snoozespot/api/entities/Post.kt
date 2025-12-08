@@ -12,7 +12,8 @@ data class Post(
     val createdAt: LocalDateTime,
     val deletedAt: LocalDateTime? = null,
     val pictures: List<StoredFile> = emptyList(),
-    val comments: List<PostComment> = emptyList()
+    val comments: List<PostComment> = emptyList(),
+    val likedByUser: Boolean = false
 
 ) : EntityBase() {
 
@@ -23,7 +24,8 @@ data class Post(
         likeCount = likeCount,
         createdAt = createdAt,
         pictures = pictures.map { it.toDTO() },
-        comments = comments.map { it.toDTO() }
+        comments = comments.map { it.toDTO() },
+        likedByUser = likedByUser
     )
 
 }

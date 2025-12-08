@@ -117,4 +117,24 @@ class FeedViewModel : ViewModel() {
         }
     }
 
+    fun likePost(post: PostDTO) {
+        viewModelScope.launch {
+            val result = PostsRepository.likePost(post.id)
+            if (result.isSuccessful) {
+                val liked = result.body()!!
+                _state.update { current ->
+                    current.copy(
+                        posts = current.posts.map { p->
+                            if (p.id == post.id) {
+                                p.copy(likedByUser = liked, likeCount = p.likeCount + (if (liked) 1 else -1))
+                            } else p
+                        }
+                    )
+                }
+            } else {
+                // TODO: afficher un toast d'erreur
+            }
+        }
+    }
+
 }
