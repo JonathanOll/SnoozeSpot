@@ -19,12 +19,13 @@ class UserRepository : RepositoryBase() {
     override fun ResultRow.toEntity(
         loadRelations: Boolean
     ): User {
-        val spots = if (loadRelations)  emptyList() else emptyList<Spot>() //TODO: load spots
+        val spots = if (loadRelations) emptyList() else emptyList<Spot>() //TODO: load spots
         val posts = if (loadRelations) emptyList() else emptyList<Post>() //TODO: load posts
         val following = if (loadRelations) emptyList() else emptyList<User>() //TODO: load following
         val followers = if (loadRelations) emptyList() else emptyList<User>() //TODO
 
         return User(
+            id = this[Tables.Users.id].value,
             uuid = this[Tables.Users.uuid],
             username = this[Tables.Users.username],
             email = this[Tables.Users.email],
@@ -35,7 +36,7 @@ class UserRepository : RepositoryBase() {
             spots = spots,
             posts = posts,
             following = following,
-            followers = followers
+            followers = followers,
         )
     }
 
@@ -89,10 +90,10 @@ class UserRepository : RepositoryBase() {
         return Result.success(res)
     }
 
-    fun getById(id: Int) : Result<User> {
+    fun getById(id: Int, loadRelations: Boolean = false) : Result<User> {
         val user = transaction {
             Tables.Users.select { Tables.Users.id eq id }.map {
-                it.toEntity(loadRelations = false)
+                it.toEntity(loadRelations = loadRelations)
             }
         }.firstOrNull()
         if(user == null) return Result.failure(Exception("User not found"))

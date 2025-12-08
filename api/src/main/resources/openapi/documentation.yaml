@@ -279,18 +279,52 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/UserDTO"
+  /users/{uuid}:
+    get:
+      description: ""
+      parameters:
+        - name: "uuid"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid user ID"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "User not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDTO"
 components:
   schemas:
     UserAuthRequest:
       type: "object"
       properties:
-        email:
-          type: "string"
-          nullable: true
         username:
           type: "string"
         password:
           type: "string"
+        email:
+          type: "string"
+          nullable: true
       required:
         - "username"
         - "password"

@@ -1,5 +1,6 @@
 package iut.fauryollivier.snoozespot.api.config
 
+import PostCommentRepository
 import SpotCommentRepository
 import io.ktor.server.application.*
 import iut.fauryollivier.snoozespot.api.auth.jwtModule
@@ -27,6 +28,7 @@ val appModule = module {
     single { UserService(get()) }
 
     single { PostService(get()) }
+    single { PostCommentRepository(get()) }
     single { PostRepository(get()) }
 
     single { SpotService(get()) }

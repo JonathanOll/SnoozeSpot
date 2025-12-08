@@ -33,7 +33,6 @@ fun insertDefault () {
             val post = Tables.Posts.insertAndGetId {
                 it[userId] = user.value
                 it[content] = "This is a sample post content [$i]"
-                it[likeCount] = 123
                 it[createdAt] = LocalDateTime.now().minusDays(3)
                 it[deletedAt] = null
             }

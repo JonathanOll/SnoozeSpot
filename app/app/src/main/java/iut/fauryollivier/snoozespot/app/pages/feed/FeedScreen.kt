@@ -105,7 +105,7 @@ fun FeedScreen(
                 else {
                     LazyColumn (state = listState, modifier = Modifier.fillMaxSize()) {
                         items(state.posts) { post ->
-                            FeedElement(post, modifier = Modifier.clickable {
+                            FeedElement(navigator, post, modifier = Modifier.clickable {
                                 navigator.navigate(FeedDetailsScreenDestination(post.id))
                             })
                         }

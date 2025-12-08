@@ -6,6 +6,7 @@ import java.util.UUID
 
 data class User(
 
+    val id: Int?,
     val uuid: UUID,
     val username: String,
     val email: String?,

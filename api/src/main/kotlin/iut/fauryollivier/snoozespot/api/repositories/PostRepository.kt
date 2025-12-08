@@ -1,6 +1,8 @@
 package iut.fauryollivier.snoozespot.api.repositories
 
+import PostCommentRepository
 import iut.fauryollivier.snoozespot.api.database.Tables
+import iut.fauryollivier.snoozespot.api.database.Tables.PostComments.postId
 import iut.fauryollivier.snoozespot.api.database.selectVisible
 import iut.fauryollivier.snoozespot.api.entities.Post
 import iut.fauryollivier.snoozespot.api.entities.PostComment
@@ -17,13 +19,14 @@ class PostRepository(private val userRepository: UserRepository) : RepositoryBas
         loadRelations: Boolean
     ): Post {
         val pictures = if (loadRelations) emptyList<StoredFile>() else emptyList<StoredFile>() //TODO: load pictures
-        val comments = if (loadRelations) emptyList<PostComment>() else emptyList<PostComment>() //TODO: load comments
+        val comments = if (loadRelations) emptyList<PostComment>() else emptyList<PostComment>()
+        val likeCount = getLikeCount(this[Tables.Posts.id].value).getOrThrow()
 
         return Post(
             id = this[Tables.Posts.id].value,
             user = userRepository.getById(this[Tables.Posts.userId]).getOrThrow(),
             content = this[Tables.Posts.content],
-            likeCount = this[Tables.Posts.likeCount],
+            likeCount = likeCount,
             createdAt = this[Tables.Posts.createdAt],
             deletedAt = this[Tables.Posts.deletedAt],
             pictures = pictures,
@@ -49,23 +52,8 @@ class PostRepository(private val userRepository: UserRepository) : RepositoryBas
 
     fun getById(id: Int): Result<Post> {
         val post = transaction {
-
-            Tables.Posts.leftJoin(Tables.PostComments).select { Tables.Posts.id eq id }.selectVisible().map { it ->
-                Post(
-                    id = it[Tables.Posts.id].value,
-                    user = userRepository.getById(it[Tables.Posts.userId]).getOrThrow(),
-                    content = it[Tables.Posts.content],
-                    likeCount = it[Tables.Posts.likeCount],
-                    createdAt = it[Tables.Posts.createdAt],
-                    comments = Tables.PostComments.select { Tables.PostComments.postId eq id }.map { it ->
-                        PostComment(
-                            id = it[Tables.PostComments.id].value,
-                            content = it[Tables.PostComments.content],
-                            createdAt = it[Tables.PostComments.createdAt],
-                            user = userRepository.getById(it[Tables.PostComments.userId]).getOrThrow()
-                        )
-                    }
-                )
+            Tables.Posts.select { Tables.Posts.id eq id }.selectVisible().map { it ->
+                it.toEntity(true)
             }.firstOrNull()
         }
         if(post == null) return Result.failure(Exception("Post not found"))
@@ -81,5 +69,21 @@ class PostRepository(private val userRepository: UserRepository) : RepositoryBas
             }
         }
         return Result.success(id.value)
+    }
+
+    fun getUserPosts(userId: Int): Result<List<Post>> {
+        val posts = transaction {
+            Tables.Posts.select { Tables.Posts.userId eq userId }.selectVisible().map { it ->
+                it.toEntity(false)
+            }
+        }
+        return Result.success(posts)
+    }
+
+    fun getLikeCount(postId: Int): Result<Int> {
+        val likeCount = Tables.PostLikes
+            .select { Tables.PostLikes.postId eq postId }
+            .count()
+        return Result.success(likeCount.toInt())
     }
 }

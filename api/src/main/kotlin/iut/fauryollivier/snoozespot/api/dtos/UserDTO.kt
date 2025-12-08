@@ -1,6 +1,7 @@
 package iut.fauryollivier.snoozespot.api.dtos
 
 import iut.fauryollivier.snoozespot.api.entities.User
+import iut.fauryollivier.snoozespot.api.repositories.UserRepository
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
@@ -23,6 +24,7 @@ data class UserDTO(
 ) : DTOBase() {
 
     override fun toEntity() = User(
+        id = null,
         uuid = uuid,
         username = username,
         email = email,

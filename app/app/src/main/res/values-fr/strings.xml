@@ -29,4 +29,6 @@
     <string name="register">S\'inscrire</string>
     <string name="loginInstead">Déjà un compte ? Connectez vous</string>
     <string name="email">Adresse mail</string>
+    <string name="follow">Suivre</string>
+    <string name="share">Partager</string>
 </resources>

@@ -102,7 +102,6 @@ object Tables {
     object Posts : IntIdTable("post") {
         val userId = integer("user_id").references(Users.id)
         val content = varchar("content", 5000)
-        val likeCount = integer("like_count").default(0)
         val canBeDisplayed = integer("can_be_displayed").default(1)
         val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
         val deletedAt = datetime("deleted_at").nullable()

@@ -2,6 +2,7 @@ package iut.fauryollivier.snoozespot.app.pages.feed.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,13 +31,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
+import iut.fauryollivier.snoozespot.app.destinations.AccountDetailsScreenDestination
 
 
 @Composable
-fun FeedElement(postDTO: PostDTO, isComment: Boolean = false, modifier: Modifier = Modifier) {
+fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: Boolean = false, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
                     .border(1.dp, Color(0xFFEDEDED))
@@ -44,7 +47,10 @@ fun FeedElement(postDTO: PostDTO, isComment: Boolean = false, modifier: Modifier
                     .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Row (verticalAlignment = Alignment.CenterVertically) {
+            Row (
+                modifier = Modifier.clickable { navigator.navigate(AccountDetailsScreenDestination(postDTO.user.uuid)) },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Image(
                     painterResource(R.drawable.lobster),
                     stringResource(R.string.profile_picture),
@@ -150,8 +156,9 @@ fun FeedElement(postDTO: PostDTO, isComment: Boolean = false, modifier: Modifier
 }
 
 @Composable
-fun FeedElement(postComment: PostCommentDTO, modifier: Modifier = Modifier) {
+fun FeedElement(navigator: DestinationsNavigator, postComment: PostCommentDTO, modifier: Modifier = Modifier) {
     FeedElement(
+        navigator,
         PostDTO(
             -1,
             postComment.user,

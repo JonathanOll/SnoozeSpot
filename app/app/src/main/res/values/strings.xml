@@ -29,4 +29,6 @@
     <string name="register">Register</string>
     <string name="loginInstead">Already got an account? Login instead</string>
     <string name="email">Email address</string>
+    <string name="follow">Follow</string>
+    <string name="share">Share</string>
 </resources>
