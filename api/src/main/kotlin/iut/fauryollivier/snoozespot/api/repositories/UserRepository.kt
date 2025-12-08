@@ -5,9 +5,7 @@ import iut.fauryollivier.snoozespot.api.auth.model.UserAuthRequest
 import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.database.selectActive
 import iut.fauryollivier.snoozespot.api.entities.User
-import iut.fauryollivier.snoozespot.api.model.PostModel
-import iut.fauryollivier.snoozespot.api.model.SpotModel
-import iut.fauryollivier.snoozespot.api.model.UserModel
+import iut.fauryollivier.snoozespot.api.models.UserModel
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select

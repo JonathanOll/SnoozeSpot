@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.dtos
 
-import iut.fauryollivier.snoozespot.api.model.SpotModel
+import iut.fauryollivier.snoozespot.api.models.SpotModel
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
@@ -23,7 +23,7 @@ data class SpotDTO(
 
 ) : DTOBase() {
 
-    override fun toModel() = SpotModel(
+    override fun toModel(loadRelations: Boolean) : SpotModel = SpotModel(
         id = id,
         creatorId = null,
         name = name,
@@ -38,9 +38,9 @@ data class SpotDTO(
         picturesIds = emptyList(),
         attributesIds = emptyList(),
         commentsIds = emptyList(),
-        creator = null, //creator?.toModel(),
-        pictures = pictures?.map { it.toModel() },
-        attributes = attributes?.map { it.toModel() },
-        comments = comments?.map { it.toModel() }
+        creator = if(loadRelations) creator?.toModel(false) else null,
+        pictures = if(loadRelations) pictures?.map { it.toModel(false) } else null,
+        attributes = if(loadRelations) attributes?.map { it.toModel(false) } else null,
+        comments = if(loadRelations) comments?.map { it.toModel(false) } else null
     )
 }

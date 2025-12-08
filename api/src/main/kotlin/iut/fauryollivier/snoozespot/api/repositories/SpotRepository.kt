@@ -4,7 +4,7 @@ import SpotCommentRepository
 import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.database.selectVisible
 import iut.fauryollivier.snoozespot.api.entities.Spot
-import iut.fauryollivier.snoozespot.api.model.SpotModel
+import iut.fauryollivier.snoozespot.api.models.SpotModel
 import iut.fauryollivier.snoozespot.api.routes.CreateSpotRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction

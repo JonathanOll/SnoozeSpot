@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.api.model
+package iut.fauryollivier.snoozespot.api.models
 
 import iut.fauryollivier.snoozespot.api.dtos.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.entities.PostComment
@@ -24,9 +24,9 @@ data class PostCommentModel(
         deletedAt = deletedAt
     )
 
-    override fun toDTO() = PostCommentDTO(
+    override fun toDTO(loadRelations: Boolean): PostCommentDTO = PostCommentDTO(
         id = id,
-        user = user?.toDTO(),
+        user = if(loadRelations) user?.toDTO() else null,
         content = content,
         createdAt = createdAt
     )

@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.dtos
 
-import iut.fauryollivier.snoozespot.api.model.SpotAttributeModel
+import iut.fauryollivier.snoozespot.api.models.SpotAttributeModel
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
@@ -13,14 +13,14 @@ data class SpotAttributeDTO(
 
 ) : DTOBase() {
 
-    override fun toModel() = SpotAttributeModel(
+    override fun toModel(loadRelations: Boolean) : SpotAttributeModel = SpotAttributeModel(
         id = id,
         name = name,
         iconId = null,
         createdAt = LocalDateTime.now(),
         updatedAt = LocalDateTime.now(),
         deletedAt = null,
-        icon = icon?.toModel()
+        icon = if(loadRelations) icon?.toModel(false) else null
     )
 
 }

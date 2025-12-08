@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.api.model
+package iut.fauryollivier.snoozespot.api.models
 
 import iut.fauryollivier.snoozespot.api.dtos.SpotCommentDTO
 import iut.fauryollivier.snoozespot.api.entities.SpotComment
@@ -29,9 +29,9 @@ data class SpotCommentModel(
         deletedAt = this.deletedAt,
     )
 
-    override fun toDTO() = SpotCommentDTO(
+    override fun toDTO(loadRelations: Boolean) : SpotCommentDTO = SpotCommentDTO(
         id = id,
-        user = user?.toDTO(),
+        user = if(loadRelations) user?.toDTO(false) else null,
         description = description,
         rating = rating,
         createdAt = createdAt

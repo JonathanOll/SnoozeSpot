@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.api.model
+package iut.fauryollivier.snoozespot.api.models
 
 import iut.fauryollivier.snoozespot.api.dtos.PostDTO
 import iut.fauryollivier.snoozespot.api.entities.Post
@@ -34,14 +34,14 @@ data class PostModel(
         comments = commentsIds
     )
 
-    override fun toDTO() = PostDTO(
+    override fun toDTO(loadRelations: Boolean) : PostDTO = PostDTO(
         id = id,
-        user = user?.toDTO(),
+        user = if(loadRelations) user?.toDTO(false) else null,
         content = content,
         likeCount = likeCount,
         createdAt = createdAt,
-        pictures = pictures?.map { it.toDTO() },
-        comments = comments?.map { it.toDTO() }
+        pictures = if(loadRelations) pictures?.map { it.toDTO(false) } else null,
+        comments = if(loadRelations) comments?.map { it.toDTO(false) } else null
     )
 
 }

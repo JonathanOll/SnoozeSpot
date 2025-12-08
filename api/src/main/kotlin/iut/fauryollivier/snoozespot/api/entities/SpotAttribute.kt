@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.entities
 
-import iut.fauryollivier.snoozespot.api.model.SpotAttributeModel
+import iut.fauryollivier.snoozespot.api.models.SpotAttributeModel
 import java.time.LocalDateTime
 
 data class SpotAttribute(

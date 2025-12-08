@@ -10,7 +10,7 @@ import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import iut.fauryollivier.snoozespot.api.auth.currentUserId
-import iut.fauryollivier.snoozespot.api.model.StoredFileModel
+import iut.fauryollivier.snoozespot.api.models.StoredFileModel
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
 import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
 import iut.fauryollivier.snoozespot.api.services.PostService

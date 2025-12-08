@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.dtos
 
-import iut.fauryollivier.snoozespot.api.model.PostModel
+import iut.fauryollivier.snoozespot.api.models.PostModel
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
@@ -19,18 +19,19 @@ data class PostDTO(
 
 ) : DTOBase() {
 
-    override fun toModel() = PostModel(
+    override fun toModel(loadRelations: Boolean) : PostModel = PostModel(
         id = id,
         userId = 0,
         content = content,
+        canBeDisplayed = false,
         likeCount = likeCount,
         createdAt = createdAt ?: LocalDateTime.now(),
         picturesIds = emptyList(),
         commentsIds = emptyList(),
 
-        user = user?.toModel(),
-        pictures = pictures?.map { it.toModel() },
-        comments = comments?.map { it.toModel() }
+        user = if(loadRelations) user?.toModel(false) else null,
+        pictures = if(loadRelations) pictures?.map { it.toModel(false) } else null,
+        comments = if(loadRelations) comments?.map { it.toModel(false) } else null
     )
 
 }

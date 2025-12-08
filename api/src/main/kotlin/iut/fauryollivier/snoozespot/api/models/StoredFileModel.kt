@@ -1,9 +1,8 @@
-package iut.fauryollivier.snoozespot.api.model
+package iut.fauryollivier.snoozespot.api.models
 
 import iut.fauryollivier.snoozespot.api.config.Config
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
 import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
-import iut.fauryollivier.snoozespot.api.entities.EntityBase
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
 import java.time.LocalDateTime
@@ -35,7 +34,7 @@ data class StoredFileModel(
         deletedAt = this.deletedAt
     )
 
-    override fun toDTO() = StoredFileDTO(
+    override fun toDTO(loadRelations: Boolean): StoredFileDTO = StoredFileDTO(
         uuid = uuid,
         description = description,
         path = Config.STORED_FILE_REMOTE_PATH + path.substringAfter(Config.STORED_FILE_PATH.substringAfterLast("\\")),

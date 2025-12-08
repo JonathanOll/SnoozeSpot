@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.services
 
-import iut.fauryollivier.snoozespot.api.model.PostModel
+import iut.fauryollivier.snoozespot.api.models.PostModel
 import iut.fauryollivier.snoozespot.api.repositories.PostRepository
 
 class PostService(private val postRepository: PostRepository) {

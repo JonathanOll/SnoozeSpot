@@ -1,6 +1,6 @@
 import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.entities.PostComment
-import iut.fauryollivier.snoozespot.api.model.PostCommentModel
+import iut.fauryollivier.snoozespot.api.models.PostCommentModel
 import iut.fauryollivier.snoozespot.api.repositories.RepositoryBase
 import iut.fauryollivier.snoozespot.api.repositories.UserRepository
 import org.jetbrains.exposed.sql.ResultRow

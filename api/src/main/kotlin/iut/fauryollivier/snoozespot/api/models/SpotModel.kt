@@ -1,7 +1,6 @@
-package iut.fauryollivier.snoozespot.api.model
+package iut.fauryollivier.snoozespot.api.models
 
 import iut.fauryollivier.snoozespot.api.dtos.SpotDTO
-import iut.fauryollivier.snoozespot.api.entities.EntityBase
 import iut.fauryollivier.snoozespot.api.entities.Spot
 import java.time.LocalDateTime
 
@@ -46,9 +45,9 @@ data class SpotModel(
         comments = this.commentsIds,
     )
 
-    override fun toDTO() = SpotDTO(
+    override fun toDTO(loadRelations: Boolean) : SpotDTO = SpotDTO(
         id = id,
-        creator = creator?.toDTO(),
+        creator = if(loadRelations) creator?.toDTO(false) else null,
         name = name,
         description = description,
         latitude = latitude,
@@ -56,8 +55,8 @@ data class SpotModel(
         likeCount = likeCount,
         rating = rating,
         createdAt = createdAt,
-        pictures = pictures?.map { it.toDTO() } ?: emptyList(),
-        attributes = attributes?.map { it.toDTO() } ?: emptyList(),
-        comments = comments?.map { it.toDTO() } ?: emptyList()
+        pictures = if(loadRelations) pictures?.map { it.toDTO(false) } else null,
+        attributes = if(loadRelations) attributes?.map { it.toDTO(false) } else null,
+        comments = if(loadRelations) comments?.map { it.toDTO(false) } else null
     )
 }

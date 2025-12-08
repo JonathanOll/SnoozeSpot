@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.dtos
 
-import iut.fauryollivier.snoozespot.api.model.SpotCommentModel
+import iut.fauryollivier.snoozespot.api.models.SpotCommentModel
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
@@ -17,14 +17,14 @@ data class SpotCommentDTO(
 
 ) : DTOBase() {
 
-    override fun toModel() = SpotCommentModel(
+    override fun toModel(loadRelations: Boolean) : SpotCommentModel = SpotCommentModel(
         id = id,
         spotId = spot?.id ?: 0,
         userId = 0,
         description = description,
         rating = rating,
         createdAt = createdAt ?: LocalDateTime.now(),
-        user = null, //user?.toModel()
+        user = if(loadRelations) user?.toModel(false) else null
     )
 
 }

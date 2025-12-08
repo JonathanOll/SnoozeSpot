@@ -3,7 +3,7 @@ package iut.fauryollivier.snoozespot.api.repositories
 import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.database.selectVisible
 import iut.fauryollivier.snoozespot.api.entities.Post
-import iut.fauryollivier.snoozespot.api.model.PostModel
+import iut.fauryollivier.snoozespot.api.models.PostModel
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.insertAndGetId

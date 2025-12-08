@@ -1,7 +1,7 @@
 package iut.fauryollivier.snoozespot.api.services
 
 import io.ktor.http.content.*
-import iut.fauryollivier.snoozespot.api.model.StoredFileModel
+import iut.fauryollivier.snoozespot.api.models.StoredFileModel
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
 import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
 import iut.fauryollivier.snoozespot.api.repositories.StoredFileRepository

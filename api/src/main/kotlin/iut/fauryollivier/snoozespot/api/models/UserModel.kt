@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.api.model
+package iut.fauryollivier.snoozespot.api.models
 
 import iut.fauryollivier.snoozespot.api.dtos.UserDTO
 import iut.fauryollivier.snoozespot.api.entities.User
@@ -45,17 +45,17 @@ data class UserModel(
         followers = followersIds
     )
 
-    override fun toDTO(): UserDTO = UserDTO(
+    override fun toDTO(loadRelations: Boolean): UserDTO = UserDTO(
         uuid = uuid,
         username = username,
         email = email,
-        profilePicture = profilePicture?.toDTO(),
+        profilePicture = profilePicture?.toDTO(false),
         karma = karma,
         createdAt = createdAt,
-        spots = spots?.map { it.toDTO() },
-        posts = posts?.map { it.toDTO() },
-        following = following?.map { it.toDTO() },
-        followers = followers?.map { it.toDTO() }
+        spots = if (loadRelations) spots?.map { it.toDTO(false) } else emptyList(),
+        posts = if (loadRelations) posts?.map { it.toDTO(false) } else null,
+        following = if (loadRelations) following?.map { it.toDTO(false) } else null,
+        followers = if (loadRelations) followers?.map { it.toDTO(false) } else null
     )
 
 }

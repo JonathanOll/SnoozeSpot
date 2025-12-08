@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.entities
 
-import iut.fauryollivier.snoozespot.api.model.UserModel
+import iut.fauryollivier.snoozespot.api.models.UserModel
 import java.time.LocalDateTime
 import java.util.*
 

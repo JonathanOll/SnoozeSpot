@@ -1,13 +1,8 @@
 package iut.fauryollivier.snoozespot.api.entities
 
-import iut.fauryollivier.snoozespot.api.config.Config
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
-import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
-import iut.fauryollivier.snoozespot.api.entities.EntityBase
 import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
-import iut.fauryollivier.snoozespot.api.model.ModelBase
-import iut.fauryollivier.snoozespot.api.model.SpotModel
-import iut.fauryollivier.snoozespot.api.model.StoredFileModel
+import iut.fauryollivier.snoozespot.api.models.StoredFileModel
 import java.time.LocalDateTime
 import java.util.UUID
 

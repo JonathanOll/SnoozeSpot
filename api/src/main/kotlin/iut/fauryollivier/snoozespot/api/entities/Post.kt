@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.entities
 
-import iut.fauryollivier.snoozespot.api.model.PostModel
+import iut.fauryollivier.snoozespot.api.models.PostModel
 import java.time.LocalDateTime
 
 data class Post(

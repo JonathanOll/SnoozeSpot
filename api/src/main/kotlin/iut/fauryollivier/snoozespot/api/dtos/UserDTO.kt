@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.dtos
 
-import iut.fauryollivier.snoozespot.api.model.UserModel
+import iut.fauryollivier.snoozespot.api.models.UserModel
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
@@ -22,7 +22,7 @@ data class UserDTO(
 
 ) : DTOBase() {
 
-    override fun toModel() = UserModel(
+    override fun toModel(loadRelations: Boolean) : UserModel = UserModel(
         id = null,
         uuid = uuid,
         username = username,
@@ -37,11 +37,11 @@ data class UserDTO(
         followingIds = emptyList(),
         followersIds = emptyList(),
 
-        profilePicture = profilePicture?.toModel(),
-        spots = null, //spots?.map { it.toModel() },
-        posts = null, //posts?.map { it.toModel() },
-        following = emptyList(),
-        followers = emptyList()
+        profilePicture = if(loadRelations) profilePicture?.toModel(false) else null,
+        spots = if(loadRelations) spots?.map { it.toModel(false) } else null,
+        posts = if(loadRelations) posts?.map { it.toModel(false) } else null,
+        following = if(loadRelations) following?.map { it.toModel(false) } else null,
+        followers = if(loadRelations) followers?.map { it.toModel(false) } else null
     )
 
 }

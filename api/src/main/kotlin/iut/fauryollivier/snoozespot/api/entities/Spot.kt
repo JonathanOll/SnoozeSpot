@@ -1,13 +1,6 @@
 package iut.fauryollivier.snoozespot.api.entities
 
-import iut.fauryollivier.snoozespot.api.dtos.SpotDTO
-import iut.fauryollivier.snoozespot.api.entities.EntityBase
-import iut.fauryollivier.snoozespot.api.model.ModelBase
-import iut.fauryollivier.snoozespot.api.model.SpotAttributeModel
-import iut.fauryollivier.snoozespot.api.model.SpotCommentModel
-import iut.fauryollivier.snoozespot.api.model.SpotModel
-import iut.fauryollivier.snoozespot.api.model.StoredFileModel
-import iut.fauryollivier.snoozespot.api.model.UserModel
+import iut.fauryollivier.snoozespot.api.models.SpotModel
 import java.time.LocalDateTime
 
 data class Spot(

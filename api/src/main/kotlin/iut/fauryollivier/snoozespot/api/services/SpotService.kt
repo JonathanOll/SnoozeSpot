@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.services
 
-import iut.fauryollivier.snoozespot.api.model.SpotModel
+import iut.fauryollivier.snoozespot.api.models.SpotModel
 import iut.fauryollivier.snoozespot.api.repositories.SpotRepository
 import iut.fauryollivier.snoozespot.api.routes.CreateSpotRequest
 

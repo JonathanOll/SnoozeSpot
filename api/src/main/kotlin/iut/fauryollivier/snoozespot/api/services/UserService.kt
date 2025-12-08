@@ -1,6 +1,6 @@
 package iut.fauryollivier.snoozespot.api.services
 
-import iut.fauryollivier.snoozespot.api.model.UserModel
+import iut.fauryollivier.snoozespot.api.models.UserModel
 import iut.fauryollivier.snoozespot.api.repositories.UserRepository
 import java.util.UUID
 

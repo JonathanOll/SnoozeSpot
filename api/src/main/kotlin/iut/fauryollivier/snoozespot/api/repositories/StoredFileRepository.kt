@@ -5,7 +5,7 @@ import io.ktor.utils.io.jvm.javaio.*
 import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.database.Tables.Files.description
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
-import iut.fauryollivier.snoozespot.api.model.StoredFileModel
+import iut.fauryollivier.snoozespot.api.models.StoredFileModel
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
 import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
 import org.jetbrains.exposed.sql.ResultRow
