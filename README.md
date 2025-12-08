@@ -13,23 +13,24 @@ This guide explains how to run the mobile api located in the `api` subdirectory 
 
 #### Default stored file path settings:
 
-- STORED_FILE_PATH=".\\src\\main\\resources\\static\\files" **Must use \\\ as delimiter.**
-
+- STORED_FILE_PATH = ".\\src\\main\\resources\\static\\files" **Must use \\\ as delimiter.**
+- STORED_FILE_REMOTE_PATH = "/files" **Must use / as delimiter.**
+- 
 *Optional: override these environment variables for production.*
 
 #### Default JWT settings:
 
-- JWT_SECRET="dev-secret-to-change"
-- JWT_ISSUER="public-snooze-spot-api"
-- JWT_EXPIRATION_SECONDS=3600
+- JWT_SECRET = "dev-secret-to-change"
+- JWT_ISSUER = "public-snooze-spot-api"
+- JWT_EXPIRATION_SECONDS = 3600
 
 *Optional: override these environment variables for production.*
 
 #### Default SSL auto-signed certificate settings:
 
-- SSL_CERTIFICATE_ALIAS="certificateAlias"
-- SSL_CERTIFICATE_PASSWORD="my-best-password"
-- SSL_CERTIFICATE_FILE_PASSWORD="my-second-best-password"
+- SSL_CERTIFICATE_ALIAS = "certificateAlias"
+- SSL_CERTIFICATE_PASSWORD = "my-best-password"
+- SSL_CERTIFICATE_FILE_PASSWORD = "my-second-best-password"
 
 *Optional: override these environment variables for production.*
 
@@ -53,7 +54,7 @@ You can do this either by running the command manually or by configuring Android
 
 5. Put the created task before the build
 
-6. At the root of the `app` directory, create a file called secret.properties in which you include your Google Map API Key (format: `MAPS_API_KEY=my_key`)
+6. At the root of the `app` directory, create a file called secret.properties in which you include your Google Map API Key (format: `MAPS_API_KEY = my_key`)
 
 7. Launch the app.
 

@@ -25,7 +25,7 @@ data class StoredFile(
     override fun toDTO() = StoredFileDTO(
         uuid = uuid,
         description = description,
-        path = path.substringAfter(Config.STORED_FILE_PATH.substringAfterLast("\\")),
+        path = Config.STORED_FILE_REMOTE_PATH + path.substringAfter(Config.STORED_FILE_PATH.substringAfterLast("\\")),
         type = type,
         usage = usage,
         createdAt = createdAt

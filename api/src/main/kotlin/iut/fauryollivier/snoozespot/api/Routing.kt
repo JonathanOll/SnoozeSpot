@@ -2,9 +2,7 @@ package iut.fauryollivier.snoozespot.api
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.http.content.files
 import io.ktor.server.http.content.staticFileSystem
-import io.ktor.server.http.content.staticResources
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
@@ -39,6 +37,6 @@ fun Application.configureRouting() {
 
         route("/users") { userRoutes() }
 
-        staticFileSystem("/files", Config.STORED_FILE_PATH)
+        staticFileSystem(Config.STORED_FILE_REMOTE_PATH, Config.STORED_FILE_PATH)
     }
 }

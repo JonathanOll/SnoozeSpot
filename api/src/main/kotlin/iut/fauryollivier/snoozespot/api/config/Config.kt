@@ -14,4 +14,5 @@ object Config {
         ?: listOf("127.0.0.1", "0.0.0.0", "localhost")
 
     val STORED_FILE_PATH = System.getenv("STORED_FILE_PATH") ?: ".\\src\\main\\resources\\static\\files"
+    val STORED_FILE_REMOTE_PATH = System.getenv("STORED_FILE_REMOTE_PATH") ?: "/files"
 }
