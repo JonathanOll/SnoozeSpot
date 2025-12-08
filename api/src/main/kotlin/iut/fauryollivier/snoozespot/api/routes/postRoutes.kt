@@ -9,18 +9,12 @@ import io.ktor.server.request.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.utils.io.jvm.javaio.toInputStream
-import io.ktor.utils.io.readByteArray
 import iut.fauryollivier.snoozespot.api.auth.currentUserId
-import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
 import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
-import iut.fauryollivier.snoozespot.api.repositories.StoredFileRepository
 import iut.fauryollivier.snoozespot.api.services.PostService
 import iut.fauryollivier.snoozespot.api.services.StoredFileService
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 import kotlin.Result
@@ -49,7 +43,7 @@ fun Route.postRoutes() {
             call.respond(HttpStatusCode.InternalServerError)
             return@get
         }
-        call.respond(postsResult.getOrThrow())
+        call.respond(postsResult.getOrThrow().map { it.toDTO() })
     }
 
     get<PostById> { params ->
@@ -58,12 +52,12 @@ fun Route.postRoutes() {
             call.respond(HttpStatusCode.NotFound, "Post not found")
             return@get
         }
-        call.respond(postResult.getOrThrow())
+        call.respond(postResult.getOrThrow().toDTO())
     }
 
     post("/image"){
         var description: String = "unknow description"
-        var fileResult : Result<StoredFileDTO>? = null
+        var fileResult : Result<StoredFile>? = null
 
         val multipart = call.receiveMultipart()
         multipart.forEachPart { part ->
@@ -95,7 +89,7 @@ fun Route.postRoutes() {
             call.respond(HttpStatusCode.BadRequest, "Image upload failed")
             return@post
         }
-        call.respond(HttpStatusCode.Created, fileResult.getOrThrow())
+        call.respond(HttpStatusCode.Created, fileResult.getOrThrow().toDTO())
     }
 
     authenticate("jwtAuth") {
@@ -107,7 +101,7 @@ fun Route.postRoutes() {
                 call.respond(HttpStatusCode.BadRequest, "Post creation failed")
                 return@post
             }
-            call.respond(HttpStatusCode.Created, postResult.getOrThrow())
+            call.respond(HttpStatusCode.Created, postResult.getOrThrow().toDTO())
         }
     }
 }

@@ -17,7 +17,7 @@ fun Route.userRoutes() {
             call.respond(HttpStatusCode.InternalServerError)
             return@get
         }
-        call.respond(usersResult.getOrThrow())
+        call.respond(usersResult.getOrThrow().map { it.toDTO() })
     }
 
     get("/{uuid}") {
@@ -33,6 +33,6 @@ fun Route.userRoutes() {
             call.respond(HttpStatusCode.NotFound, "User not found")
             return@get
         }
-        call.respond(result.getOrThrow())
+        call.respond(result.getOrThrow().toDTO())
     }
 }

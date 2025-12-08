@@ -5,7 +5,6 @@ import iut.fauryollivier.snoozespot.api.routes.AuthResponseDTO
 import iut.fauryollivier.snoozespot.api.auth.JWTService
 import iut.fauryollivier.snoozespot.api.auth.Password
 import iut.fauryollivier.snoozespot.api.auth.model.UserAuthRequest
-import iut.fauryollivier.snoozespot.api.dtos.UserDTO
 import iut.fauryollivier.snoozespot.api.repositories.UserRepository
 import kotlin.Result
 

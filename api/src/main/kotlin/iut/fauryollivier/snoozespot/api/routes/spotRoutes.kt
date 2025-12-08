@@ -8,10 +8,6 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.Schema
-import io.swagger.v3.oas.annotations.parameters.RequestBody
 import iut.fauryollivier.snoozespot.api.auth.currentUserId
 import iut.fauryollivier.snoozespot.api.services.SpotService
 import kotlinx.serialization.Serializable
@@ -35,7 +31,7 @@ fun Route.spotRoutes() {
             call.respond(HttpStatusCode.InternalServerError)
             return@get
         }
-        call.respond(spotsResult.getOrThrow())
+        call.respond(spotsResult.getOrThrow().map { it.toDTO() })
     }
 
     get("/zone") {
@@ -54,7 +50,7 @@ fun Route.spotRoutes() {
             call.respond(HttpStatusCode.InternalServerError)
             return@get
         }
-        call.respond(spotsResult.getOrThrow())
+        call.respond(spotsResult.getOrThrow().map { it.toDTO() })
     }
 
     route("/spots/{id}") {
@@ -69,7 +65,7 @@ fun Route.spotRoutes() {
                 call.respond(HttpStatusCode.NotFound, "Spot not found")
                 return@get
             }
-            call.respond(spotResult.getOrThrow())
+            call.respond(spotResult.getOrThrow().toDTO())
         }
     }
 
@@ -79,7 +75,7 @@ fun Route.spotRoutes() {
             val request = call.receive<CreateSpotRequest>()
             try {
                 val post = spotService.createSpot(userId, request)
-                call.respond(HttpStatusCode.Created, post!!)
+                call.respond(HttpStatusCode.Created, post.getOrThrow().toDTO())
             } catch (e: Exception) {
                 print(e.toString())
                 call.respond(HttpStatusCode.BadRequest, "Post creation failed")

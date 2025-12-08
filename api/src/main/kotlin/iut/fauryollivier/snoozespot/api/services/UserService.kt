@@ -1,24 +1,25 @@
 package iut.fauryollivier.snoozespot.api.services
 
 import iut.fauryollivier.snoozespot.api.dtos.UserDTO
+import iut.fauryollivier.snoozespot.api.entities.User
 import iut.fauryollivier.snoozespot.api.repositories.UserRepository
 import java.util.UUID
 
 class UserService(private val userRepository: UserRepository) {
 
-    fun getAll(): Result<List<UserDTO>> {
+    fun getAll(): Result<List<User>> {
         val result = userRepository.getAll()
         if (result.isFailure) return Result.failure(result.exceptionOrNull()!!)
-        return Result.success(result.getOrThrow().map { it.toDTO() })
+        return Result.success(result.getOrThrow())
     }
 
-    fun getByUuid(uuid: UUID): Result<UserDTO> {
+    fun getByUuid(uuid: UUID): Result<User> {
         val id = userRepository.getUserIdByUUID(uuid);
         if(id.isFailure) return Result.failure(Exception("unknown UUID $uuid"))
 
         val result = userRepository.getById(id.getOrThrow(), true)
         if (result.isFailure) return Result.failure(result.exceptionOrNull()!!)
 
-        return Result.success(result.getOrThrow().toDTO())
+        return Result.success(result.getOrThrow())
     }
 }
