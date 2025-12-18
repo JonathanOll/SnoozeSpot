@@ -74,6 +74,7 @@ api/docs/**
 app/secrets.properties
 
 # auto-signed certificate
+app/app/src/main/res/raw/auto_signed_api_certificate.cer
 
 # api static files
 api/src/main/resources/static/files
