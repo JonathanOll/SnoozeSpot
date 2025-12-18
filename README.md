@@ -1,6 +1,9 @@
 # SnoozeSpot  
 Where naps meet the map.
 
+L'ancien repo (avec l'historique des PRs qui ne peut pas être migré) : 
+https://github.com/Cortard/SnoozeSpot/pulls?q=is%3Apr+is%3Aclosed
+
 ---
 
 # ⚙️ Api Setup Guide (`/api`)
