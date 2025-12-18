@@ -41,6 +41,21 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions += "env"
+    productFlavors {
+        create("development") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            buildConfigField("String", "clefDev", "\"API-KEY-DEV\"")
+        }
+
+        create("production") {
+            dimension = "env"
+            buildConfigField("String", "clefProd", "\"API-KEY-PROD\"")
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -59,6 +74,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     packaging {

@@ -7,9 +7,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.scale
+import iut.fauryollivier.snoozespot.BuildConfig
 
 @Destination(start = true)
 @Composable
@@ -92,6 +95,9 @@ fun SplashScreen(
                         .fillMaxWidth(1f)
                         .scale(scale)
         )
+
+        if (BuildConfig.FLAVOR.contains("dev"))
+            Text(BuildConfig.VERSION_NAME, modifier = Modifier.align(Alignment.BottomEnd).padding(8.dp))
     }
 
     LaunchedEffect(loaded) {
