@@ -82,15 +82,13 @@ object Tables {
         override val primaryKey = PrimaryKey(spotId, fileId)
     }
 
-    object SpotComments : Table("spot_comment") {
-        val id = integer("id").autoIncrement()
+    object SpotComments : IntIdTable("spot_comment") {
         val userId = integer("user_id").references(Users.id)
         val spotId = integer("spot_id").references(Spots.id)
         val description = varchar("description", 2000)
         val rating = integer("rating")
         val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
         val deletedAt = datetime("deleted_at").nullable()
-        override val primaryKey = PrimaryKey(id)
     }
 
     object SpotLikes : Table("spot_like") {

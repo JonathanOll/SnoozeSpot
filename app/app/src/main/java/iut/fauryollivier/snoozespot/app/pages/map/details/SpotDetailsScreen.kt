@@ -16,6 +16,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.RateReview
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,22 +41,40 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.result.NavResult
+import com.ramcosta.composedestinations.result.ResultRecipient
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.ScaffoldController
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
+import iut.fauryollivier.snoozespot.app.components.AnonymousOnly
+import iut.fauryollivier.snoozespot.app.components.AuthOnly
 import iut.fauryollivier.snoozespot.app.components.HorizontalLine
 import iut.fauryollivier.snoozespot.app.components.StarRating
 import iut.fauryollivier.snoozespot.app.components.TransparentBackTopBar
+import iut.fauryollivier.snoozespot.app.destinations.NewPostScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.app.pages.map.details.components.SpotComment
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 
 @SuppressLint("UnrememberedMutableState")
 @Destination
 @Composable
-fun SpotDetailsScreen(navigator: DestinationsNavigator, spotId: Int, scaffoldController: ScaffoldController, vm: SpotDetailsViewModel = viewModel()){
+fun SpotDetailsScreen(
+    navigator: DestinationsNavigator,
+    spotId: Int,
+    scaffoldController: ScaffoldController,
+    vm: SpotDetailsViewModel = viewModel(),
+    resultRecipient: ResultRecipient<NewPostScreenDestination, NewPostResult>,
+){
     LaunchedEffect(true) {
         scaffoldController.topBar.value = {  }
         scaffoldController.showBottomBar.value = false
+    }
+
+    resultRecipient.onNavResult {
+        if (it is NavResult.Value) {
+            vm.sendSpotComment(it.value)
+        }
     }
 
     val spot: SpotDTO? by vm.spot.collectAsState()
@@ -146,19 +165,41 @@ fun SpotDetailsScreen(navigator: DestinationsNavigator, spotId: Int, scaffoldCon
                             Text("%.1f étoile(s)".format(spot?.rating ?: 0f))
                         }
                         HorizontalLine(1.dp, Color(0xFFE6E6E6))
-                        Column {
+                        Column (
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                        ) {
                             spot!!.comments.forEach { comment ->
-                                SpotComment(comment)
+                                SpotComment(navigator, comment)
+                            }
+                            AuthOnly {
+                                Button(onClick = { navigator.navigate(NewPostScreenDestination(showGradePicker = true)) }) {
+                                    Text(
+                                        stringResource(R.string.add_comment),
+                                        color = Color.White
+                                    )
+                                }
+                            }
+                            AnonymousOnly {
+                                Text(stringResource(R.string.log_in_to_comment))
                             }
                         }
 
                     } else {
                         Column(
-                            modifier = Modifier.fillMaxWidth().height(50.dp),
+                            modifier = Modifier.fillMaxWidth().height(150.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
                             Text("Aucun avis")
+                            AuthOnly {
+                                Button(onClick = { navigator.navigate(NewPostScreenDestination(showGradePicker = true)) }) {
+                                    Text(stringResource(R.string.add_comment), color = Color.White)
+                                }
+                            }
+                            AnonymousOnly {
+                                Text(stringResource(R.string.log_in_to_comment))
+                            }
                         }
                     }
                 }

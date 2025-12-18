@@ -25,6 +25,12 @@ data class CreateSpotRequest(
     val longitude: Double,
 )
 
+@Serializable
+data class CreateSpotCommentRequest(
+    val content: String,
+    val rating: Int,
+)
+
 // route("/spots")
 fun Route.spotRoutes() {
     val spotService by inject<SpotService>()
@@ -57,7 +63,7 @@ fun Route.spotRoutes() {
         call.respond(spotsResult.getOrThrow())
     }
 
-    route("/spots/{id}") {
+    route("/{id}") {
         get {
             val spotId = call.parameters["id"]?.toIntOrNull()
             if (spotId == null) {
@@ -84,6 +90,29 @@ fun Route.spotRoutes() {
                 print(e.toString())
                 call.respond(HttpStatusCode.BadRequest, "Post creation failed")
             }
+        }
+
+        post("{id}/comment") {
+            val userId = call.currentUserId().getOrThrow()
+            val spotId = call.parameters["id"]?.toIntOrNull()
+            if (spotId == null) {
+                call.respond(HttpStatusCode.BadRequest, "Invalid spot ID")
+                return@post
+            }
+            val spotResult = spotService.getById(spotId)
+            if (spotResult.isFailure) {
+                call.respond(HttpStatusCode.NotFound, "Spot not found")
+                return@post
+            }
+
+            val request = call.receive<CreateSpotCommentRequest>()
+
+            val result = spotService.createSpotComment(userId!!, spotId, request.content, request.rating)
+            if (result.isFailure) {
+                call.respond(HttpStatusCode.BadRequest, "Could not comment spot $spotId")
+                return@post
+            }
+            call.respond(result.getOrThrow())
         }
     }
 }

@@ -150,7 +150,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePostRequest"
+              $ref: "#/components/schemas/CreatePostCommentRequest"
         required: true
       responses:
         "400":
@@ -262,7 +262,7 @@ paths:
               examples:
                 Example#1:
                   value: "Post creation failed"
-  /spots/spots/{id}:
+  /spots/{id}:
     get:
       description: ""
       parameters:
@@ -296,6 +296,48 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/SpotDTO"
+  /spots/{id}/comment:
+    post:
+      description: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSpotCommentRequest"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: "Invalid spot ID"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Spot not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SpotCommentDTO"
   /spots/zone:
     get:
       description: ""
@@ -657,6 +699,13 @@ components:
           type: "string"
       required:
         - "content"
+    CreatePostCommentRequest:
+      type: "object"
+      properties:
+        content:
+          type: "string"
+      required:
+        - "content"
     CreateSpotRequest:
       type: "object"
       properties:
@@ -678,3 +727,14 @@ components:
     Object:
       type: "object"
       properties: { }
+    CreateSpotCommentRequest:
+      type: "object"
+      properties:
+        content:
+          type: "string"
+        rating:
+          type: "integer"
+          format: "int32"
+      required:
+        - "content"
+        - "rating"

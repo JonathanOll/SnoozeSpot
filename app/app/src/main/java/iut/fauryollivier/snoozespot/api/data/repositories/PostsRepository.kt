@@ -2,6 +2,7 @@ package iut.fauryollivier.snoozespot.api.data.repositories
 
 import android.util.Log
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
+import iut.fauryollivier.snoozespot.api.generated.model.CreatePostCommentRequest
 import iut.fauryollivier.snoozespot.api.generated.model.CreatePostRequest
 import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
@@ -48,7 +49,7 @@ object PostsRepository {
 
     suspend fun createPostComment(postId: Int, content: String): Response<PostCommentDTO> {
         try {
-            val result = NetworkDataSource.api.postsIdCommentPost(postId, CreatePostRequest(content))
+            val result = NetworkDataSource.api.postsIdCommentPost(postId, CreatePostCommentRequest(content))
             return Response.success(result.body())
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)

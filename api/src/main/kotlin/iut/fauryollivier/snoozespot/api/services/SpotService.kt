@@ -1,12 +1,15 @@
 package iut.fauryollivier.snoozespot.api.services
 
+import SpotCommentRepository
+import iut.fauryollivier.snoozespot.api.dtos.SpotCommentDTO
 import iut.fauryollivier.snoozespot.api.dtos.SpotDTO
+import iut.fauryollivier.snoozespot.api.repositories.PostRepository
 import iut.fauryollivier.snoozespot.api.repositories.SpotRepository
 import iut.fauryollivier.snoozespot.api.routes.CreateSpotRequest
 import org.koin.ktor.ext.inject
 import kotlin.IllegalArgumentException
 
-class SpotService(private val spotRepository: SpotRepository) {
+class SpotService(private val spotRepository: SpotRepository, private val spotCommentRepository: SpotCommentRepository) {
 
     fun getAll(): Result<List<SpotDTO>> {
         val result = spotRepository.getAll()
@@ -38,5 +41,14 @@ class SpotService(private val spotRepository: SpotRepository) {
         val spotResult = getById(spotIdResult.getOrThrow())
         if (spotResult.isFailure) return Result.failure(Exception("Spot could not be created"))
         return Result.success(spotResult.getOrThrow())
+    }
+
+    fun createSpotComment(userId: Int, spotId: Int, content: String, rating: Int): Result<SpotCommentDTO> {
+        val spotCommentIdResult = spotCommentRepository.createSpotComment(userId, spotId, content, rating)
+        if (spotCommentIdResult.isFailure) return Result.failure(Exception("Spot comment could not be created"))
+
+        val spotResult = spotCommentRepository.getById(spotCommentIdResult.getOrThrow())
+        if (spotResult.isFailure) return Result.failure(Exception("Spot comment could not be created"))
+        return Result.success(spotResult.getOrThrow().toDTO())
     }
 }

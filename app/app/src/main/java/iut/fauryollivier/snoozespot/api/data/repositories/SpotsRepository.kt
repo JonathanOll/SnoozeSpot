@@ -3,6 +3,10 @@ package iut.fauryollivier.snoozespot.api.data.repositories
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
+import iut.fauryollivier.snoozespot.api.generated.model.CreatePostRequest
+import iut.fauryollivier.snoozespot.api.generated.model.CreateSpotCommentRequest
+import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
+import iut.fauryollivier.snoozespot.api.generated.model.SpotCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -12,7 +16,7 @@ object SpotsRepository {
 
     suspend fun getSpot(i: Int): Response<SpotDTO> {
         try {
-            val post = NetworkDataSource.api.spotsSpotsIdGet(i)
+            val post = NetworkDataSource.api.spotsIdGet(i)
             return Response.success(post.body())
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
@@ -28,6 +32,15 @@ object SpotsRepository {
                 BigDecimal(bottomRight.longitude)
             )
             return Response.success(spots.body())
+        } catch(e: Exception) {
+            return Response.error(500, ResponseBody.EMPTY)
+        }
+    }
+
+    suspend fun createSpotComment(spotId: Int, content: String, rating: Int): Response<SpotCommentDTO> {
+        try {
+            val result = NetworkDataSource.api.spotsIdCommentPost(spotId, CreateSpotCommentRequest(content, rating))
+            return Response.success(result.body())
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
         }

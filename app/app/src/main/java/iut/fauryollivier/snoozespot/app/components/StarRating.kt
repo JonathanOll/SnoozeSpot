@@ -1,5 +1,7 @@
 package iut.fauryollivier.snoozespot.app.components
 
+import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -19,21 +21,24 @@ fun StarRating(
     starSize: Dp = 24.dp,
     maxStars: Int = 5,
     filledColor: Color = Color(0xFFFFD700),
-    emptyColor: Color = Color.Gray
+    emptyColor: Color = Color.Gray,
+    onClicked: (i: Int) -> Unit = {}
 ) {
     Row {
         for (i in 1..maxStars) {
             val icon = when {
-                i <= rating -> Icons.Filled.Star
-                i - rating in 0.5..0.99 -> Icons.Filled.StarHalf
+                rating >= i -> Icons.Filled.Star
+                rating - i + 1 in 0.5..0.99 -> Icons.Filled.StarHalf
                 else -> Icons.Filled.StarBorder
             }
-            val tint = if (i <= rating || i - rating in 0.5..0.99) filledColor else emptyColor
+            val tint = if (i <= rating || rating - i + 1 in 0.5..0.99) filledColor else emptyColor
             Icon(
                 imageVector = icon,
                 contentDescription = null,
                 tint = tint,
-                modifier = Modifier.size(starSize)
+                modifier = Modifier
+                    .size(starSize)
+                    .clickable { onClicked(i) }
             )
         }
     }

@@ -42,7 +42,7 @@ val appModule = module {
     single { PostCommentRepository(get()) }
     single { PostRepository(get()) }
 
-    single { SpotService(get()) }
+    single { SpotService(get(), get()) }
     single { SpotCommentRepository(get()) }
     single { SpotRepository(get(), get()) }
 

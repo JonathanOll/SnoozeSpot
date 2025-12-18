@@ -153,7 +153,7 @@ fun Route.postRoutes() {
                 call.respond(HttpStatusCode.BadRequest, "Post not found")
             }
 
-            val request = call.receive<CreatePostRequest>()
+            val request = call.receive<CreatePostCommentRequest>()
 
             val result = postService.createPostComment(userId!!, postId, request.content)
             if (result.isFailure) {

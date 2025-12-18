@@ -49,13 +49,7 @@ class FeedDetailsViewModel : ViewModel() {
     fun sendPostComment(data: NewPostResult) {
         viewModelScope.launch {
             val result = PostsRepository.createPostComment(postDTOState.value!!.id, data.content)
-            if (result.isSuccessful) {
-                postDTOState.update {
-                    it!!.copy(
-                        comments = it.comments + result.body()!!
-                    )
-                }
-            } else {
+            if (!result.isSuccessful) {
                 // TODO: afficher un toast d'erreur
             }
         }

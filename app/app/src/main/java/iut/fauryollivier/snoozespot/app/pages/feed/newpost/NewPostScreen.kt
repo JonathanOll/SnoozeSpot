@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
@@ -30,12 +31,14 @@ import com.ramcosta.composedestinations.result.ResultBackNavigator
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.ScaffoldController
+import iut.fauryollivier.snoozespot.app.components.EditableStarRating
 import iut.fauryollivier.snoozespot.app.components.ImagePicker
 import java.io.Serializable
 
 data class NewPostResult(
     val content: String,
-    val uris: List<String>
+    val uris: List<String>,
+    val rating: Int
 ) : Serializable
 
 @Destination
@@ -53,10 +56,19 @@ fun NewPostScreen(
     }
 
     val pictures = remember { mutableStateListOf<Uri>() }
+    val rating = remember { mutableIntStateOf(3) }
     var text by remember { mutableStateOf("") }
 
     Box (modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (showGradePicker) {
+                Text(stringResource(R.string.rating))
+                EditableStarRating(rating)
+            }
+
             if (showMediaPicker)
                 ImagePicker(pictures)
 
@@ -70,7 +82,13 @@ fun NewPostScreen(
 
         FloatingActionButton(
             onClick = {
-                resultBackNavigator.navigateBack(NewPostResult(text, pictures.map { it.toString() }.toList())) },
+                resultBackNavigator.navigateBack(
+                    NewPostResult(
+                        text,
+                        pictures.map { it.toString() }.toList(),
+                        rating.intValue
+                    )
+                ) },
             backgroundColor = primaryContainerLight,
             contentColor = primaryLight,
             modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 16.dp)
