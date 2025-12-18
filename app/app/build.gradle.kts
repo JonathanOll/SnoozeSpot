@@ -50,9 +50,16 @@ android {
             buildConfigField("String", "clefDev", "\"API-KEY-DEV\"")
         }
 
+        create("beta") {
+            dimension = "env"
+            applicationIdSuffix = ".beta"
+            versionNameSuffix = "-beta"
+            buildConfigField("String", "clefBeta", "\"API-KEY-DEV\"")
+        }
+
         create("production") {
             dimension = "env"
-            buildConfigField("String", "clefProd", "\"API-KEY-PROD\"")
+            buildConfigField("String", "clefProd", "\"API-KEY-BETA\"")
         }
     }
 

@@ -96,7 +96,7 @@ fun SplashScreen(
                         .scale(scale)
         )
 
-        if (BuildConfig.FLAVOR.contains("dev"))
+        if (BuildConfig.FLAVOR.contains("dev") || BuildConfig.FLAVOR.contains("beta"))
             Text(BuildConfig.VERSION_NAME, modifier = Modifier.align(Alignment.BottomEnd).padding(8.dp))
     }
 
