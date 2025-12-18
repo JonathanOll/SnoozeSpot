@@ -1,9 +1,11 @@
 package iut.fauryollivier.snoozespot.api.services
 
+import PostCommentRepository
+import iut.fauryollivier.snoozespot.api.dtos.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.dtos.PostDTO
 import iut.fauryollivier.snoozespot.api.repositories.PostRepository
 
-class PostService(private val postRepository: PostRepository) {
+class PostService(private val postRepository: PostRepository, private val postCommentRepository: PostCommentRepository) {
 
     fun getAll(from: Int = -1, to: Int = -1, userId: Int?): Result<List<PostDTO>> {
         val result = postRepository.getAll(from, to, userId)
@@ -38,5 +40,14 @@ class PostService(private val postRepository: PostRepository) {
                 return Result.failure(result.exceptionOrNull()!!)
             return Result.success(true)
         }
+    }
+
+    fun createPostComment(userId: Int, postId: Int, content: String): Result<PostCommentDTO> {
+        val postCommentIdResult = postCommentRepository.createPostComment(userId, postId, content)
+        if (postCommentIdResult.isFailure) return Result.failure(Exception("Post comment could not be created"))
+
+        val postResult = postCommentRepository.getById(postCommentIdResult.getOrThrow())
+        if (postResult.isFailure) return Result.failure(Exception("Post could not be created"))
+        return Result.success(postResult.getOrThrow().toDTO())
     }
 }

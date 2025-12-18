@@ -38,6 +38,11 @@ data class CreatePostRequest(
     val content: String,
 )
 
+@Serializable
+data class CreatePostCommentRequest(
+    val content: String,
+)
+
 // route("/posts")
 fun Route.postRoutes() {
     val postService by inject<PostService>()
@@ -66,7 +71,6 @@ fun Route.postRoutes() {
             call.respond(postResult.getOrThrow())
         }
     }
-
 
     post("/image"){
         var description: String = "unknow description"
@@ -132,6 +136,28 @@ fun Route.postRoutes() {
             val result = postService.likePost(postId, userId!!)
             if (result.isFailure) {
                 call.respond(HttpStatusCode.BadRequest, "Could not like post $postId")
+                return@post
+            }
+            call.respond(HttpStatusCode.OK, result.getOrThrow())
+        }
+
+        post("{id}/comment") {
+            val userId = call.currentUserId().getOrNull()
+            val postId = call.parameters["id"]?.toIntOrNull()
+
+            if (postId == null) {
+                call.respond(HttpStatusCode.BadRequest, "Post not found")
+            }
+            val postResult = postService.getById(postId!!, userId)
+            if (postResult.isFailure) {
+                call.respond(HttpStatusCode.BadRequest, "Post not found")
+            }
+
+            val request = call.receive<CreatePostRequest>()
+
+            val result = postService.createPostComment(userId!!, postId, request.content)
+            if (result.isFailure) {
+                call.respond(HttpStatusCode.BadRequest, "Could not comment post $postId")
                 return@post
             }
             call.respond(HttpStatusCode.OK, result.getOrThrow())

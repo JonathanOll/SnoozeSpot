@@ -39,4 +39,6 @@
     <string name="name">Nom</string>
     <string name="details">Informations</string>
     <string name="description">Description</string>
+    <string name="add_comment">Ajouter un commentaire</string>
+    <string name="log_in_to_comment">Connectez vous pour commenter</string>
 </resources>

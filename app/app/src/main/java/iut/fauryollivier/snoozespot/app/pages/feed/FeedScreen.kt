@@ -105,7 +105,7 @@ fun FeedScreen(
 
 
         FloatingActionButton(
-            onClick = { navigator.navigate(NewPostScreenDestination) },
+            onClick = { navigator.navigate(NewPostScreenDestination(showMediaPicker = true)) },
             backgroundColor = primaryContainerLight,
             contentColor = primaryLight,
             modifier = Modifier

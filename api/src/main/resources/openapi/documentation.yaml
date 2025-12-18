@@ -137,6 +137,41 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/PostDTO"
+  /posts/{id}/comment:
+    post:
+      description: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePostRequest"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: "Post not found"
+                Example#3:
+                  value: "Post not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PostCommentDTO"
   /posts/{id}/like:
     post:
       description: ""

@@ -1,9 +1,10 @@
-package iut.fauryollivier.snoozespot.app.pages.feed.details
+package iut.fauryollivier.snoozespot.app.pages.feed.feeddetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import iut.fauryollivier.snoozespot.api.data.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
+import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,6 +38,21 @@ class FeedDetailsViewModel : ViewModel() {
                     current?.copy(
                         likedByUser = liked,
                         likeCount = current.likeCount + (if (liked) 1 else -1)
+                    )
+                }
+            } else {
+                // TODO: afficher un toast d'erreur
+            }
+        }
+    }
+
+    fun sendPostComment(data: NewPostResult) {
+        viewModelScope.launch {
+            val result = PostsRepository.createPostComment(postDTOState.value!!.id, data.content)
+            if (result.isSuccessful) {
+                postDTOState.update {
+                    it!!.copy(
+                        comments = it.comments + result.body()!!
                     )
                 }
             } else {

@@ -39,4 +39,6 @@
     <string name="name">Name</string>
     <string name="details">Details</string>
     <string name="description">Description</string>
+    <string name="add_comment">Add a comment</string>
+    <string name="log_in_to_comment">Log in to comment</string>
 </resources>

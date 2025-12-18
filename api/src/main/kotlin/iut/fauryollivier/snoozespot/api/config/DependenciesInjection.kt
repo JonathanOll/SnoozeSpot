@@ -38,7 +38,7 @@ val appModule = module {
     single { UserRepository() }
     single { UserService(get()) }
 
-    single { PostService(get()) }
+    single { PostService(get(), get()) }
     single { PostCommentRepository(get()) }
     single { PostRepository(get()) }
 

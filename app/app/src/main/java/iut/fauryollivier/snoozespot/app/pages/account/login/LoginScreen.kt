@@ -10,6 +10,7 @@ import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -39,7 +40,7 @@ fun LoginScreen(
         OutlinedTextField(
             value = vm.username,
             onValueChange = { vm.onUsernameChanged(it) },
-            label = { Text(stringResource(R.string.email)) }
+            label = { Text(stringResource(R.string.username)) }
         )
 
         OutlinedTextField(
@@ -52,7 +53,7 @@ fun LoginScreen(
         Button(
             onClick = { vm.login(context, navigator) }
         ) {
-            Text(stringResource(R.string.login))
+            Text(stringResource(R.string.login), color = Color.White)
         }
 
         Text(

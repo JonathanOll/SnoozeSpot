@@ -76,7 +76,7 @@ fun AccountScreen(navigator: DestinationsNavigator, scaffoldController: Scaffold
                 UserProfileCard(user!!)
                 HorizontalLine()
                 Button(onClick = {vm.logout(context)}) {
-                    Text(stringResource(R.string.logout))
+                    Text(stringResource(R.string.logout), color = Color.White)
                 }
             }
     }

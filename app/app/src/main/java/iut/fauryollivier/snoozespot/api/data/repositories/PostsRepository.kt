@@ -3,6 +3,7 @@ package iut.fauryollivier.snoozespot.api.data.repositories
 import android.util.Log
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.CreatePostRequest
+import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -44,5 +45,16 @@ object PostsRepository {
             return Response.error(500, ResponseBody.EMPTY)
         }
     }
+
+    suspend fun createPostComment(postId: Int, content: String): Response<PostCommentDTO> {
+        try {
+            val result = NetworkDataSource.api.postsIdCommentPost(postId, CreatePostRequest(content))
+            return Response.success(result.body())
+        } catch(e: Exception) {
+            return Response.error(500, ResponseBody.EMPTY)
+        }
+    }
+
+
 
 }

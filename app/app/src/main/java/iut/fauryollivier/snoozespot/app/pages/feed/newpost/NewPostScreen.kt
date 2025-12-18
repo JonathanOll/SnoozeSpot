@@ -40,7 +40,13 @@ data class NewPostResult(
 
 @Destination
 @Composable
-fun NewPostScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, resultBackNavigator: ResultBackNavigator<NewPostResult>) {
+fun NewPostScreen(
+    navigator: DestinationsNavigator,
+    showMediaPicker: Boolean = false,
+    showGradePicker: Boolean = false,
+    scaffoldController: ScaffoldController,
+    resultBackNavigator: ResultBackNavigator<NewPostResult>
+) {
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { BackTopBar(navigator) }
         scaffoldController.showBottomBar.value = false
@@ -51,7 +57,8 @@ fun NewPostScreen(navigator: DestinationsNavigator, scaffoldController: Scaffold
 
     Box (modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
-            ImagePicker(pictures)
+            if (showMediaPicker)
+                ImagePicker(pictures)
 
             OutlinedTextField(
                 value = text,
@@ -59,10 +66,6 @@ fun NewPostScreen(navigator: DestinationsNavigator, scaffoldController: Scaffold
                 label = { Text(stringResource(R.string.post_content)) },
                 modifier = Modifier.fillMaxSize()
             )
-
-            pictures.forEach {
-                Text(it.toString())
-            }
         }
 
         FloatingActionButton(

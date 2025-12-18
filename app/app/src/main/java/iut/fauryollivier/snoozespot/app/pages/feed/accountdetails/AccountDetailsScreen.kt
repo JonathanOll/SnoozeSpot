@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.app.pages.feed.details
+package iut.fauryollivier.snoozespot.app.pages.feed.feeddetails
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
