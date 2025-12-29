@@ -42,4 +42,5 @@
     <string name="add_comment">Add a comment</string>
     <string name="log_in_to_comment">Log in to comment</string>
     <string name="rating">Rating</string>
+    <string name="no_review">No review</string>
 </resources>

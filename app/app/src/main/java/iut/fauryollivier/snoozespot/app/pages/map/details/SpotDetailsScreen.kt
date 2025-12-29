@@ -191,7 +191,7 @@ fun SpotDetailsScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
-                            Text("Aucun avis")
+                            Text(stringResource(R.string.no_review))
                             AuthOnly {
                                 Button(onClick = { navigator.navigate(NewPostScreenDestination(showGradePicker = true)) }) {
                                     Text(stringResource(R.string.add_comment), color = Color.White)

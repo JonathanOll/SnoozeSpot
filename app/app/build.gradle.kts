@@ -141,6 +141,8 @@ dependencies {
 
     implementation(libs.openapi.generator)
     implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     implementation(libs.maps.compose)
 
@@ -292,6 +294,30 @@ tasks.register("updateRoomModel") {
     }
 }
 
+tasks.register("initRoomLists") {
+    mustRunAfter("cleanupAndMergeGenerated")
+    group = "openapi"
+    doLast {
+        val roomModelsDir = file("$srcDirPath/src/main/kotlin/org/openapitools/client/models/room")
+
+        roomModelsDir.walkTopDown().filter { it.isFile && it.extension == "kt" }.forEach { roomModelFile ->
+            var text = roomModelFile.readText()
+
+            // Regex qui détecte : @Ignore lateinit var nom: List<Something>
+            val listLateinitRegex = Regex("@Ignore\\s+lateinit var (\\w+): kotlin\\.collections\\.List<[^>]+>")
+
+            // Remplace par : var nom: List<Type> = emptyList()
+            text = listLateinitRegex.replace(text) { match ->
+                val propName = match.groupValues[1]
+                "@Ignore var $propName: ${match.value.substringAfter(": ")} = emptyList()"
+            }
+
+            roomModelFile.writeText(text)
+            println("Initialisé les listes dans ${roomModelFile.name}")
+        }
+    }
+}
+
 tasks.register("cleanupAndMergeGenerated") {
     mustRunAfter("updateRoomModel")
     group = "openapi"
@@ -327,7 +353,7 @@ tasks.register("cleanupAndMergeGenerated") {
 }
 
 tasks.register("openApiGenerateAll") {
-    dependsOn("openApiGenerateRetrofit", "openApiGenerateRoom", "updateRetrofitModel", "updateRoomModel", "cleanupAndMergeGenerated")
+    dependsOn("openApiGenerateRetrofit", "openApiGenerateRoom", "updateRetrofitModel", "updateRoomModel", "initRoomLists", "cleanupAndMergeGenerated")
     group = "openapi"
 }
 
