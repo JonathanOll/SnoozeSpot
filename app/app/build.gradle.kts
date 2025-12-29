@@ -220,15 +220,14 @@ tasks.register("updateRetrofitModel") {
     group = "openapi"
     doLast {
         val retrofitDir = file("$srcDirPath/src/main/kotlin/iut/fauryollivier/snoozespot/api/generated/model")
-        val roomDir = file("$srcDirPath/room/src/main/java/iut/fauryollivier/snoozespot/api/generated/room/model")
+        val roomDir = file("$srcDirPath/src/main/kotlin/org/openapitools/client/models/room")
 
         retrofitDir.walkTopDown().filter { it.isFile && it.extension == "kt" }.forEach { retrofitFile ->
             val className = retrofitFile.nameWithoutExtension
             val classNameRoomModel = retrofitFile.nameWithoutExtension + "RoomModel"
-            val roomFile = File(roomDir, "$className.kt")
+            val roomFile = File(roomDir, "$classNameRoomModel.kt")
 
             if(!roomFile.exists()) {
-                println("Room model for $className not found, skipping")
                 return@forEach
             }
 

@@ -3,7 +3,15 @@ package iut.fauryollivier.snoozespot.app.pages.map
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.filled.Bookmarks
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -11,7 +19,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.CameraPosition
@@ -30,6 +41,7 @@ import iut.fauryollivier.snoozespot.app.components.PlusTopBar
 import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.destinations.FeedScreenDestination
 import iut.fauryollivier.snoozespot.app.destinations.NewSpotScreenDestination
+import iut.fauryollivier.snoozespot.app.destinations.OfflineSpotListScreenDestination
 import iut.fauryollivier.snoozespot.app.destinations.SpotDetailsScreenDestination
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -40,7 +52,25 @@ import kotlinx.coroutines.flow.debounce
 @Composable
 fun MapScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, modifier: Modifier = Modifier, vm: MapViewModel = viewModel()) {
     LaunchedEffect(true) {
-        scaffoldController.topBar.value = { PlusTopBar { navigator.navigate(NewSpotScreenDestination) } }
+        scaffoldController.topBar.value = { PlusTopBar (
+            {
+                navigator.navigate(
+                    NewSpotScreenDestination
+                )
+            },
+            {
+                Icon(
+                    Icons.Default.Bookmarks,
+                    contentDescription = stringResource(R.string.save_offline),
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .size(28.dp)
+                        .clickable {
+                            navigator.navigate(OfflineSpotListScreenDestination)
+                        }
+                )
+            })
+        }
         scaffoldController.showBottomBar.value = true
     }
 

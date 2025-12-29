@@ -17,4 +17,10 @@ interface SpotDao {
 
     @Delete
     suspend fun delete(spot: SpotDTORoomModel)
+
+    @Query("SELECT EXISTS(SELECT 1 FROM SpotDTO WHERE id = :spotId)")
+    suspend fun exist(spotId: Int): Boolean
+
+    @Query("DELETE FROM SpotDTO WHERE id = :spotId")
+    suspend fun deleteById(spotId: Int)
 }

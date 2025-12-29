@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -72,7 +73,7 @@ fun BackTopBar(navigator: DestinationsNavigator) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransparentBackTopBar(navigator: DestinationsNavigator) {
+fun TransparentBackTopBar(navigator: DestinationsNavigator, rightElement: @Composable () -> Unit = {}) {
     TopAppBar(
         modifier = Modifier
             .background(
@@ -84,7 +85,9 @@ fun TransparentBackTopBar(navigator: DestinationsNavigator) {
             ),
         title = {
             Row (
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
@@ -97,6 +100,8 @@ fun TransparentBackTopBar(navigator: DestinationsNavigator) {
                             navigator.popBackStack()
                         }
                 )
+
+                rightElement()
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
@@ -144,12 +149,14 @@ fun FeedTopBar() {
 }
 
 @Composable
-fun PlusTopBar(onClick: () -> Unit) {
+fun PlusTopBar(onClick: () -> Unit, leftContent: @Composable () -> Unit = {}) {
     TopBar {
         Row(
             modifier = Modifier.fillMaxWidth().clickable(onClick=onClick),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            leftContent()
+
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = null,

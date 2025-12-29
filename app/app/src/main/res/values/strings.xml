@@ -43,4 +43,5 @@
     <string name="log_in_to_comment">Log in to comment</string>
     <string name="rating">Rating</string>
     <string name="no_review">No review</string>
+    <string name="save_offline">Save offline</string>
 </resources>

@@ -30,26 +30,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DatabaseBuilder.init(applicationContext)
-        lifecycleScope.launch {
-            DatabaseBuilder
-                .getInstance()
-                .SpotDao()
-                .insert(
-                    SpotDTORoomModel(
-                        12,
-                        1,
-                        "test",
-                        "description salut",
-                        42.0,
-                        3.0,
-                        1,
-                        null,
-                        5.0f,
-                    )
-                )
-
-            Log.d("jonatan", DatabaseBuilder.getInstance().SpotDao().getAll().map { it.toApiModel() }.toString())
-        }
         LocalStorage(this).startObserving(lifecycleScope)
         NetworkDataSource.init(this)
         enableEdgeToEdge()

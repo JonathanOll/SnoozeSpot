@@ -2,6 +2,7 @@ package iut.fauryollivier.snoozespot.app.pages.map.details
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,10 +11,13 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material3.Button
@@ -61,7 +65,8 @@ import iut.fauryollivier.snoozespot.utils.ErrorMessage
 @Composable
 fun SpotDetailsScreen(
     navigator: DestinationsNavigator,
-    spotId: Int,
+    spotId: Int? = null,
+    spotData: SpotDTO? = null,
     scaffoldController: ScaffoldController,
     vm: SpotDetailsViewModel = viewModel(),
     resultRecipient: ResultRecipient<NewPostScreenDestination, NewPostResult>,
@@ -79,6 +84,7 @@ fun SpotDetailsScreen(
 
     val spot: SpotDTO? by vm.spot.collectAsState()
     val errorMessage: ErrorMessage? by vm.errorMessage.collectAsState()
+    val saved: Boolean by vm.offlineSaved.collectAsState()
 
     val mapPositionState = rememberCameraPositionState()
     LaunchedEffect(spot) {
@@ -91,7 +97,10 @@ fun SpotDetailsScreen(
     }
 
     LaunchedEffect(true) {
-        vm.fetchSpot(spotId)
+        if (spotId != null)
+            vm.fetchSpot(spotId)
+        else
+            vm.setSpot(spotData!!)
     }
     Box {
         Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
@@ -205,7 +214,19 @@ fun SpotDetailsScreen(
                 }
             }
         }
-        TransparentBackTopBar(navigator) // on doit le mettre ici et pas de le scaffold pour que les éléments puissent se placer en dessous
+        TransparentBackTopBar(navigator) { // on doit le mettre ici et pas de le scaffold pour que les éléments puissent se placer en dessous
+            Icon(
+                if (saved) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+                tint = Color.White,
+                contentDescription = stringResource(R.string.save_offline),
+                modifier = Modifier
+                    .padding(4.dp)
+                    .size(28.dp)
+                    .clickable {
+                    vm.saveOffline()
+                }
+            )
+        }
     }
 
 }
