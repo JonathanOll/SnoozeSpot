@@ -12,6 +12,7 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import iut.fauryollivier.snoozespot.api.auth.currentUserId
+import iut.fauryollivier.snoozespot.api.auth.handleMultipart
 import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
@@ -89,39 +90,8 @@ fun Route.spotRoutes() {
         post {
             val userId = call.currentUserId().getOrThrow()
 
-            var name: String? = null
-            var description: String? = null
-            var latitude: Double? = null
-            var longitude: Double? = null
-            val files: MutableList<Result<StoredFile>> = mutableListOf()
+            val (request, files) = call.handleMultipart<CreateSpotRequest>(storedFileService)
 
-            val multipart = call.receiveMultipart()
-            multipart.forEachPart { part->
-                when (part) {
-                    is PartData.FormItem -> {
-                        when (part.name) {
-                            "name" -> name = part.value
-                            "description" -> description = part.value
-                            "latitude" -> latitude = part.value.toDoubleOrNull()!!
-                            "longitude" -> longitude = part.value.toDoubleOrNull()!!
-                        }
-                    }
-
-                    is PartData.FileItem -> {
-                        files += storedFileService.saveFile(
-                            part,
-                            "$userId's spot image",
-                            StoredFileType.IMAGE,
-                            StoredFileUsage.POST_MEDIA
-                        )
-                    }
-
-                    else -> {}
-                }
-                part.dispose()
-            }
-
-            val request = CreateSpotRequest(name!!, description!!, latitude!!, longitude!!)
             val spot = spotService.createSpot(userId, request, files)
 
             if (spot.isFailure) {

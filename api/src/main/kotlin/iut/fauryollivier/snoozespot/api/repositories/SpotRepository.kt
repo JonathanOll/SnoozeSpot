@@ -114,7 +114,7 @@ class SpotRepository(
         return Result.success(list)
     }
 
-    fun createSpot(userId: Int, data: CreateSpotRequest, files: MutableList<Result<StoredFile>>): Result<Int> {
+    fun createSpot(userId: Int, data: CreateSpotRequest, files: List<Result<StoredFile>>): Result<Int> {
         val id = transaction {
             Tables.Spots.insertAndGetId {
                 it[this.creatorId] = userId

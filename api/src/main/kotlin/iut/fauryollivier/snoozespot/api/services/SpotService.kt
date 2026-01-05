@@ -33,7 +33,7 @@ class SpotService(private val spotRepository: SpotRepository, private val spotCo
         return Result.success(result.getOrThrow().map { it.toDTO() })
     }
 
-    fun createSpot(userId: Int, data: CreateSpotRequest, files: MutableList<Result<StoredFile>>): Result<SpotDTO> {
+    fun createSpot(userId: Int, data: CreateSpotRequest, files: List<Result<StoredFile>>): Result<SpotDTO> {
         val spotIdResult = spotRepository.createSpot(userId, data, files)
         if (spotIdResult.isFailure) return Result.failure(Exception("Spot could not be created"))
 
