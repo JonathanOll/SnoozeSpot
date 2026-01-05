@@ -3,6 +3,7 @@ package iut.fauryollivier.snoozespot.api.services
 import PostCommentRepository
 import iut.fauryollivier.snoozespot.api.dtos.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.dtos.PostDTO
+import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.repositories.PostRepository
 
 class PostService(private val postRepository: PostRepository, private val postCommentRepository: PostCommentRepository) {
@@ -19,8 +20,8 @@ class PostService(private val postRepository: PostRepository, private val postCo
         return Result.success(postResult.getOrThrow().toDTO())
     }
 
-    fun createPost(userId: Int, content: String): Result<PostDTO> {
-        val postIdResult = postRepository.createPost(userId, content)
+    fun createPost(userId: Int, content: String, files: List<Result<StoredFile>>): Result<PostDTO> {
+        val postIdResult = postRepository.createPost(userId, content, files)
         if (postIdResult.isFailure) return Result.failure(Exception("Post could not be created"))
 
         val postResult = postRepository.getById(postIdResult.getOrThrow(), userId)

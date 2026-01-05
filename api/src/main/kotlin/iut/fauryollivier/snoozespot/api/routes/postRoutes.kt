@@ -12,6 +12,7 @@ import io.ktor.server.routing.*
 import io.ktor.utils.io.jvm.javaio.toInputStream
 import io.ktor.utils.io.readByteArray
 import iut.fauryollivier.snoozespot.api.auth.currentUserId
+import iut.fauryollivier.snoozespot.api.auth.handleMultipart
 import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
@@ -72,48 +73,13 @@ fun Route.postRoutes() {
         }
     }
 
-    post("/image"){
-        var description: String = "unknow description"
-        var fileResult : Result<StoredFile>? = null
-
-        val multipart = call.receiveMultipart()
-        multipart.forEachPart { part ->
-            when (part) {
-                is PartData.FormItem -> {
-                    if (part.name == "description")  {
-                        description = part.value
-                        if( fileResult != null && fileResult!!.isSuccess && description.isNotBlank()) {
-                            storedFileService.changeFileDescription(fileResult!!.getOrThrow().uuid, description)
-                        }
-                    }
-                }
-                is PartData.FileItem -> {
-                    if (part.name == "image") {
-                        fileResult = storedFileService.saveFile(
-                            part,
-                            description,
-                            StoredFileType.IMAGE,
-                            StoredFileUsage.POST_MEDIA
-                        )
-                    }
-                    part.dispose()
-                }
-                else -> part.dispose()
-            }
-        }
-
-        if ( fileResult == null || fileResult.isFailure) {
-            call.respond(HttpStatusCode.BadRequest, "Image upload failed")
-            return@post
-        }
-        call.respond(HttpStatusCode.Created, fileResult.getOrThrow())
-    }
-
     authenticate("jwtAuth") {
         post("") {
             val userId = call.currentUserId().getOrThrow()
-            val request = call.receive<CreatePostRequest>()
-            val postResult = postService.createPost(userId, request.content)
+
+            val (request, files) = call.handleMultipart<CreatePostRequest>(storedFileService)
+
+            val postResult = postService.createPost(userId, request.content, files)
             if (postResult.isFailure) {
                 call.respond(HttpStatusCode.BadRequest, "Post creation failed")
                 return@post

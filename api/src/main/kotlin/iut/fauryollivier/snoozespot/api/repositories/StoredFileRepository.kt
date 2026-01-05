@@ -116,5 +116,15 @@ class StoredFileRepository(private val uploadDir: String) : RepositoryBase() {
         return files
     }
 
+    fun getFilesByPostId(postId: Int): List<StoredFile> {
+        val files = transaction {
+            (Tables.PostPictures innerJoin Tables.Files)
+                .select { Tables.PostPictures.postId eq postId }
+                .map { it.toEntity(false) }
+        }
+
+        return files
+    }
+
 
 }
