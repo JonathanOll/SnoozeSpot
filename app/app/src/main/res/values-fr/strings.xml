@@ -42,4 +42,6 @@
     <string name="add_comment">Ajouter un commentaire</string>
     <string name="log_in_to_comment">Connectez vous pour commenter</string>
     <string name="rating">Note</string>
+    <string name="no_review">Aucun avis</string>
+    <string name="save_offline">Sauvegarder hors ligne</string>
 </resources>

@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.api.data.repositories
+package iut.fauryollivier.snoozespot.repositories
 
 import android.util.Log
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource

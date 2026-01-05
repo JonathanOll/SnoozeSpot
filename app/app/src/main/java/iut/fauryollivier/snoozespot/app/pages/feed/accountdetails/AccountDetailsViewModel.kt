@@ -2,7 +2,7 @@ package iut.fauryollivier.snoozespot.app.pages.feed.feeddetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import iut.fauryollivier.snoozespot.api.data.repositories.UsersRepository
+import iut.fauryollivier.snoozespot.repositories.UsersRepository
 import iut.fauryollivier.snoozespot.api.generated.model.UserDTO
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import kotlinx.coroutines.flow.MutableStateFlow
