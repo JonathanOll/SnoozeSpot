@@ -9,9 +9,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object NetworkDataSource {
-    private const val BASE_URL = "https://localhost:8080/"
+    public const val BASE_URL = "https://localhost:8080/"
 
-    private lateinit var apiInstance: DefaultApi
+    private lateinit var apiInstance: SnoozeSpotApi
 
     fun init(context: Context) {
         val intercepter = HttpLoggingInterceptor().apply {
@@ -27,9 +27,9 @@ object NetworkDataSource {
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(DefaultApi::class.java)
+            .create(SnoozeSpotApi::class.java)
     }
 
-    val api: DefaultApi
+    val api: SnoozeSpotApi
         get() = apiInstance
 }

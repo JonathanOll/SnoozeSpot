@@ -4,6 +4,7 @@ import SpotCommentRepository
 import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.database.Tables.SpotComments.rating
 import iut.fauryollivier.snoozespot.api.database.selectVisible
+import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
 import iut.fauryollivier.snoozespot.api.entities.Spot
 import iut.fauryollivier.snoozespot.api.entities.SpotAttribute
 import iut.fauryollivier.snoozespot.api.entities.SpotComment
@@ -14,6 +15,7 @@ import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.andWhere
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
@@ -21,7 +23,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class SpotRepository(
     private val userRepository: UserRepository,
-    private val spotCommentRepository: SpotCommentRepository
+    private val spotCommentRepository: SpotCommentRepository,
+    private val storedFileRepository: StoredFileRepository
 ) : RepositoryBase() {
 
     override fun ResultRow.toEntity(
@@ -31,7 +34,7 @@ class SpotRepository(
 
         val likeCount = getLikeCount(id).getOrThrow()
         val creator = if (loadRelations) userRepository.getById(this[Tables.Spots.creatorId]).getOrThrow() else null
-        val pictures = if (loadRelations) emptyList() else emptyList<StoredFile>() //TODO: load pictures
+        val pictures = if (loadRelations) storedFileRepository.getFilesBySpotId(id) else emptyList<StoredFile>() //TODO: load pictures
         val attributes = if (loadRelations) emptyList() else emptyList<SpotAttribute>() //TODO: load attributes
         val comments = if (loadRelations) spotCommentRepository.getBySpotId(id).getOrThrow() else emptyList()
 
@@ -111,7 +114,7 @@ class SpotRepository(
         return Result.success(list)
     }
 
-    fun createSpot(userId: Int, data: CreateSpotRequest): Result<Int> {
+    fun createSpot(userId: Int, data: CreateSpotRequest, files: MutableList<Result<StoredFile>>): Result<Int> {
         val id = transaction {
             Tables.Spots.insertAndGetId {
                 it[this.creatorId] = userId
@@ -121,6 +124,18 @@ class SpotRepository(
                 it[this.longitude] = data.longitude
             }
         }
+
+        files.forEach { file->
+            if (file.isSuccess) {
+                transaction {
+                    Tables.SpotPictures.insert {
+                        it[spotId] = id.value
+                        it[fileId] = file.getOrThrow().id!!
+                    }
+                }
+            }
+        }
+
         return Result.success(id.value)
     }
 }

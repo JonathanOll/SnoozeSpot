@@ -1,21 +1,26 @@
 package iut.fauryollivier.snoozespot.api.routes
 
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.content.PartData
+import io.ktor.http.content.forEachPart
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
+import io.ktor.server.request.receiveMultipart
 import io.ktor.server.response.*
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
-import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.Schema
-import io.swagger.v3.oas.annotations.parameters.RequestBody
 import iut.fauryollivier.snoozespot.api.auth.currentUserId
+import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
+import iut.fauryollivier.snoozespot.api.entities.StoredFile
+import iut.fauryollivier.snoozespot.api.enums.StoredFileType
+import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
 import iut.fauryollivier.snoozespot.api.services.SpotService
+import iut.fauryollivier.snoozespot.api.services.StoredFileService
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
+import kotlin.getValue
 
 @Serializable
 data class CreateSpotRequest(
@@ -34,6 +39,7 @@ data class CreateSpotCommentRequest(
 // route("/spots")
 fun Route.spotRoutes() {
     val spotService by inject<SpotService>()
+    val storedFileService by inject<StoredFileService>()
 
     get {
         val spotsResult = spotService.getAll() // Pagination simple
@@ -82,8 +88,41 @@ fun Route.spotRoutes() {
     authenticate("jwtAuth") {
         post {
             val userId = call.currentUserId().getOrThrow()
-            val request = call.receive<CreateSpotRequest>()
-            val spot = spotService.createSpot(userId, request)
+
+            var name: String? = null
+            var description: String? = null
+            var latitude: Double? = null
+            var longitude: Double? = null
+            val files: MutableList<Result<StoredFile>> = mutableListOf()
+
+            val multipart = call.receiveMultipart()
+            multipart.forEachPart { part->
+                when (part) {
+                    is PartData.FormItem -> {
+                        when (part.name) {
+                            "name" -> name = part.value
+                            "description" -> description = part.value
+                            "latitude" -> latitude = part.value.toDoubleOrNull()!!
+                            "longitude" -> longitude = part.value.toDoubleOrNull()!!
+                        }
+                    }
+
+                    is PartData.FileItem -> {
+                        files += storedFileService.saveFile(
+                            part,
+                            "$userId's spot image",
+                            StoredFileType.IMAGE,
+                            StoredFileUsage.POST_MEDIA
+                        )
+                    }
+
+                    else -> {}
+                }
+                part.dispose()
+            }
+
+            val request = CreateSpotRequest(name!!, description!!, latitude!!, longitude!!)
+            val spot = spotService.createSpot(userId, request, files)
 
             if (spot.isFailure) {
                 call.respond(HttpStatusCode.BadRequest, "Post creation failed")

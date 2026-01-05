@@ -74,7 +74,7 @@ fun Route.postRoutes() {
 
     post("/image"){
         var description: String = "unknow description"
-        var fileResult : Result<StoredFileDTO>? = null
+        var fileResult : Result<StoredFile>? = null
 
         val multipart = call.receiveMultipart()
         multipart.forEachPart { part ->
