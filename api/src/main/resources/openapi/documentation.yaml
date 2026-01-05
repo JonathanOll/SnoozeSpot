@@ -252,7 +252,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Object"
+                $ref: "#/components/schemas/SpotDTO"
         "400":
           description: "Bad Request"
           content:

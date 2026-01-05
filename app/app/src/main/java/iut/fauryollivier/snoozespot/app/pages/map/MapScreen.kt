@@ -22,6 +22,8 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.result.NavResult
+import com.ramcosta.composedestinations.result.ResultRecipient
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.components.DefaultTopBar
 import iut.fauryollivier.snoozespot.ScaffoldController
@@ -29,8 +31,11 @@ import iut.fauryollivier.snoozespot.app.components.BottomBar
 import iut.fauryollivier.snoozespot.app.components.PlusTopBar
 import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.destinations.FeedScreenDestination
+import iut.fauryollivier.snoozespot.app.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.destinations.NewSpotScreenDestination
 import iut.fauryollivier.snoozespot.app.destinations.SpotDetailsScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
+import iut.fauryollivier.snoozespot.app.pages.map.newspot.NewSpotResult
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 
@@ -38,7 +43,13 @@ import kotlinx.coroutines.flow.debounce
 @SuppressLint("UnrememberedMutableState")
 @Destination
 @Composable
-fun MapScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, modifier: Modifier = Modifier, vm: MapViewModel = viewModel()) {
+fun MapScreen(
+    navigator: DestinationsNavigator,
+    scaffoldController: ScaffoldController,
+    modifier: Modifier = Modifier,
+    resultRecipient: ResultRecipient<NewSpotScreenDestination, NewSpotResult>,
+    vm: MapViewModel = viewModel()
+) {
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { PlusTopBar { navigator.navigate(NewSpotScreenDestination) } }
         scaffoldController.showBottomBar.value = true
@@ -52,6 +63,12 @@ fun MapScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldCont
     }
 
     val currentCameraPosition = rememberUpdatedState(cameraPositionState.position)
+
+    resultRecipient.onNavResult {
+        if (it is NavResult.Value) {
+            vm.newSpot(it.value)
+        }
+    }
 
     LaunchedEffect(currentCameraPosition.value) {
         snapshotFlow { currentCameraPosition.value }

@@ -83,13 +83,14 @@ fun Route.spotRoutes() {
         post {
             val userId = call.currentUserId().getOrThrow()
             val request = call.receive<CreateSpotRequest>()
-            try {
-                val post = spotService.createSpot(userId, request)
-                call.respond(HttpStatusCode.Created, post!!)
-            } catch (e: Exception) {
-                print(e.toString())
+            val spot = spotService.createSpot(userId, request)
+
+            if (spot.isFailure) {
                 call.respond(HttpStatusCode.BadRequest, "Post creation failed")
+                return@post
             }
+
+            call.respond(HttpStatusCode.Created, spot.getOrThrow())
         }
 
         post("{id}/comment") {

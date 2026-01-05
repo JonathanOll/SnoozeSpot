@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.CreatePostRequest
 import iut.fauryollivier.snoozespot.api.generated.model.CreateSpotCommentRequest
+import iut.fauryollivier.snoozespot.api.generated.model.CreateSpotRequest
 import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.SpotCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
@@ -18,6 +19,15 @@ object SpotsRepository {
         try {
             val post = NetworkDataSource.api.spotsIdGet(i)
             return Response.success(post.body())
+        } catch(e: Exception) {
+            return Response.error(500, ResponseBody.EMPTY)
+        }
+    }
+
+    suspend fun createSpot(name: String, description: String, latitude: Double, longitude: Double): Response<SpotDTO> {
+        try {
+            val result = NetworkDataSource.api.spotsPost(CreateSpotRequest(name, description, latitude, longitude))
+            return Response.success(result.body())
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
         }
