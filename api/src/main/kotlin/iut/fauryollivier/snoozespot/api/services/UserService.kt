@@ -21,4 +21,8 @@ class UserService(private val userRepository: UserRepository) {
 
         return Result.success(result.getOrThrow().toDTO())
     }
+
+    fun changeProfilePicture(userId: Int, fileId: Int): Result<Unit> {
+        return userRepository.changeProfilePicture(userId, fileId)
+    }
 }

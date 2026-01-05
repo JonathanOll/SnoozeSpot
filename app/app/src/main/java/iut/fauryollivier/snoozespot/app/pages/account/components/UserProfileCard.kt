@@ -3,6 +3,7 @@ package iut.fauryollivier.snoozespot.app.pages.account.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -30,11 +31,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import iut.fauryollivier.snoozespot.R
+import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.UserDTO
 
 @Composable
-fun UserProfileCard(user: UserDTO) {
+fun UserProfileCard(
+    user: UserDTO,
+    onClickOnProfilePic: () -> Unit = { }
+) {
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -42,14 +48,26 @@ fun UserProfileCard(user: UserDTO) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Avatar
-        Image(
-            painter = painterResource(R.drawable.lobster),
-            contentDescription = "Avatar de ${user.username}",
-            modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape)
-                .border(2.dp, Color.Gray, CircleShape)
-        )
+        if (user.profilePicture != null)
+            AsyncImage(
+                model = NetworkDataSource.BASE_URL + user.profilePicture.path,
+                contentDescription = "Avatar de ${user.username}",
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, Color.Gray, CircleShape)
+                    .clickable { onClickOnProfilePic() }
+            )
+        else
+            Image(
+                painter = painterResource(R.drawable.lobster),
+                contentDescription = "Avatar de ${user.username}",
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, Color.Gray, CircleShape)
+                    .clickable { onClickOnProfilePic()}
+            )
 
         Spacer(modifier = Modifier.height(8.dp))
 

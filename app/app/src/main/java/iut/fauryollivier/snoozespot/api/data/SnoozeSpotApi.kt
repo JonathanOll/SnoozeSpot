@@ -28,4 +28,10 @@ interface SnoozeSpotApi : DefaultApi {
         @Part("content") content: RequestBody,
         @Part files: List<MultipartBody.Part>
     ): Response<PostDTO>
+
+    @Multipart
+    @POST("users/profile-picture")
+    suspend fun changeProfilePic(
+        @Part file: MultipartBody.Part
+    ): Response<PostDTO>
 }

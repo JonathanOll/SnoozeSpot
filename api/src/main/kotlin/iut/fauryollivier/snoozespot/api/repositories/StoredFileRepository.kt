@@ -3,12 +3,10 @@ package iut.fauryollivier.snoozespot.api.repositories
 import io.ktor.http.content.*
 import io.ktor.utils.io.jvm.javaio.*
 import iut.fauryollivier.snoozespot.api.database.Tables
-import iut.fauryollivier.snoozespot.api.database.Tables.Files.description
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
 import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
 import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.experimental.suspendedTransactionAsync
@@ -36,7 +34,7 @@ class StoredFileRepository(private val uploadDir: String) : RepositoryBase() {
             uuid = this[Tables.Files.uuid],
             description = this[Tables.Files.description],
             path = this[Tables.Files.path],
-            type = StoredFileType.fromInt( this[Tables.Files.type]) ?: StoredFileType.UNKNOW,
+            type = StoredFileType.fromInt( this[Tables.Files.type]) ?: StoredFileType.UNKNOWN,
             usage = StoredFileUsage.fromInt(this[Tables.Files.usage]) ?: StoredFileUsage.UNKNOW,
             createdAt = this[Tables.Files.createdAt],
             deletedAt = this[Tables.Files.deletedAt]
