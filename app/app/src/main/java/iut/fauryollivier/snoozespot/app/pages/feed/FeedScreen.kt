@@ -1,5 +1,6 @@
 package iut.fauryollivier.snoozespot.app.pages.feed
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -59,6 +61,8 @@ fun FeedScreen(
         scaffoldController.showBottomBar.value = true
     }
 
+    val context: Context = LocalContext.current
+
     val state by vm.screenState.collectAsState()
     val listState = remember { LazyListState() }
 
@@ -70,7 +74,7 @@ fun FeedScreen(
 
     resultRecipient.onNavResult {
         if (it is NavResult.Value) {
-            vm.newPost(navigator, it.value)
+            vm.newPost(navigator, context, it.value)
         }
     }
 

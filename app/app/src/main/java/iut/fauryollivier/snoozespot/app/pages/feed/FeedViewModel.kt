@@ -1,5 +1,6 @@
 package iut.fauryollivier.snoozespot.app.pages.feed
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -105,10 +106,10 @@ class FeedViewModel : ViewModel() {
         }
     }
 
-    fun newPost(navigator: DestinationsNavigator, data: NewPostResult) {
+    fun newPost(navigator: DestinationsNavigator, context: Context, data: NewPostResult) {
         viewModelScope.launch {
             try {
-                val response = PostsRepository.createPost(data.content)
+                val response = PostsRepository.createPost(context, data.content, data.uris)
                 if(response.isSuccessful) {
                     navigator.navigate(FeedDetailsScreenDestination(response.body()?.id!!))
                 }

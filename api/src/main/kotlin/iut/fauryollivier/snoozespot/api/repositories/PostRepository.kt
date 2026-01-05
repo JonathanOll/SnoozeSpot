@@ -16,13 +16,13 @@ import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PostRepository(private val userRepository: UserRepository) : RepositoryBase() {
+class PostRepository(private val userRepository: UserRepository, private val storedFileRepository: StoredFileRepository) : RepositoryBase() {
 
     fun ResultRow.toEntity(
         loadRelations: Boolean,
         userId: Int?
     ): Post {
-        val pictures = if (loadRelations) emptyList<StoredFile>() else emptyList<StoredFile>() //TODO: load pictures
+        val pictures = if (true || loadRelations) storedFileRepository.getFilesByPostId(this[Tables.Posts.id].value) else emptyList<StoredFile>() //TODO: load pictures
         val comments = if (loadRelations) emptyList<PostComment>() else emptyList<PostComment>()
         val likeCount = getLikeCount(this[Tables.Posts.id].value).getOrThrow()
         val likedByUser = userId != null && isLikedBy(this[Tables.Posts.id].value, userId).getOrThrow()
@@ -72,13 +72,25 @@ class PostRepository(private val userRepository: UserRepository) : RepositoryBas
     }
 
 
-    fun createPost(userId: Int, content: String): Result<Int> {
+    fun createPost(userId: Int, content: String, files: List<Result<StoredFile>>): Result<Int> {
         val id = transaction {
             Tables.Posts.insertAndGetId {
                 it[this.userId] = userId
                 it[this.content] = content
             }
         }
+
+        files.forEach { file->
+            if (file.isSuccess) {
+                transaction {
+                    Tables.PostPictures.insert {
+                        it[postId] = id.value
+                        it[fileId] = file.getOrThrow().id!!
+                    }
+                }
+            }
+        }
+
         return Result.success(id.value)
     }
 

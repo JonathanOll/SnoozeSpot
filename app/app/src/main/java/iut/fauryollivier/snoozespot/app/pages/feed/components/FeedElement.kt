@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
+import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.destinations.AccountDetailsScreenDestination
@@ -75,8 +76,6 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
 
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
-
         Text(
             text = postDTO.content,
             fontSize = 16.sp
@@ -92,7 +91,7 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
                 ) {
                     postDTO.pictures.forEachIndexed { index, it ->
                         AsyncImage(
-                            model = it,
+                            model = NetworkDataSource.BASE_URL + it.path,
                             contentDescription = stringResource(R.string.picture_n, index),
                             modifier = Modifier
                                 .size(160.dp)
@@ -104,7 +103,7 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
                 }
 
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Row {
                 OutlinedButton(

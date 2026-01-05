@@ -1,6 +1,7 @@
 package iut.fauryollivier.snoozespot.api.data
 
 import iut.fauryollivier.snoozespot.api.generated.api.DefaultApi
+import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -20,4 +21,11 @@ interface SnoozeSpotApi : DefaultApi {
         @Part("longitude") longitude: RequestBody,
         @Part files: List<MultipartBody.Part>
     ): Response<SpotDTO>
+
+    @Multipart
+    @POST("posts")
+    suspend fun createPost(
+        @Part("content") content: RequestBody,
+        @Part files: List<MultipartBody.Part>
+    ): Response<PostDTO>
 }
