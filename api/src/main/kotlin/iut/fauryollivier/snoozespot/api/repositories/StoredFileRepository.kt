@@ -12,6 +12,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.experimental.suspendedTransactionAsync
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.io.File
 import java.nio.file.Files
@@ -104,4 +105,16 @@ class StoredFileRepository(private val uploadDir: String) : RepositoryBase() {
             Result.failure(Exception("File not found or description unchanged"))
         }
     }
+
+    fun getFilesBySpotId(spotId: Int): List<StoredFile> {
+        val files = transaction {
+            (Tables.SpotPictures innerJoin Tables.Files)
+                .select { Tables.SpotPictures.spotId eq spotId }
+                .map { it.toEntity(false) }
+        }
+
+        return files
+    }
+
+
 }

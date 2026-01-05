@@ -3,11 +3,10 @@ package iut.fauryollivier.snoozespot.api.services
 import SpotCommentRepository
 import iut.fauryollivier.snoozespot.api.dtos.SpotCommentDTO
 import iut.fauryollivier.snoozespot.api.dtos.SpotDTO
-import iut.fauryollivier.snoozespot.api.repositories.PostRepository
+import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
+import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.repositories.SpotRepository
 import iut.fauryollivier.snoozespot.api.routes.CreateSpotRequest
-import org.koin.ktor.ext.inject
-import kotlin.IllegalArgumentException
 
 class SpotService(private val spotRepository: SpotRepository, private val spotCommentRepository: SpotCommentRepository) {
 
@@ -34,8 +33,8 @@ class SpotService(private val spotRepository: SpotRepository, private val spotCo
         return Result.success(result.getOrThrow().map { it.toDTO() })
     }
 
-    fun createSpot(userId: Int, data: CreateSpotRequest): Result<SpotDTO> {
-        val spotIdResult = spotRepository.createSpot(userId, data)
+    fun createSpot(userId: Int, data: CreateSpotRequest, files: List<Result<StoredFile>>): Result<SpotDTO> {
+        val spotIdResult = spotRepository.createSpot(userId, data, files)
         if (spotIdResult.isFailure) return Result.failure(Exception("Spot could not be created"))
 
         val spotResult = getById(spotIdResult.getOrThrow())

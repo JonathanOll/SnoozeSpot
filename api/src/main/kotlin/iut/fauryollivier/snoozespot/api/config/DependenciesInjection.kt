@@ -44,6 +44,6 @@ val appModule = module {
 
     single { SpotService(get(), get()) }
     single { SpotCommentRepository(get()) }
-    single { SpotRepository(get(), get()) }
+    single { SpotRepository(get(), get(), get()) }
 
 }

@@ -1,5 +1,7 @@
 package iut.fauryollivier.snoozespot.app.pages.map
 
+import android.content.Context
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.GoogleMap
@@ -40,9 +42,16 @@ class MapViewModel : ViewModel() {
         }
     }
 
-    fun newSpot(data: NewSpotResult) {
+    fun newSpot(data: NewSpotResult, context: Context) {
         viewModelScope.launch {
-            SpotsRepository.createSpot(data.name, data.description, data.location.latitude, data.location.longitude)
+            SpotsRepository.createSpot(
+                context,
+                data.name,
+                data.description,
+                data.location.latitude,
+                data.location.longitude,
+                data.uris
+            )
         }
     }
 

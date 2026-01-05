@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -49,6 +50,7 @@ import com.ramcosta.composedestinations.result.NavResult
 import com.ramcosta.composedestinations.result.ResultRecipient
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.ScaffoldController
+import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import iut.fauryollivier.snoozespot.app.components.AnonymousOnly
 import iut.fauryollivier.snoozespot.app.components.AuthOnly
@@ -105,12 +107,24 @@ fun SpotDetailsScreen(
     Box {
         Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
             if(spot != null) {
-                Image(
-                    painter = painterResource(R.drawable.lobster),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxWidth().height(250.dp),
-                    contentScale = ContentScale.Crop
-                )
+                if (!spot!!.pictures.isEmpty()) {
+                    AsyncImage(
+                        model = NetworkDataSource.BASE_URL + spot!!.pictures[0].path,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp),
+                        contentScale = ContentScale.Crop,
+                    )
+                }
+                else
+                    Image(
+                        painter = painterResource(R.drawable.lobster),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxWidth().height(250.dp),
+                        contentScale = ContentScale.Crop
+                    )
+
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         spot!!.name,

@@ -20,6 +20,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -85,6 +86,8 @@ fun MapScreen(
         scaffoldController.showBottomBar.value = true
     }
 
+    val context = LocalContext.current
+
     val state by vm.screenState.collectAsState()
 
     val bourg = LatLng(46.2, 5.216667)
@@ -96,7 +99,7 @@ fun MapScreen(
 
     resultRecipient.onNavResult {
         if (it is NavResult.Value) {
-            vm.newSpot(it.value)
+            vm.newSpot(it.value, context)
         }
     }
 

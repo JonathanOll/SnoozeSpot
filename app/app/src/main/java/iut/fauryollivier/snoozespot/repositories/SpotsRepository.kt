@@ -1,6 +1,8 @@
 package iut.fauryollivier.snoozespot.repositories
 
+import android.content.Context
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
 import com.google.android.gms.maps.model.LatLng
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.CreatePostRequest
@@ -10,6 +12,8 @@ import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.SpotCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import iut.fauryollivier.snoozespot.room.DatabaseBuilder
+import iut.fauryollivier.snoozespot.utils.buildFileParts
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import org.openapitools.client.models.room.SpotDTORoomModel
 import retrofit2.Response
@@ -26,9 +30,13 @@ object SpotsRepository {
         }
     }
 
-    suspend fun createSpot(name: String, description: String, latitude: Double, longitude: Double): Response<SpotDTO> {
+    suspend fun createSpot(context: Context, name: String, description: String, latitude: Double, longitude: Double, files: List<String>): Response<SpotDTO> {
         try {
-            val result = NetworkDataSource.api.spotsPost(CreateSpotRequest(name, description, latitude, longitude))
+            val result = NetworkDataSource.api.createSpot(
+                name.toRequestBody(), description.toRequestBody(),
+                latitude.toString().toRequestBody(), longitude.toString().toRequestBody(),
+                files = buildFileParts(context, files)
+            )
             return Response.success(result.body())
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
