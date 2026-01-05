@@ -1,7 +1,7 @@
 package iut.fauryollivier.snoozespot.api.enums
 
 enum class StoredFileType(val value: Int) {
-    UNKNOW(0),
+    UNKNOWN(0),
 
     IMAGE(1),
     VIDEO(2),
@@ -16,7 +16,7 @@ enum class StoredFileType(val value: Int) {
 
         fun getPathForType(type: StoredFileType): String {
             return when(type) {
-                UNKNOW -> "unknown"
+                UNKNOWN -> "unknown"
                 IMAGE -> "images"
                 VIDEO -> "videos"
                 AUDIO -> "audios"

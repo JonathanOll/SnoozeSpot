@@ -43,6 +43,40 @@ fun buildFileParts(
     }
 }
 
+fun buildFilePart(
+    context: Context,
+    uriString: String
+): MultipartBody.Part {
+
+    val uri = uriString.toUri()
+
+    val inputStream = context.contentResolver.openInputStream(uri)
+        ?: throw IllegalArgumentException("Cannot open URI: $uri")
+
+    val bytes = inputStream.readBytes()
+
+    val rawName = uri.lastPathSegment ?: "file"
+
+    val mimeType = getMimeType(context, uri)
+    val extension = android.webkit.MimeTypeMap.getSingleton()
+        .getExtensionFromMimeType(mimeType)
+        ?: rawName.substringAfterLast('.', "")
+
+    val fileName = if (rawName.contains(".")) {
+        rawName
+    } else {
+        "$rawName.$extension"
+    }
+
+    val requestBody = bytes.toRequestBody(mimeType.toMediaType())
+
+    return MultipartBody.Part.createFormData(
+        name = "file",
+        filename = fileName,
+        body = requestBody
+    )
+}
+
 fun getMimeType(context: Context, uri: Uri): String {
     return context.contentResolver.getType(uri) ?: "application/octet-stream"
 }

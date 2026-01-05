@@ -6,12 +6,16 @@ import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.database.selectActive
 import iut.fauryollivier.snoozespot.api.entities.Post
 import iut.fauryollivier.snoozespot.api.entities.Spot
+import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.entities.User
+import iut.fauryollivier.snoozespot.api.enums.StoredFileType
+import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import java.util.*
 
 class UserRepository : RepositoryBase() {
@@ -24,12 +28,33 @@ class UserRepository : RepositoryBase() {
         val following = if (loadRelations) emptyList() else emptyList<User>() //TODO: load following
         val followers = if (loadRelations) emptyList() else emptyList<User>() //TODO
 
+        val profilePictureId = this[Tables.Users.profilePictureId]
+
+        val profilePicture = if (profilePictureId != null) {
+            val fileRow = Tables.Files
+                .select { Tables.Files.id eq profilePictureId }
+                .singleOrNull()
+
+            fileRow?.let {
+                StoredFile(
+                    id = it[Tables.Files.id].value,
+                    uuid = it[Tables.Files.uuid],
+                    description = it[Tables.Files.description],
+                    path = it[Tables.Files.path],
+                    type = StoredFileType.fromInt(it[Tables.Files.type]) ?: StoredFileType.UNKNOWN,
+                    usage = StoredFileUsage.fromInt(it[Tables.Files.usage]) ?: StoredFileUsage.UNKNOW,
+                    createdAt = it[Tables.Files.createdAt],
+                    deletedAt = it[Tables.Files.deletedAt]
+                )
+            }
+        } else null
+
         return User(
             id = this[Tables.Users.id].value,
             uuid = this[Tables.Users.uuid],
             username = this[Tables.Users.username],
             email = this[Tables.Users.email],
-            profilePicture = null,
+            profilePicture = profilePicture,
             karma = this[Tables.Users.karma],
             createdAt = this[Tables.Users.createdAt],
             deletedAt = this[Tables.Users.deletedAt],
@@ -111,4 +136,19 @@ class UserRepository : RepositoryBase() {
         if(id == null) return Result.failure(Exception("User not found"))
         return getById(id.value)
     }
+
+    fun changeProfilePicture(userId: Int, fileId: Int): Result<Unit> {
+        val updatedRows = transaction {
+            Tables.Users.update({ Tables.Users.id eq userId }) {
+                it[profilePictureId] = fileId
+            }
+        }
+
+        return if (updatedRows > 0) {
+            Result.success(Unit)
+        } else {
+            Result.failure(Exception("User not found or profile picture unchanged"))
+        }
+    }
+
 }
