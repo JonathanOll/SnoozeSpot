@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.api.data.repositories
+package iut.fauryollivier.snoozespot.repositories
 
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
@@ -8,7 +8,9 @@ import iut.fauryollivier.snoozespot.api.generated.model.CreateSpotCommentRequest
 import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.SpotCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
+import iut.fauryollivier.snoozespot.room.DatabaseBuilder
 import okhttp3.ResponseBody
+import org.openapitools.client.models.room.SpotDTORoomModel
 import retrofit2.Response
 import java.math.BigDecimal
 
@@ -41,6 +43,37 @@ object SpotsRepository {
         try {
             val result = NetworkDataSource.api.spotsIdCommentPost(spotId, CreateSpotCommentRequest(content, rating))
             return Response.success(result.body())
+        } catch(e: Exception) {
+            return Response.error(500, ResponseBody.EMPTY)
+        }
+    }
+
+    suspend fun saveOffline(spot: SpotDTO) {
+        DatabaseBuilder.getInstance().SpotDao().insert(SpotDTORoomModel(
+            roomTableId = spot.id,
+            id = spot.id,
+            name = spot.name,
+            description = spot.description,
+            latitude = spot.latitude,
+            longitude = spot.longitude,
+            likeCount = spot.likeCount,
+            creator = spot.creator,
+            rating = spot.rating,
+            createdAt = spot.createdAt,
+        ))
+    }
+
+    suspend fun removeOffline(id: Int) {
+        return DatabaseBuilder.getInstance().SpotDao().deleteById(id)
+    }
+
+    suspend fun isSavedOffline(id: Int): Boolean {
+        return DatabaseBuilder.getInstance().SpotDao().exist(id)
+    }
+
+    suspend fun getSpotsOffline(): Response<List<SpotDTO>> {
+        try {
+            return Response.success(DatabaseBuilder.getInstance().SpotDao().getAll().map { it.toApiModel() })
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
         }

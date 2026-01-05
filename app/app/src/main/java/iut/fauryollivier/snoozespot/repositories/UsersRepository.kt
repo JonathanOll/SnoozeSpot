@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.api.data.repositories
+package iut.fauryollivier.snoozespot.repositories
 
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.CreatePostRequest

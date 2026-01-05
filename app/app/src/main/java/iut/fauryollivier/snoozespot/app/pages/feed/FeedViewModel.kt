@@ -3,8 +3,7 @@ package iut.fauryollivier.snoozespot.app.pages.feed
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
-import iut.fauryollivier.snoozespot.api.data.repositories.PostsRepository
+import iut.fauryollivier.snoozespot.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult

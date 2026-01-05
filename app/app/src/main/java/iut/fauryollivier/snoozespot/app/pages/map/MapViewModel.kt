@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import iut.fauryollivier.snoozespot.api.data.repositories.SpotsRepository
+import iut.fauryollivier.snoozespot.repositories.SpotsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
