@@ -41,6 +41,17 @@ fun Route.userRoutes() {
         call.respond(result.getOrThrow())
     }
     authenticate("jwtAuth") {
+        get("me") {
+            val userId = call.currentUserId().getOrThrow()
+
+            val result = userService.getById(userId)
+            if (result.isFailure) {
+                call.respond(HttpStatusCode.NotFound, "User not found")
+                return@get
+            }
+            call.respond(result.getOrThrow())
+        }
+
         post("profile-picture") {
             val userId = call.currentUserId().getOrThrow()
 
