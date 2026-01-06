@@ -87,7 +87,7 @@ suspend inline fun <reified T : Any> ApplicationCall.handleMultipart(
         part.dispose()
     }
 
-    val typedObject = mapParamsToClass(params, T::class)
+    val typedObject = if (T::class != Unit::class) mapParamsToClass(params, T::class) else Unit as T
     return typedObject to files
 }
 

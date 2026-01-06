@@ -1,5 +1,9 @@
 package iut.fauryollivier.snoozespot.app.pages.account
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
@@ -41,15 +45,25 @@ import iut.fauryollivier.snoozespot.datastore.LocalStorage
 
 @Destination
 @Composable
-fun AccountScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, modifier: Modifier = Modifier, vm: AccountViewModel = viewModel()) {
+fun AccountScreen(
+    navigator: DestinationsNavigator,
+    scaffoldController: ScaffoldController,
+    modifier: Modifier = Modifier,
+    vm: AccountViewModel = viewModel()
+) {
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { DefaultTopBar() }
         scaffoldController.showBottomBar.value = true
     }
 
-    val user by LocalStorage(LocalContext.current).getUser.collectAsState(null)
-
     val context = LocalContext.current
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+        if (uri != null)
+            vm.changeProfilePic(context, uri)
+    }
+
+    val user by LocalStorage(LocalContext.current).getUser.collectAsState(null)
 
     AnonymousOnly {
         Column (
@@ -73,7 +87,13 @@ fun AccountScreen(navigator: DestinationsNavigator, scaffoldController: Scaffold
     AuthOnly {
         if (user != null)
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                UserProfileCard(user!!)
+                UserProfileCard(
+                    user!!
+                ) {
+                    launcher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                }
                 HorizontalLine()
                 Button(onClick = {vm.logout(context)}) {
                     Text(stringResource(R.string.logout), color = Color.White)

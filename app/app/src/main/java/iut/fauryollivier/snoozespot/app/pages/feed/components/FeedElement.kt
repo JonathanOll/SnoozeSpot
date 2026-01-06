@@ -55,13 +55,22 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
                 modifier = Modifier.clickable { navigator.navigate(AccountDetailsScreenDestination(postDTO.user.uuid)) },
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painterResource(R.drawable.lobster),
-                    stringResource(R.string.profile_picture),
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clip(CircleShape)
-                )
+                if (postDTO.user.profilePicture != null)
+                    AsyncImage(
+                        NetworkDataSource.BASE_URL + postDTO.user.profilePicture.path,
+                        stringResource(R.string.profile_picture),
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(CircleShape)
+                    )
+                else
+                    Image(
+                        painterResource(R.drawable.lobster),
+                        stringResource(R.string.profile_picture),
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(CircleShape)
+                    )
 
                 Spacer(modifier = Modifier.width(8.dp))
 
