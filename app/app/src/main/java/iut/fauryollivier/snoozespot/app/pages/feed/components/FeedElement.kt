@@ -37,6 +37,8 @@ import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
+import iut.fauryollivier.snoozespot.app.components.ExpandableImage
+import iut.fauryollivier.snoozespot.app.components.ExpandableImageWithDownload
 import iut.fauryollivier.snoozespot.app.destinations.AccountDetailsScreenDestination
 
 
@@ -90,14 +92,12 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
                         .horizontalScroll(rememberScrollState())
                 ) {
                     postDTO.pictures.forEachIndexed { index, it ->
-                        AsyncImage(
-                            model = NetworkDataSource.BASE_URL + it.path,
+                        ExpandableImageWithDownload(
+                            imageUri = NetworkDataSource.BASE_URL + it.path,
                             contentDescription = stringResource(R.string.picture_n, index),
                             modifier = Modifier
                                 .size(160.dp)
-                                .padding(end = 4.dp),
-                            placeholder = painterResource(id = R.drawable.ic_launcher_background),
-                            error = painterResource(id = R.drawable.lobster)
+                                .padding(end = 4.dp)
                         )
                     }
                 }
