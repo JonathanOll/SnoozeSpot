@@ -44,4 +44,5 @@
     <string name="rating">Note</string>
     <string name="no_review">Aucun avis</string>
     <string name="save_offline">Sauvegarder hors ligne</string>
+    <string name="image_downloaded">Image téléchargée</string>
 </resources>

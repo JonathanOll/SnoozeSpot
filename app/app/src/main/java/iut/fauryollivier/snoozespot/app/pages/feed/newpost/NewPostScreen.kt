@@ -55,7 +55,7 @@ fun NewPostScreen(
         scaffoldController.showBottomBar.value = false
     }
 
-    val pictures = remember { mutableStateListOf<Uri>() }
+    val pictures = remember { mutableStateListOf<String>() }
     val rating = remember { mutableIntStateOf(3) }
     var text by remember { mutableStateOf("") }
 

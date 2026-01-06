@@ -70,7 +70,7 @@ fun NewSpotScreen(navigator: DestinationsNavigator, scaffoldController: Scaffold
         position = CameraPosition.fromLatLngZoom(bouvent, 14f)
     }
 
-    val pictures = remember { mutableStateListOf<Uri>() }
+    val pictures = remember { mutableStateListOf<String>() }
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 

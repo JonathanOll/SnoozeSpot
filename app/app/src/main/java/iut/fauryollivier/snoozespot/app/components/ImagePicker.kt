@@ -46,11 +46,11 @@ import coil3.compose.AsyncImage
 import iut.fauryollivier.snoozespot.R
 
 @Composable
-fun ImagePicker(list: SnapshotStateList<Uri> ,modifier: Modifier = Modifier) {
+fun ImagePicker(list: SnapshotStateList<String> ,modifier: Modifier = Modifier) {
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris: List<Uri> ->
-        list.addAll(uris.filter { it !in list })
+        list.addAll(uris.map { it.toString() }.filter { it !in list })
     }
-    val selected = remember { mutableStateOf<Uri?>(null) }
+    val selected = remember { mutableStateOf<String?>(null) }
     var confirmDelete = remember { mutableStateOf(false) }
 
     LazyRow(modifier = modifier
@@ -86,12 +86,15 @@ fun ImagePicker(list: SnapshotStateList<Uri> ,modifier: Modifier = Modifier) {
     }
 
     if (selected.value != null) {
-        ImagePreviewDialog(selected.value!!, {
+        ImagePickerPreviewDialog(selected.value!!,
+            {
             confirmDelete.value = true
-            }, {
+            },
+            {
                 confirmDelete.value = false
                 selected.value = null
-        })
+            }
+        )
 
         if (confirmDelete.value)
             DeleteImageDialog({
@@ -105,33 +108,14 @@ fun ImagePicker(list: SnapshotStateList<Uri> ,modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ImagePreviewDialog(
-    imageUri: Uri,
+fun ImagePickerPreviewDialog(
+    imageUri: String,
     onDelete: () -> Unit,
     onCancel: () -> Unit
 ) {
-    Dialog(
-        onDismissRequest = { onCancel() },
-        properties = DialogProperties(usePlatformDefaultWidth = false)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.25f))
-                .blur(20.dp)
-                .clickable { onCancel() }
-        )
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            AsyncImage(
-                model = imageUri,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxSize(0.7f)
-                    .align(Alignment.Center),
-                contentScale = ContentScale.Fit
-            )
-
+    ImagePreviewDialog(imageUri) {
+        Box (modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
                     .align(Alignment.TopStart)

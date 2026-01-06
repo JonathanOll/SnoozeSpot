@@ -54,6 +54,8 @@ import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import iut.fauryollivier.snoozespot.app.components.AnonymousOnly
 import iut.fauryollivier.snoozespot.app.components.AuthOnly
+import iut.fauryollivier.snoozespot.app.components.ExpandableImage
+import iut.fauryollivier.snoozespot.app.components.ExpandableImageWithDownload
 import iut.fauryollivier.snoozespot.app.components.HorizontalLine
 import iut.fauryollivier.snoozespot.app.components.StarRating
 import iut.fauryollivier.snoozespot.app.components.TransparentBackTopBar
@@ -108,8 +110,8 @@ fun SpotDetailsScreen(
         Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
             if(spot != null) {
                 if (!spot!!.pictures.isEmpty()) {
-                    AsyncImage(
-                        model = NetworkDataSource.BASE_URL + spot!!.pictures[0].path,
+                    ExpandableImageWithDownload(
+                        imageUri = NetworkDataSource.BASE_URL + spot!!.pictures[0].path,
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxWidth()
