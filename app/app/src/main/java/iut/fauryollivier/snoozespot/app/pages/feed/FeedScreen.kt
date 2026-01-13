@@ -116,9 +116,15 @@ fun FeedScreen(
                 else {
                     LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
                         items(state.posts) { post ->
-                            FeedElement(navigator, post, modifier = Modifier.clickable {
-                                navigator.navigate(FeedDetailsScreenDestination(post.id))
-                            }, likePost = { vm.likePost(it) })
+                            FeedElement(
+                                navigator,
+                                post,
+                                modifier = Modifier.clickable {
+                                    navigator.navigate(FeedDetailsScreenDestination(post.id))
+                                },
+                                onLike = { vm.likePost(it) },
+                                onDelete = { vm.deletePost(it) }
+                            )
                         }
                     }
                 }

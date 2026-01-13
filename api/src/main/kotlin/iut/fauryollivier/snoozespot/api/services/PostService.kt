@@ -54,4 +54,34 @@ class PostService(
         if (postResult.isFailure) return Result.failure(Exception("Post could not be created"))
         return Result.success(postResult.getOrThrow().toDTO())
     }
+
+    fun deletePost(postId: Int, userId: Int): Result<Unit> {
+        val post = postRepository.getById(postId, userId)
+        if (!post.isSuccess) {
+            return Result.failure(Exception("Post not found"))
+        }
+        if (post.getOrThrow().user.id != userId) {
+            return Result.failure(Exception("Post could not be deleted"))
+        }
+
+        val result = postRepository.deletePost(postId)
+        if (result.isFailure)
+            return Result.failure(result.exceptionOrNull()!!)
+        return Result.success(Unit)
+    }
+
+    fun deletePostComment(commentId: Int, userId: Int): Result<Unit> {
+        val comment = postCommentRepository.getById(commentId)
+        if (!comment.isSuccess) {
+            return Result.failure(Exception("Post not found"))
+        }
+        if (comment.getOrThrow().user.id != userId) {
+            return Result.failure(Exception("Post could not be deleted"))
+        }
+
+        val result = postCommentRepository.deletePostComment(commentId)
+        if (result.isFailure)
+            return Result.failure(result.exceptionOrNull()!!)
+        return Result.success(Unit)
+    }
 }

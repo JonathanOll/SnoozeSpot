@@ -89,7 +89,9 @@ fun FeedDetailsScreen(
             FeedElementDetailed(
                 navigator,
                 postDTO!!,
-                likePost = { vm.likePost(it.id) },
+                onLike = { vm.likePost(it.id) },
+                onDelete = { vm.deletePost(it.id, { navigator.navigateUp() }) },
+                onCommentDelete = { vm.deleteComment(it.id) }
             )
         }
     }
