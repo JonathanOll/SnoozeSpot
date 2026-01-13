@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,7 +38,7 @@ fun FeedDetailsScreen(
     scaffoldController: ScaffoldController,
     vm: FeedDetailsViewModel = viewModel(),
     resultRecipient: ResultRecipient<NewPostScreenDestination, NewPostResult>,
-){
+) {
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { BackTopBar(navigator) }
         scaffoldController.showBottomBar.value = false
@@ -51,7 +50,10 @@ fun FeedDetailsScreen(
         vm.events.collect { event ->
             when (event) {
                 is UiEvent.ShowToast ->
-                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT).show() } }
+                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT)
+                        .show()
+            }
+        }
     }
 
     val postDTO: PostDTO? by vm.state.collectAsState()
@@ -66,7 +68,7 @@ fun FeedDetailsScreen(
     LaunchedEffect(true) {
         vm.fetchPost(postId)
     }
-    if(errorMessage != null) {
+    if (errorMessage != null) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -75,7 +77,10 @@ fun FeedDetailsScreen(
                 androidx.compose.material3.Text(stringResource(errorMessage!!.stringId))
 
                 Button(onClick = { vm.fetchPost(postId) }) {
-                    androidx.compose.material3.Text(stringResource(R.string.refresh), color = Color.White)
+                    androidx.compose.material3.Text(
+                        stringResource(R.string.refresh),
+                        color = Color.White
+                    )
                 }
             }
         }

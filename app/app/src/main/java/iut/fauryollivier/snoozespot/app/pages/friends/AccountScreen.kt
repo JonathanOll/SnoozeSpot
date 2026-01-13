@@ -16,7 +16,11 @@ import iut.fauryollivier.snoozespot.app.components.DefaultTopBar
 
 @Destination
 @Composable
-fun FriendsScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, modifier: Modifier = Modifier) {
+fun FriendsScreen(
+    navigator: DestinationsNavigator,
+    scaffoldController: ScaffoldController,
+    modifier: Modifier = Modifier
+) {
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { DefaultTopBar() }
         scaffoldController.showBottomBar.value = true

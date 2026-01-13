@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
+import iut.fauryollivier.snoozespot.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -81,7 +81,7 @@ class FeedViewModel : ViewModel() {
                 } else {
                     errorState()
                 }
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 errorState()
             }
         }
@@ -107,7 +107,7 @@ class FeedViewModel : ViewModel() {
                 } else {
                     errorState()
                 }
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 errorState()
             }
         }
@@ -117,12 +117,12 @@ class FeedViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = PostsRepository.createPost(context, data.content, data.uris)
-                if(response.isSuccessful && response.body() != null) {
+                if (response.isSuccessful && response.body() != null) {
                     navigator.navigate(FeedDetailsScreenDestination(response.body()?.id!!))
                 } else {
                     _events.emit(UiEvent.ShowToast(R.string.failed_to_create_post))
                 }
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 _events.emit(UiEvent.ShowToast(R.string.failed_to_create_post))
             }
         }
@@ -135,9 +135,12 @@ class FeedViewModel : ViewModel() {
                 val liked = result.body()!!
                 _state.update { current ->
                     current.copy(
-                        posts = current.posts.map { p->
+                        posts = current.posts.map { p ->
                             if (p.id == post.id) {
-                                p.copy(likedByUser = liked, likeCount = p.likeCount + (if (liked) 1 else -1))
+                                p.copy(
+                                    likedByUser = liked,
+                                    likeCount = p.likeCount + (if (liked) 1 else -1)
+                                )
                             } else p
                         }
                     )

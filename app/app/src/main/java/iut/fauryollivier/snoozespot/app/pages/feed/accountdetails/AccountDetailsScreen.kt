@@ -31,7 +31,7 @@ fun AccountDetailsScreen(
     userId: UUID,
     scaffoldController: ScaffoldController,
     vm: AccountDetailsViewModel = viewModel()
-){
+) {
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { BackTopBar(navigator) }
         scaffoldController.showBottomBar.value = false
@@ -44,7 +44,7 @@ fun AccountDetailsScreen(
         vm.fetchUser(userId)
     }
 
-    if(errorMessage != null) {
+    if (errorMessage != null) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center

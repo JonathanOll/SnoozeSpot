@@ -9,7 +9,10 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PostRepository(private val userRepository: UserRepository, private val storedFileRepository: StoredFileRepository) : RepositoryBase() {
+class PostRepository(
+    private val userRepository: UserRepository,
+    private val storedFileRepository: StoredFileRepository
+) : RepositoryBase() {
 
     fun ResultRow.toEntity(
         loadRelations: Boolean,
@@ -17,7 +20,8 @@ class PostRepository(private val userRepository: UserRepository, private val sto
     ): Post {
         val id = this[Tables.Posts.id].value
 
-        val pictures = if (true || loadRelations) storedFileRepository.getFilesByPostId(this[Tables.Posts.id].value) else emptyList<StoredFile>() //TODO: load pictures
+        val pictures =
+            storedFileRepository.getFilesByPostId(this[Tables.Posts.id].value)
         val comments = if (loadRelations) {
             Tables.PostComments
                 .select {
@@ -50,6 +54,7 @@ class PostRepository(private val userRepository: UserRepository, private val sto
             likedByUser = likedByUser
         )
     }
+
     override fun ResultRow.toEntity(
         loadRelations: Boolean
     ): Post {
@@ -74,11 +79,11 @@ class PostRepository(private val userRepository: UserRepository, private val sto
 
     fun getById(id: Int, userId: Int?): Result<Post> {
         val post = transaction {
-            Tables.Posts.select { Tables.Posts.id eq id }.selectVisible().map { it ->
+            Tables.Posts.select { Tables.Posts.id eq id }.selectVisible().map {
                 it.toEntity(true, userId)
             }.firstOrNull()
         }
-        if(post == null) return Result.failure(Exception("Post not found"))
+        if (post == null) return Result.failure(Exception("Post not found"))
         return Result.success(post)
     }
 
@@ -90,7 +95,7 @@ class PostRepository(private val userRepository: UserRepository, private val sto
                 it[this.content] = content
             }
 
-            files.forEach { file->
+            files.forEach { file ->
                 if (file.isSuccess) {
                     Tables.PostPictures.insert {
                         it[postId] = id.value
@@ -106,7 +111,7 @@ class PostRepository(private val userRepository: UserRepository, private val sto
 
     fun getUserPosts(userId: Int): Result<List<Post>> {
         val posts = transaction {
-            Tables.Posts.select { Tables.Posts.userId eq userId }.selectVisible().map { it ->
+            Tables.Posts.select { Tables.Posts.userId eq userId }.selectVisible().map {
                 it.toEntity(false)
             }
         }

@@ -23,7 +23,8 @@ class SpotRepository(
 
         val likeCount = getLikeCount(id).getOrThrow()
         val creator = if (loadRelations) userRepository.getById(this[Tables.Spots.creatorId]).getOrThrow() else null
-        val pictures = if (loadRelations) storedFileRepository.getFilesBySpotId(id) else emptyList<StoredFile>() //TODO: load pictures
+        val pictures =
+            if (loadRelations) storedFileRepository.getFilesBySpotId(id) else emptyList<StoredFile>() //TODO: load pictures
         val attributes = if (loadRelations) emptyList() else emptyList<SpotAttribute>() //TODO: load attributes
         val comments = if (loadRelations) spotCommentRepository.getBySpotId(id).getOrThrow() else emptyList()
 
@@ -66,7 +67,7 @@ class SpotRepository(
         return Result.success(list)
     }
 
-    fun getById(id: Int): Result<Spot>{
+    fun getById(id: Int): Result<Spot> {
         val spot = transaction {
             Tables.Spots.leftJoin(Tables.SpotComments)
                 .select { Tables.Spots.id eq id }
@@ -76,7 +77,7 @@ class SpotRepository(
                 }
                 .firstOrNull()
         }
-        if(spot == null) return Result.failure(Throwable("Spot not found"))
+        if (spot == null) return Result.failure(Throwable("Spot not found"))
         return Result.success(spot)
     }
 
@@ -113,7 +114,7 @@ class SpotRepository(
                 it[this.longitude] = data.longitude
             }
 
-            files.forEach { file->
+            files.forEach { file ->
                 if (file.isSuccess) {
                     Tables.SpotPictures.insert {
                         it[spotId] = id.value

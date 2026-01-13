@@ -9,13 +9,18 @@ import java.util.*
 
 class StoredFileService(private val storedFileRepository: StoredFileRepository) {
 
-    fun saveFile(inputFile: PartData.FileItem, description: String, type: StoredFileType, usage: StoredFileUsage): Result<StoredFile> {
+    fun saveFile(
+        inputFile: PartData.FileItem,
+        description: String,
+        type: StoredFileType,
+        usage: StoredFileUsage
+    ): Result<StoredFile> {
         val idResult = storedFileRepository.saveFile(inputFile, description, type, usage)
-        if(idResult.isFailure) {
+        if (idResult.isFailure) {
             return Result.failure(Exception("Could not save file"))
         }
         val fileResult = storedFileRepository.getFileById(idResult.getOrThrow())
-        if(fileResult.isFailure) {
+        if (fileResult.isFailure) {
             return Result.failure(Exception("File saved but could not be retrieved"))
         }
         return Result.success(fileResult.getOrThrow())

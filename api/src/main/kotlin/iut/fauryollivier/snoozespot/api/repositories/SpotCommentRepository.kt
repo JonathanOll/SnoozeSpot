@@ -9,7 +9,8 @@ import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class SpotCommentRepository(private val userRepository: UserRepository) : RepositoryBase() {
+class
+SpotCommentRepository(private val userRepository: UserRepository) : RepositoryBase() {
 
     override fun ResultRow.toEntity(
         loadRelations: Boolean
@@ -51,11 +52,11 @@ class SpotCommentRepository(private val userRepository: UserRepository) : Reposi
 
     fun getById(id: Int): Result<SpotComment> {
         val spotComment = transaction {
-            Tables.SpotComments.select { Tables.SpotComments.id eq id }.selectVisible().map { it ->
+            Tables.SpotComments.select { Tables.SpotComments.id eq id }.selectVisible().map {
                 it.toEntity(true)
             }.firstOrNull()
         }
-        if(spotComment == null) return Result.failure(Exception("Post not found"))
+        if (spotComment == null) return Result.failure(Exception("Post not found"))
         return Result.success(spotComment)
     }
 }

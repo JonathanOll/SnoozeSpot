@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class AccountViewModel: ViewModel() {
+class AccountViewModel : ViewModel() {
 
     private val _events = MutableSharedFlow<UiEvent>()
     val events = _events.asSharedFlow()

@@ -39,18 +39,21 @@ import coil3.compose.AsyncImage
 import iut.fauryollivier.snoozespot.R
 
 @Composable
-fun ImagePicker(list: SnapshotStateList<String> ,modifier: Modifier = Modifier) {
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris: List<Uri> ->
-        list.addAll(uris.map { it.toString() }.filter { it !in list })
-    }
+fun ImagePicker(list: SnapshotStateList<String>, modifier: Modifier = Modifier) {
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris: List<Uri> ->
+            list.addAll(uris.map { it.toString() }.filter { it !in list })
+        }
     val selected = remember { mutableStateOf<String?>(null) }
     var confirmDelete = remember { mutableStateOf(false) }
 
-    LazyRow(modifier = modifier
-        .fillMaxWidth()
-        .height(120.dp)
-        .padding(10.dp)) {
-        items(list) { uri->
+    LazyRow(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(120.dp)
+            .padding(10.dp)
+    ) {
+        items(list) { uri ->
             AsyncImage(
                 model = uri,
                 contentDescription = null,
@@ -79,9 +82,10 @@ fun ImagePicker(list: SnapshotStateList<String> ,modifier: Modifier = Modifier) 
     }
 
     if (selected.value != null) {
-        ImagePickerPreviewDialog(selected.value!!,
+        ImagePickerPreviewDialog(
+            selected.value!!,
             {
-            confirmDelete.value = true
+                confirmDelete.value = true
             },
             {
                 confirmDelete.value = false
@@ -108,7 +112,7 @@ fun ImagePickerPreviewDialog(
 ) {
 
     ImagePreviewDialog(imageUri) {
-        Box (modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
                     .align(Alignment.TopStart)
@@ -142,7 +146,7 @@ fun DeleteImageDialog(
     AlertDialog(
         onDismissRequest = { onDismiss() },
         title = { Text(stringResource(R.string.confirm_title)) },
-        text = { Text(stringResource(R.string.confirm_pic_delete))},
+        text = { Text(stringResource(R.string.confirm_pic_delete)) },
         confirmButton = {
             TextButton(onClick = { onConfirm() }) {
                 Text(stringResource(R.string.confirm))

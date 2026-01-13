@@ -32,7 +32,7 @@ class FeedDetailsViewModel : ViewModel() {
 
         viewModelScope.launch {
             val post = PostsRepository.getPost(id)
-            if(post.isSuccessful && post.body() != null)
+            if (post.isSuccessful && post.body() != null)
                 _state.value = post.body()!!
             else
                 _errorMessage.value = ErrorMessage.COULD_NOT_FETCH_ERROR

@@ -7,7 +7,7 @@ import androidx.compose.runtime.MutableIntState
 fun EditableStarRating(rating: MutableIntState) {
     StarRating(
         rating.intValue.toFloat(),
-        onClicked = { it->
+        onClicked = { it ->
             rating.intValue = it
         }
     )
