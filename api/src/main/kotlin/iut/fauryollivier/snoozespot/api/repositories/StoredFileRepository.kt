@@ -33,7 +33,7 @@ class StoredFileRepository(private val uploadDir: String) : RepositoryBase() {
             uuid = this[Tables.Files.uuid],
             description = this[Tables.Files.description],
             path = this[Tables.Files.path],
-            type = StoredFileType.fromInt( this[Tables.Files.type]) ?: StoredFileType.UNKNOWN,
+            type = StoredFileType.fromInt(this[Tables.Files.type]) ?: StoredFileType.UNKNOWN,
             usage = StoredFileUsage.fromInt(this[Tables.Files.usage]) ?: StoredFileUsage.UNKNOW,
             createdAt = this[Tables.Files.createdAt],
             deletedAt = this[Tables.Files.deletedAt]
@@ -46,14 +46,19 @@ class StoredFileRepository(private val uploadDir: String) : RepositoryBase() {
                 .map { it.toEntity(false) }
                 .singleOrNull()
         }
-        if ( file == null) {
+        if (file == null) {
             return Result.failure(Exception("File not found"))
         }
         return Result.success(file)
     }
 
-    fun saveFile(inputFile: PartData.FileItem, description: String, type: StoredFileType, usage: StoredFileUsage): Result<Int> {
-        if(inputFile.originalFileName.isNullOrBlank()) {
+    fun saveFile(
+        inputFile: PartData.FileItem,
+        description: String,
+        type: StoredFileType,
+        usage: StoredFileUsage
+    ): Result<Int> {
+        if (inputFile.originalFileName.isNullOrBlank()) {
             return Result.failure(Exception("File must have a name or extension"))
         }
 

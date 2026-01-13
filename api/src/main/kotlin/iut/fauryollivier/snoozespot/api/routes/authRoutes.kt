@@ -25,7 +25,7 @@ fun Route.authRoutes() {
         val result: Result<AuthResponseDTO>
         try {
             result = authService.create(request)
-            if(result.isFailure) call.respond(HttpStatusCode.Unauthorized)
+            if (result.isFailure) call.respond(HttpStatusCode.Unauthorized)
             call.respond(HttpStatusCode.Created, result.getOrThrow())
         } catch (e: Exception) {
             call.respond(HttpStatusCode.InternalServerError)
@@ -38,7 +38,7 @@ fun Route.authRoutes() {
         val request = call.receive<UserAuthRequest>()
         try {
             val result = authService.login(request)
-            if(result.isFailure) call.respond(HttpStatusCode.Unauthorized)
+            if (result.isFailure) call.respond(HttpStatusCode.Unauthorized)
             call.respond(HttpStatusCode.Created, result.getOrThrow())
         } catch (e: Exception) {
             call.respond(HttpStatusCode.InternalServerError)

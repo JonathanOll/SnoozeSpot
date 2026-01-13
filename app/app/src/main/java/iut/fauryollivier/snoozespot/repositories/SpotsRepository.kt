@@ -23,12 +23,19 @@ object SpotsRepository {
                 Response.success(spot.body())
             else
                 Response.error(500, ResponseBody.EMPTY)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Response.error(500, ResponseBody.EMPTY)
         }
     }
 
-    suspend fun createSpot(context: Context, name: String, description: String, latitude: Double, longitude: Double, files: List<String>): Response<SpotDTO> {
+    suspend fun createSpot(
+        context: Context,
+        name: String,
+        description: String,
+        latitude: Double,
+        longitude: Double,
+        files: List<String>
+    ): Response<SpotDTO> {
         return try {
             val result = NetworkDataSource.api.createSpot(
                 name.toRequestBody(), description.toRequestBody(),
@@ -39,7 +46,7 @@ object SpotsRepository {
                 Response.success(result.body())
             else
                 Response.error(500, ResponseBody.EMPTY)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Response.error(500, ResponseBody.EMPTY)
         }
     }
@@ -56,36 +63,45 @@ object SpotsRepository {
                 Response.success(spots.body())
             else
                 Response.error(500, ResponseBody.EMPTY)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Response.error(500, ResponseBody.EMPTY)
         }
     }
 
-    suspend fun createSpotComment(spotId: Int, content: String, rating: Int): Response<SpotCommentDTO> {
+    suspend fun createSpotComment(
+        spotId: Int,
+        content: String,
+        rating: Int
+    ): Response<SpotCommentDTO> {
         return try {
-            val result = NetworkDataSource.api.spotsIdCommentPost(spotId, CreateSpotCommentRequest(content, rating))
+            val result = NetworkDataSource.api.spotsIdCommentPost(
+                spotId,
+                CreateSpotCommentRequest(content, rating)
+            )
             if (result.isSuccessful)
                 Response.success(result.body())
             else
                 Response.error(500, ResponseBody.EMPTY)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Response.error(500, ResponseBody.EMPTY)
         }
     }
 
     suspend fun saveOffline(spot: SpotDTO) {
-        DatabaseBuilder.getInstance().SpotDao().insert(SpotDTORoomModel(
-            roomTableId = spot.id,
-            id = spot.id,
-            name = spot.name,
-            description = spot.description,
-            latitude = spot.latitude,
-            longitude = spot.longitude,
-            likeCount = spot.likeCount,
-            creator = spot.creator,
-            rating = spot.rating,
-            createdAt = spot.createdAt,
-        ))
+        DatabaseBuilder.getInstance().SpotDao().insert(
+            SpotDTORoomModel(
+                roomTableId = spot.id,
+                id = spot.id,
+                name = spot.name,
+                description = spot.description,
+                latitude = spot.latitude,
+                longitude = spot.longitude,
+                likeCount = spot.likeCount,
+                creator = spot.creator,
+                rating = spot.rating,
+                createdAt = spot.createdAt,
+            )
+        )
     }
 
     suspend fun removeOffline(id: Int) {
@@ -98,8 +114,9 @@ object SpotsRepository {
 
     suspend fun getSpotsOffline(): Response<List<SpotDTO>> {
         return try {
-            Response.success(DatabaseBuilder.getInstance().SpotDao().getAll().map { it.toApiModel() })
-        } catch(e: Exception) {
+            Response.success(
+                DatabaseBuilder.getInstance().SpotDao().getAll().map { it.toApiModel() })
+        } catch (e: Exception) {
             Response.error(500, ResponseBody.EMPTY)
         }
     }

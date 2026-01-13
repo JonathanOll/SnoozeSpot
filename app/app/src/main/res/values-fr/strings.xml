@@ -54,4 +54,8 @@
     <string name="failed_to_create_spot">Impossible de créer le spot</string>
     <string name="could_not_register">Inscription impossible</string>
     <string name="refresh">Refresh</string>
+    <string name="delete">Supprimer</string>
+    <string name="failed_to_delete_post">Impossible de supprimer le post</string>
+    <string name="failed_to_delete_comment">Impossible de supprimer le commentaire</string>
+    <string name="logged_out">Déconnecté</string>
 </resources>

@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,10 +20,16 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Comment
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,20 +45,35 @@ import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.components.ExpandableImageWithDownload
-import iut.fauryollivier.snoozespot.app.destinations.AccountDetailsScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.AccountDetailsScreenDestination
 
 
 @Composable
-fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: Boolean = false, modifier: Modifier = Modifier, likePost: (PostDTO) -> Unit) {
+fun FeedElement(
+    navigator: DestinationsNavigator,
+    postDTO: PostDTO,
+    isComment: Boolean = false,
+    modifier: Modifier = Modifier,
+    onLike: (PostDTO) -> Unit,
+    onDelete: (PostDTO) -> Unit
+) {
+    var menuExpanded by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
-                    .border(1.dp, Color(0xFFEDEDED))
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
+            .border(1.dp, Color(0xFFEDEDED))
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Row (
-                modifier = Modifier.clickable { navigator.navigate(AccountDetailsScreenDestination(postDTO.user.uuid)) },
+            Row(
+                modifier = Modifier.clickable {
+                    navigator.navigate(
+                        AccountDetailsScreenDestination(
+                            postDTO.user.uuid
+                        )
+                    )
+                },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (postDTO.user.profilePicture != null)
@@ -78,11 +100,30 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Icon(
-                imageVector = Icons.Default.MoreVert,
-                contentDescription = stringResource(R.string.more_options),
-                tint = Color(0xFF49454F)
-            )
+            Box {
+                Icon(
+                    imageVector = Icons.Default.MoreVert,
+                    contentDescription = stringResource(R.string.more_options),
+                    tint = Color(0xFF49454F),
+                    modifier = Modifier.clickable {
+                        menuExpanded = !menuExpanded
+                    }
+                )
+
+                DropdownMenu(
+                    expanded = menuExpanded,
+                    onDismissRequest = { menuExpanded = false },
+                ) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.delete)) },
+                        onClick = {
+                            menuExpanded = false
+                            onDelete(postDTO)
+                        }
+                    )
+                }
+            }
+
 
         }
 
@@ -91,7 +132,7 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
             fontSize = 16.sp
         )
 
-        if(!isComment) {
+        if (!isComment) {
             Spacer(modifier = Modifier.height(8.dp))
 
             if (postDTO.pictures.isNotEmpty())
@@ -120,7 +161,8 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
                         .height(40.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Comment, contentDescription = stringResource(R.string.comment_post),
+                        imageVector = Icons.Outlined.Comment,
+                        contentDescription = stringResource(R.string.comment_post),
                         tint = Color(0xFF49454F)
                     )
 
@@ -138,7 +180,7 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
                 Spacer(modifier = Modifier.weight(1f))
 
                 OutlinedButton(
-                    onClick = { likePost(postDTO) },
+                    onClick = { onLike(postDTO) },
                     modifier = Modifier
                         .height(40.dp)
                 ) {
@@ -172,7 +214,13 @@ fun FeedElement(navigator: DestinationsNavigator, postDTO: PostDTO, isComment: B
 }
 
 @Composable
-fun FeedElement(navigator: DestinationsNavigator, postComment: PostCommentDTO, modifier: Modifier = Modifier, likePost: (post: PostDTO) -> Unit = {}) {
+fun FeedElement(
+    navigator: DestinationsNavigator,
+    postComment: PostCommentDTO,
+    modifier: Modifier = Modifier,
+    onLike: (post: PostDTO) -> Unit = {},
+    onDelete: (post: PostDTO) -> Unit = {}
+) {
     FeedElement(
         navigator,
         PostDTO(
@@ -187,6 +235,7 @@ fun FeedElement(navigator: DestinationsNavigator, postComment: PostCommentDTO, m
         ),
         isComment = true,
         modifier = modifier,
-        likePost = likePost
+        onLike = onLike,
+        onDelete = onDelete
     )
 }

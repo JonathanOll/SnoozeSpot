@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SpotDetailsViewModel: ViewModel() {
+class SpotDetailsViewModel : ViewModel() {
 
     private val _events = MutableSharedFlow<UiEvent>()
     val events = _events.asSharedFlow()
@@ -30,11 +30,10 @@ class SpotDetailsViewModel: ViewModel() {
     fun fetchSpot(spotId: Int) {
         viewModelScope.launch {
             val spot = SpotsRepository.getSpot(spotId)
-            if(spot.isSuccessful && spot.body() != null) {
+            if (spot.isSuccessful && spot.body() != null) {
                 spotState.value = spot.body()!!
                 _offlineSaved.value = SpotsRepository.isSavedOffline(spotState.value!!.id)
-            }
-            else
+            } else
                 errorMessageState.value = ErrorMessage.COULD_NOT_FETCH_ERROR
         }
     }
@@ -45,7 +44,8 @@ class SpotDetailsViewModel: ViewModel() {
 
     fun sendSpotComment(data: NewPostResult) {
         viewModelScope.launch {
-            val result = SpotsRepository.createSpotComment(spotState.value!!.id, data.content, data.rating)
+            val result =
+                SpotsRepository.createSpotComment(spotState.value!!.id, data.content, data.rating)
             if (!result.isSuccessful) {
                 _events.emit(UiEvent.ShowToast(R.string.failed_to_comment))
             }

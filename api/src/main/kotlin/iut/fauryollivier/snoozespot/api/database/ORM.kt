@@ -17,7 +17,7 @@ fun resetDatabase() {
     }
 }
 
-fun insertDefault () {
+fun insertDefault() {
     transaction {
         val roleId = Tables.Roles.insertAndGetId {
             it[name] = "User"
@@ -52,7 +52,8 @@ fun insertDefault () {
         val spotId = Tables.Spots.insertAndGetId {
             it[creatorId] = 1
             it[name] = "Terrasse de N2JSoft"
-            it[description] = "Une belle terrasse avec vue sur le lac, idéale pour des réunions ou des moments de détente."
+            it[description] =
+                "Une belle terrasse avec vue sur le lac, idéale pour des réunions ou des moments de détente."
             it[latitude] = 46.17048
             it[longitude] = 5.29052
             it[canBeDisplayed] = 1

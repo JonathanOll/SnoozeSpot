@@ -32,7 +32,7 @@ class FeedDetailsViewModel : ViewModel() {
 
         viewModelScope.launch {
             val post = PostsRepository.getPost(id)
-            if(post.isSuccessful && post.body() != null)
+            if (post.isSuccessful && post.body() != null)
                 _state.value = post.body()!!
             else
                 _errorMessage.value = ErrorMessage.COULD_NOT_FETCH_ERROR
@@ -63,6 +63,32 @@ class FeedDetailsViewModel : ViewModel() {
             val result = PostsRepository.createPostComment(_state.value!!.id, data.content)
             if (!result.isSuccessful) {
                 _events.emit(UiEvent.ShowToast(R.string.failed_to_comment_post))
+            }
+        }
+    }
+
+    fun deletePost(id: Int, navigateUp: () -> Unit) {
+        viewModelScope.launch {
+            val result = PostsRepository.deletePost(id)
+            if (result.isSuccessful) {
+                navigateUp()
+            } else {
+                _events.emit(UiEvent.ShowToast(R.string.failed_to_delete_post))
+            }
+        }
+    }
+
+    fun deleteComment(id: Int) {
+        viewModelScope.launch {
+            val result = PostsRepository.deletePostComment(id)
+            if (result.isSuccessful) {
+                _state.update { it->
+                    it!!.copy(
+                        comments = it.comments.filter { it.id != id }
+                    )
+                }
+            } else {
+                _events.emit(UiEvent.ShowToast(R.string.failed_to_delete_comment))
             }
         }
     }

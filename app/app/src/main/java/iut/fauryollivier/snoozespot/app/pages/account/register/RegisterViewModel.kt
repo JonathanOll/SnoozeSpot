@@ -3,8 +3,6 @@ package iut.fauryollivier.snoozespot.app.pages.account.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
-import iut.fauryollivier.snoozespot.api.generated.model.UserAuthRequest
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.repositories.UsersRepository
 import iut.fauryollivier.snoozespot.utils.UiEvent

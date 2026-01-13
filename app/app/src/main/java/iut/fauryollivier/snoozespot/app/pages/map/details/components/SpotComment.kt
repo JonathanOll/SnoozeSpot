@@ -21,21 +21,23 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.generated.model.SpotCommentDTO
 import iut.fauryollivier.snoozespot.app.components.StarRating
+import iut.fauryollivier.snoozespot.app.pages.destinations.AccountDetailsScreenDestination
 
 @Composable
 fun SpotComment(
     navigator: DestinationsNavigator,
     comment: SpotCommentDTO
 ) {
-    Column (modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier.padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Row (
+            Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.clickable {  navigator.navigate(
-                    iut.fauryollivier.snoozespot.app.destinations.AccountDetailsScreenDestination(
-                        comment.user.uuid
+                        AccountDetailsScreenDestination(
+                            comment.user.uuid
+                        )
                     )
-                ) }
+                }
             ) {
                 Image(
                     painterResource(R.drawable.lobster),

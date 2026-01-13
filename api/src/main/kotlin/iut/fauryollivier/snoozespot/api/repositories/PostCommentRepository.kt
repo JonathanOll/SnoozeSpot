@@ -1,4 +1,5 @@
 import iut.fauryollivier.snoozespot.api.database.Tables
+import iut.fauryollivier.snoozespot.api.database.Tables.Posts.deletedAt
 import iut.fauryollivier.snoozespot.api.database.selectVisible
 import iut.fauryollivier.snoozespot.api.entities.PostComment
 import iut.fauryollivier.snoozespot.api.repositories.RepositoryBase
@@ -6,8 +7,10 @@ import iut.fauryollivier.snoozespot.api.repositories.UserRepository
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.javatime.CurrentDateTime
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 class PostCommentRepository(private val userRepository: UserRepository) : RepositoryBase() {
 
@@ -38,11 +41,11 @@ class PostCommentRepository(private val userRepository: UserRepository) : Reposi
 
     fun getById(id: Int): Result<PostComment> {
         val postComment = transaction {
-            Tables.PostComments.select { Tables.PostComments.id eq id }.selectVisible().map { it ->
+            Tables.PostComments.select { Tables.PostComments.id eq id }.selectVisible().map {
                 it.toEntity(true)
             }.firstOrNull()
         }
-        if(postComment == null) return Result.failure(Exception("Post not found"))
+        if (postComment == null) return Result.failure(Exception("Post not found"))
         return Result.success(postComment)
     }
 
@@ -55,5 +58,17 @@ class PostCommentRepository(private val userRepository: UserRepository) : Reposi
             }
         }
         return Result.success(id.value)
+    }
+    fun deletePostComment(commentId: Int): Result<Unit> {
+        val updated = transaction {
+            Tables.PostComments.update({ Tables.PostComments.id eq commentId }) {
+                it[deletedAt] = CurrentDateTime
+            }
+        }
+
+        if (updated == 0) {
+            return Result.failure(Exception("Comment not found"))
+        }
+        return Result.success(Unit)
     }
 }

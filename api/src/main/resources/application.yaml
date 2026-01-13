@@ -1,10 +1,10 @@
 ktor:
-    application:
-        modules:
-            - iut.fauryollivier.snoozespot.api.ApplicationKt.module
-    deployment:
-        port: 443
-        host: "127.0.0.1"
+  application:
+    modules:
+      - iut.fauryollivier.snoozespot.api.ApplicationKt.module
+  deployment:
+    port: 443
+    host: "127.0.0.1"
 jwt:
   domain: "https://jwt-provider-domain/"
   audience: "jwt-audience"

@@ -34,9 +34,9 @@ import com.ramcosta.composedestinations.result.ResultRecipient
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.PlusTopBar
-import iut.fauryollivier.snoozespot.app.destinations.NewSpotScreenDestination
-import iut.fauryollivier.snoozespot.app.destinations.OfflineSpotListScreenDestination
-import iut.fauryollivier.snoozespot.app.destinations.SpotDetailsScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.NewSpotScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.OfflineSpotListScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.SpotDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.map.newspot.NewSpotResult
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.FlowPreview
@@ -54,24 +54,25 @@ fun MapScreen(
     vm: MapViewModel = viewModel()
 ) {
     LaunchedEffect(true) {
-        scaffoldController.topBar.value = { PlusTopBar (
-            {
-                navigator.navigate(
-                    NewSpotScreenDestination
-                )
-            },
-            {
-                Icon(
-                    Icons.Default.Bookmarks,
-                    contentDescription = stringResource(R.string.save_offline),
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .size(28.dp)
-                        .clickable {
-                            navigator.navigate(OfflineSpotListScreenDestination)
-                        }
-                )
-            })
+        scaffoldController.topBar.value = {
+            PlusTopBar(
+                {
+                    navigator.navigate(
+                        NewSpotScreenDestination
+                    )
+                },
+                {
+                    Icon(
+                        Icons.Default.Bookmarks,
+                        contentDescription = stringResource(R.string.save_offline),
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .size(28.dp)
+                            .clickable {
+                                navigator.navigate(OfflineSpotListScreenDestination)
+                            }
+                    )
+                })
         }
         scaffoldController.showBottomBar.value = true
     }
@@ -82,7 +83,10 @@ fun MapScreen(
         vm.events.collect { event ->
             when (event) {
                 is UiEvent.ShowToast ->
-                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT).show() } }
+                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT)
+                        .show()
+            }
+        }
     }
 
     val state by vm.screenState.collectAsState()
@@ -112,7 +116,7 @@ fun MapScreen(
     }
 
     GoogleMap(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState,
     ) {
         state.spots.forEach { spot ->

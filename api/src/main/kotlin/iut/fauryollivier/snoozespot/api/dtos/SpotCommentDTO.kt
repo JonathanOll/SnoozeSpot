@@ -14,7 +14,7 @@ data class SpotCommentDTO(
     val rating: Int,
     @Contextual val createdAt: LocalDateTime?,
 
-) : DTOBase() {
+    ) : DTOBase() {
 
     override fun toEntity() = SpotComment(
         id = id,

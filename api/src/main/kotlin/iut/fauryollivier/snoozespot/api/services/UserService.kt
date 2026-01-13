@@ -13,8 +13,8 @@ class UserService(private val userRepository: UserRepository) {
     }
 
     fun getByUuid(uuid: UUID): Result<UserDTO> {
-        val id = userRepository.getUserIdByUUID(uuid);
-        if(id.isFailure) return Result.failure(Exception("unknown UUID $uuid"))
+        val id = userRepository.getUserIdByUUID(uuid)
+        if (id.isFailure) return Result.failure(Exception("unknown UUID $uuid"))
 
         val result = userRepository.getById(id.getOrThrow(), true)
         if (result.isFailure) return Result.failure(result.exceptionOrNull()!!)
