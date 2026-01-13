@@ -6,7 +6,10 @@ import iut.fauryollivier.snoozespot.api.dtos.PostDTO
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.repositories.PostRepository
 
-class PostService(private val postRepository: PostRepository, private val postCommentRepository: PostCommentRepository) {
+class PostService(
+    private val postRepository: PostRepository,
+    private val postCommentRepository: PostCommentRepository
+) {
 
     fun getAll(from: Int = -1, to: Int = -1, userId: Int?): Result<List<PostDTO>> {
         val result = postRepository.getAll(from, to, userId)

@@ -18,9 +18,11 @@ object DatabaseBuilder {
     private var instance: AppDatabase? = null
 
     fun init(context: Context): AppDatabase {
-        instance = Room.databaseBuilder(context,
+        instance = Room.databaseBuilder(
+            context,
             AppDatabase::class.java,
-            "app_database")
+            "app_database"
+        )
             .build()
         return instance!!
     }

@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     topBar = topBar.value,
                     bottomBar = {
-                        if(showBottomBar.value)
+                        if (showBottomBar.value)
                             BottomBar(navController)
                     }
                 ) { innerPadding ->

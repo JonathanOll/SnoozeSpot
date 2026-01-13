@@ -25,7 +25,7 @@ class AccountDetailsViewModel : ViewModel() {
 
         viewModelScope.launch {
             val account = UsersRepository.getUser(id)
-            if(account.isSuccessful && account.body() != null)
+            if (account.isSuccessful && account.body() != null)
                 _account.value = account.body()!!
             else
                 _errorMessage.value = ErrorMessage.COULD_NOT_FETCH_ERROR

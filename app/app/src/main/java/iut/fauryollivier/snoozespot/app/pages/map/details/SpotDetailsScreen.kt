@@ -60,7 +60,6 @@ import iut.fauryollivier.snoozespot.app.components.TransparentBackTopBar
 import iut.fauryollivier.snoozespot.app.pages.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.app.pages.map.details.components.SpotComment
-import iut.fauryollivier.snoozespot.utils.ErrorMessage
 
 @SuppressLint("UnrememberedMutableState")
 @Destination
@@ -72,9 +71,9 @@ fun SpotDetailsScreen(
     scaffoldController: ScaffoldController,
     vm: SpotDetailsViewModel = viewModel(),
     resultRecipient: ResultRecipient<NewPostScreenDestination, NewPostResult>,
-){
+) {
     LaunchedEffect(true) {
-        scaffoldController.topBar.value = {  }
+        scaffoldController.topBar.value = { }
         scaffoldController.showBottomBar.value = false
     }
 
@@ -85,7 +84,6 @@ fun SpotDetailsScreen(
     }
 
     val spot: SpotDTO? by vm.spot.collectAsState()
-    val errorMessage: ErrorMessage? by vm.errorMessage.collectAsState()
     val saved: Boolean by vm.offlineSaved.collectAsState()
 
     val mapPositionState = rememberCameraPositionState()
@@ -105,8 +103,12 @@ fun SpotDetailsScreen(
             vm.setSpot(spotData!!)
     }
     Box {
-        Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
-            if(spot != null) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+        ) {
+            if (spot != null) {
                 if (!spot!!.pictures.isEmpty()) {
                     ExpandableImageWithDownload(
                         imageUri = NetworkDataSource.BASE_URL + spot!!.pictures[0].path,
@@ -116,12 +118,13 @@ fun SpotDetailsScreen(
                             .height(250.dp),
                         contentScale = ContentScale.Crop,
                     )
-                }
-                else
+                } else
                     Image(
                         painter = painterResource(R.drawable.lobster),
                         contentDescription = null,
-                        modifier = Modifier.fillMaxWidth().height(250.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp),
                         contentScale = ContentScale.Crop
                     )
 
@@ -142,7 +145,9 @@ fun SpotDetailsScreen(
                     HorizontalLine(1.dp, Color(0xFFE6E6E6))
 
                     Row(
-                        modifier = Modifier.height(50.dp).padding(16.dp),
+                        modifier = Modifier
+                            .height(50.dp)
+                            .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(Icons.Default.LocationOn, stringResource(R.string.post))
@@ -150,7 +155,9 @@ fun SpotDetailsScreen(
                     }
 
                     GoogleMap(
-                        modifier = Modifier.fillMaxWidth().aspectRatio(1/0.8f),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1 / 0.8f),
                         cameraPositionState = mapPositionState,
                         uiSettings = MapUiSettings(
                             compassEnabled = false,
@@ -166,12 +173,19 @@ fun SpotDetailsScreen(
                         )
                     ) {
                         Marker(
-                            state = MarkerState(position = LatLng(spot!!.latitude, spot!!.longitude))
+                            state = MarkerState(
+                                position = LatLng(
+                                    spot!!.latitude,
+                                    spot!!.longitude
+                                )
+                            )
                         )
                     }
 
                     Row(
-                        modifier = Modifier.height(50.dp).padding(16.dp),
+                        modifier = Modifier
+                            .height(50.dp)
+                            .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(Icons.Default.RateReview, stringResource(R.string.post))
@@ -188,7 +202,7 @@ fun SpotDetailsScreen(
                             Text("%.1f étoile(s)".format(spot?.rating ?: 0f))
                         }
                         HorizontalLine(1.dp, Color(0xFFE6E6E6))
-                        Column (
+                        Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
@@ -196,7 +210,13 @@ fun SpotDetailsScreen(
                                 SpotComment(navigator, comment)
                             }
                             AuthOnly {
-                                Button(onClick = { navigator.navigate(NewPostScreenDestination(showGradePicker = true)) }) {
+                                Button(onClick = {
+                                    navigator.navigate(
+                                        NewPostScreenDestination(
+                                            showGradePicker = true
+                                        )
+                                    )
+                                }) {
                                     Text(
                                         stringResource(R.string.add_comment),
                                         color = Color.White
@@ -210,13 +230,21 @@ fun SpotDetailsScreen(
 
                     } else {
                         Column(
-                            modifier = Modifier.fillMaxWidth().height(150.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(150.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
                             Text(stringResource(R.string.no_review))
                             AuthOnly {
-                                Button(onClick = { navigator.navigate(NewPostScreenDestination(showGradePicker = true)) }) {
+                                Button(onClick = {
+                                    navigator.navigate(
+                                        NewPostScreenDestination(
+                                            showGradePicker = true
+                                        )
+                                    )
+                                }) {
                                     Text(stringResource(R.string.add_comment), color = Color.White)
                                 }
                             }
@@ -237,8 +265,8 @@ fun SpotDetailsScreen(
                     .padding(4.dp)
                     .size(28.dp)
                     .clickable {
-                    vm.saveOffline()
-                }
+                        vm.saveOffline()
+                    }
             )
         }
     }

@@ -7,7 +7,10 @@ import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.repositories.SpotRepository
 import iut.fauryollivier.snoozespot.api.routes.CreateSpotRequest
 
-class SpotService(private val spotRepository: SpotRepository, private val spotCommentRepository: SpotCommentRepository) {
+class SpotService(
+    private val spotRepository: SpotRepository,
+    private val spotCommentRepository: SpotCommentRepository
+) {
 
     fun getAll(): Result<List<SpotDTO>> {
         val result = spotRepository.getAll()
@@ -27,7 +30,8 @@ class SpotService(private val spotRepository: SpotRepository, private val spotCo
         bottomRightLatitude: Double,
         bottomRightLongitude: Double
     ): Result<List<SpotDTO>> {
-        val result = spotRepository.getAllInZone(topLeftLatitude, topLeftLongitude, bottomRightLatitude, bottomRightLongitude)
+        val result =
+            spotRepository.getAllInZone(topLeftLatitude, topLeftLongitude, bottomRightLatitude, bottomRightLongitude)
         if (result.isFailure) return Result.failure(result.exceptionOrNull()!!)
         return Result.success(result.getOrThrow().map { it.toDTO() })
     }

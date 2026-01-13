@@ -46,12 +46,13 @@ fun Route.spotRoutes() {
         val bottomRightLatitude = call.request.queryParameters["bottomRightLatitude"]?.toDoubleOrNull()
         val bottomRightLongitude = call.request.queryParameters["bottomRightLongitude"]?.toDoubleOrNull()
 
-        if( topLeftLatitude == null || topLeftLongitude == null || bottomRightLatitude == null || bottomRightLongitude == null) {
+        if (topLeftLatitude == null || topLeftLongitude == null || bottomRightLatitude == null || bottomRightLongitude == null) {
             call.respond(HttpStatusCode.BadRequest, "Missing query parameters for the zone.")
             return@get
         }
 
-        val spotsResult = spotService.getAllInZone( topLeftLatitude, topLeftLongitude, bottomRightLatitude, bottomRightLongitude )
+        val spotsResult =
+            spotService.getAllInZone(topLeftLatitude, topLeftLongitude, bottomRightLatitude, bottomRightLongitude)
         if (spotsResult.isFailure) {
             call.respond(HttpStatusCode.InternalServerError)
             return@get

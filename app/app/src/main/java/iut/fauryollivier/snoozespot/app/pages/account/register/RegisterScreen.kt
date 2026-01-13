@@ -46,14 +46,17 @@ fun RegisterScreen(
         vm.events.collect { event ->
             when (event) {
                 is UiEvent.ShowToast ->
-                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT).show() } }
+                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT)
+                        .show()
+            }
+        }
     }
 
     val email by vm.email.collectAsState()
     val username by vm.username.collectAsState()
     val password by vm.password.collectAsState()
 
-    Column (
+    Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -85,7 +88,11 @@ fun RegisterScreen(
 
         Text(
             stringResource(R.string.loginInstead),
-            modifier = Modifier.clickable { navigator.popBackStack(); navigator.navigate(LoginScreenDestination) }
+            modifier = Modifier.clickable {
+                navigator.popBackStack(); navigator.navigate(
+                LoginScreenDestination
+            )
+            }
         )
     }
 }

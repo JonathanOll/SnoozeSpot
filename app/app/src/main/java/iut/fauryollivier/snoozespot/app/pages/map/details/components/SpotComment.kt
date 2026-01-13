@@ -28,15 +28,16 @@ fun SpotComment(
     navigator: DestinationsNavigator,
     comment: SpotCommentDTO
 ) {
-    Column (modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier.padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Row (
+            Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.clickable {  navigator.navigate(
-                    AccountDetailsScreenDestination(
-                        comment.user.uuid
+                        AccountDetailsScreenDestination(
+                            comment.user.uuid
+                        )
                     )
-                ) }
+                }
             ) {
                 Image(
                     painterResource(R.drawable.lobster),

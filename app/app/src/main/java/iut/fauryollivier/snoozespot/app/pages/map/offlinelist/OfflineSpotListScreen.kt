@@ -31,6 +31,7 @@ import iut.fauryollivier.snoozespot.utils.UiEvent
 fun OfflineSpotListScreen(
     navigator: DestinationsNavigator,
     scaffoldController: ScaffoldController,
+    modifier: Modifier = Modifier,
     vm: OfflineSpotListViewModel = viewModel()
 ) {
     LaunchedEffect(true) {
@@ -44,7 +45,10 @@ fun OfflineSpotListScreen(
         vm.events.collect { event ->
             when (event) {
                 is UiEvent.ShowToast ->
-                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT).show() } }
+                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT)
+                        .show()
+            }
+        }
     }
 
     LaunchedEffect(true) {
@@ -54,9 +58,9 @@ fun OfflineSpotListScreen(
     val spots by vm.spots.collectAsState()
 
     LazyColumn {
-        items(spots) { spot->
-            Row (
-                modifier = Modifier
+        items(spots) { spot ->
+            Row(
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(8.dp)
                     .clickable {

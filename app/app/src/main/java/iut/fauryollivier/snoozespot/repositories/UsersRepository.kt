@@ -19,7 +19,7 @@ object UsersRepository {
                 Response.success(user.body())
             else
                 Response.error(500, ResponseBody.EMPTY)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Response.error(500, ResponseBody.EMPTY)
         }
     }
@@ -33,7 +33,7 @@ object UsersRepository {
                 Response.success(Unit)
             else
                 Response.error(500, ResponseBody.EMPTY)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Response.error(500, ResponseBody.EMPTY)
         }
     }
@@ -45,19 +45,24 @@ object UsersRepository {
                 Response.success(result.body())
             else
                 Response.error(500, ResponseBody.EMPTY)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Response.error(500, ResponseBody.EMPTY)
         }
     }
 
-    suspend fun register(email: String, username: String, password: String): Response<AuthResponseDTO> {
+    suspend fun register(
+        email: String,
+        username: String,
+        password: String
+    ): Response<AuthResponseDTO> {
         return try {
-            val result = NetworkDataSource.api.authSignupPost(UserAuthRequest(username, password, email))
+            val result =
+                NetworkDataSource.api.authSignupPost(UserAuthRequest(username, password, email))
             if (result.isSuccessful)
                 Response.success(result.body())
             else
                 Response.error(500, ResponseBody.EMPTY)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Response.error(500, ResponseBody.EMPTY)
         }
     }

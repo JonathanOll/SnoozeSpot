@@ -58,9 +58,11 @@ fun NewPostScreen(
     val rating = remember { mutableIntStateOf(3) }
     var text by remember { mutableStateOf("") }
 
-    Box (modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(8.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (showGradePicker) {
@@ -91,7 +93,9 @@ fun NewPostScreen(
             },
             backgroundColor = primaryContainerLight,
             contentColor = primaryLight,
-            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 16.dp)
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 16.dp, bottom = 16.dp)
         ) {
             Icon(Icons.Filled.Check, stringResource(R.string.post))
         }

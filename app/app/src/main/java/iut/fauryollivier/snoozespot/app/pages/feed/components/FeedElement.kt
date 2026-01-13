@@ -61,13 +61,19 @@ fun FeedElement(
 
     Column(
         modifier = modifier
-                    .border(1.dp, Color(0xFFEDEDED))
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
+            .border(1.dp, Color(0xFFEDEDED))
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Row (
-                modifier = Modifier.clickable { navigator.navigate(AccountDetailsScreenDestination(postDTO.user.uuid)) },
+            Row(
+                modifier = Modifier.clickable {
+                    navigator.navigate(
+                        AccountDetailsScreenDestination(
+                            postDTO.user.uuid
+                        )
+                    )
+                },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (postDTO.user.profilePicture != null)
@@ -126,7 +132,7 @@ fun FeedElement(
             fontSize = 16.sp
         )
 
-        if(!isComment) {
+        if (!isComment) {
             Spacer(modifier = Modifier.height(8.dp))
 
             if (postDTO.pictures.isNotEmpty())
@@ -155,7 +161,8 @@ fun FeedElement(
                         .height(40.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Comment, contentDescription = stringResource(R.string.comment_post),
+                        imageVector = Icons.Outlined.Comment,
+                        contentDescription = stringResource(R.string.comment_post),
                         tint = Color(0xFF49454F)
                     )
 
