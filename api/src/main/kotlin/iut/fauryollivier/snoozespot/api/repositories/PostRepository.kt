@@ -74,21 +74,20 @@ class PostRepository(private val userRepository: UserRepository, private val sto
 
     fun createPost(userId: Int, content: String, files: List<Result<StoredFile>>): Result<Int> {
         val id = transaction {
-            Tables.Posts.insertAndGetId {
+            val id = Tables.Posts.insertAndGetId {
                 it[this.userId] = userId
                 it[this.content] = content
             }
-        }
 
-        files.forEach { file->
-            if (file.isSuccess) {
-                transaction {
+            files.forEach { file->
+                if (file.isSuccess) {
                     Tables.PostPictures.insert {
                         it[postId] = id.value
                         it[fileId] = file.getOrThrow().id!!
                     }
                 }
             }
+            id
         }
 
         return Result.success(id.value)

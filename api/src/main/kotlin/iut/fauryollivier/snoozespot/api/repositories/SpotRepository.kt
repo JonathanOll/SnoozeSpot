@@ -116,24 +116,24 @@ class SpotRepository(
 
     fun createSpot(userId: Int, data: CreateSpotRequest, files: List<Result<StoredFile>>): Result<Int> {
         val id = transaction {
-            Tables.Spots.insertAndGetId {
+            val id = Tables.Spots.insertAndGetId {
                 it[this.creatorId] = userId
                 it[this.name] = data.name
                 it[this.description] = data.description
                 it[this.latitude] = data.latitude
                 it[this.longitude] = data.longitude
             }
-        }
 
-        files.forEach { file->
-            if (file.isSuccess) {
-                transaction {
+            files.forEach { file->
+                if (file.isSuccess) {
                     Tables.SpotPictures.insert {
                         it[spotId] = id.value
                         it[fileId] = file.getOrThrow().id!!
                     }
                 }
             }
+
+            id
         }
 
         return Result.success(id.value)
