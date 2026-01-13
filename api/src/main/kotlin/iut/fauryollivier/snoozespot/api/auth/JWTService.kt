@@ -3,8 +3,7 @@ package iut.fauryollivier.snoozespot.api.auth
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
-import java.util.Date
-import java.util.UUID
+import java.util.*
 
 class JWTService(secret: String, val issuer: String, val expirationSeconds: Long) {
     private val algorithm = Algorithm.HMAC256(secret)

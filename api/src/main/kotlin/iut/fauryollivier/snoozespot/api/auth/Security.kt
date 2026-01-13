@@ -1,12 +1,11 @@
 package iut.fauryollivier.snoozespot.api.auth
 
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.content.PartData
-import io.ktor.http.content.forEachPart
+import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import io.ktor.server.request.receiveMultipart
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import iut.fauryollivier.snoozespot.api.config.Config
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
@@ -16,7 +15,7 @@ import iut.fauryollivier.snoozespot.api.repositories.UserRepository
 import iut.fauryollivier.snoozespot.api.services.StoredFileService
 import org.koin.dsl.module
 import org.koin.ktor.ext.inject
-import java.util.UUID
+import java.util.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 

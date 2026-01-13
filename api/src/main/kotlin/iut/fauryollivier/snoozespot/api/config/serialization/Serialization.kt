@@ -6,7 +6,7 @@ import io.ktor.server.plugins.contentnegotiation.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 fun Application.configureSerialization() {
     val module = SerializersModule {

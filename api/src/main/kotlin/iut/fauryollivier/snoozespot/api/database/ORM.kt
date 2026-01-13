@@ -1,6 +1,8 @@
 package iut.fauryollivier.snoozespot.api.database
 
-import io.ktor.server.application.Application
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
+import io.ktor.server.application.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.insert
@@ -89,7 +91,17 @@ fun insertDefault () {
 }
 
 fun Application.configureORM() {
-    Database.connect("jdbc:sqlite:../database/database.db", driver = "org.sqlite.JDBC")
+    val config = HikariConfig().apply {
+        jdbcUrl = "jdbc:sqlite:../database/database.db"
+        driverClassName = "org.sqlite.JDBC"
+        maximumPoolSize = 1
+        isAutoCommit = false
+        transactionIsolation = "TRANSACTION_SERIALIZABLE"
+    }
+
+    val dataSource = HikariDataSource(config)
+
+    Database.connect(dataSource)
 
     resetDatabase()
     insertDefault()

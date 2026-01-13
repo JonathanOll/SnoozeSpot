@@ -1,16 +1,15 @@
 package iut.fauryollivier.snoozespot.api.routes
 
-import io.ktor.server.routing.*
+import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
-import io.ktor.http.*
+import io.ktor.server.routing.*
 import io.swagger.v3.oas.annotations.tags.Tag
 import iut.fauryollivier.snoozespot.api.auth.model.UserAuthRequest
 import iut.fauryollivier.snoozespot.api.dtos.UserDTO
 import iut.fauryollivier.snoozespot.api.services.AuthService
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
-import kotlin.getOrThrow
 
 @Serializable
 class AuthResponseDTO(val accessToken: String, val expiresIn: Long, val user: UserDTO)

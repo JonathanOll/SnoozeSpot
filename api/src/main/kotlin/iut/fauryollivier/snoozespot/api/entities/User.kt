@@ -2,7 +2,7 @@ package iut.fauryollivier.snoozespot.api.entities
 
 import iut.fauryollivier.snoozespot.api.dtos.UserDTO
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 data class User(
 

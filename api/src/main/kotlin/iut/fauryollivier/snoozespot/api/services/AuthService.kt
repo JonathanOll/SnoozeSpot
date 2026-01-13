@@ -1,13 +1,11 @@
 package iut.fauryollivier.snoozespot.api.services
 
 
-import iut.fauryollivier.snoozespot.api.routes.AuthResponseDTO
 import iut.fauryollivier.snoozespot.api.auth.JWTService
 import iut.fauryollivier.snoozespot.api.auth.Password
 import iut.fauryollivier.snoozespot.api.auth.model.UserAuthRequest
-import iut.fauryollivier.snoozespot.api.dtos.UserDTO
 import iut.fauryollivier.snoozespot.api.repositories.UserRepository
-import kotlin.Result
+import iut.fauryollivier.snoozespot.api.routes.AuthResponseDTO
 
 class AuthService(private val userRepository:UserRepository, private val jwtService: JWTService) {
 

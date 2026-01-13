@@ -5,15 +5,8 @@ import iut.fauryollivier.snoozespot.api.database.selectVisible
 import iut.fauryollivier.snoozespot.api.entities.Post
 import iut.fauryollivier.snoozespot.api.entities.PostComment
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
-import iut.fauryollivier.snoozespot.api.entities.User
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.insertAndGetId
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class PostRepository(private val userRepository: UserRepository, private val storedFileRepository: StoredFileRepository) : RepositoryBase() {
@@ -22,8 +15,26 @@ class PostRepository(private val userRepository: UserRepository, private val sto
         loadRelations: Boolean,
         userId: Int?
     ): Post {
+        val id = this[Tables.Posts.id].value
+
         val pictures = if (true || loadRelations) storedFileRepository.getFilesByPostId(this[Tables.Posts.id].value) else emptyList<StoredFile>() //TODO: load pictures
-        val comments = if (loadRelations) emptyList<PostComment>() else emptyList<PostComment>()
+        val comments = if (loadRelations) {
+            Tables.PostComments
+                .select {
+                    Tables.PostComments.postId eq id
+                }
+                .selectVisible()
+                .map { row ->
+                    PostComment(
+                        id = row[Tables.PostComments.id].value,
+                        user = userRepository.getById(row[Tables.PostComments.userId]).getOrThrow(),
+                        content = row[Tables.PostComments.content],
+                        createdAt = row[Tables.PostComments.createdAt],
+                        deletedAt = row[Tables.PostComments.deletedAt]
+                    )
+                }
+        } else emptyList()
+
         val likeCount = getLikeCount(this[Tables.Posts.id].value).getOrThrow()
         val likedByUser = userId != null && isLikedBy(this[Tables.Posts.id].value, userId).getOrThrow()
 
@@ -74,21 +85,20 @@ class PostRepository(private val userRepository: UserRepository, private val sto
 
     fun createPost(userId: Int, content: String, files: List<Result<StoredFile>>): Result<Int> {
         val id = transaction {
-            Tables.Posts.insertAndGetId {
+            val id = Tables.Posts.insertAndGetId {
                 it[this.userId] = userId
                 it[this.content] = content
             }
-        }
 
-        files.forEach { file->
-            if (file.isSuccess) {
-                transaction {
+            files.forEach { file->
+                if (file.isSuccess) {
                     Tables.PostPictures.insert {
                         it[postId] = id.value
                         it[fileId] = file.getOrThrow().id!!
                     }
                 }
             }
+            id
         }
 
         return Result.success(id.value)

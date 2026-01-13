@@ -2,7 +2,7 @@ package iut.fauryollivier.snoozespot.api.services
 
 import iut.fauryollivier.snoozespot.api.dtos.UserDTO
 import iut.fauryollivier.snoozespot.api.repositories.UserRepository
-import java.util.UUID
+import java.util.*
 
 class UserService(private val userRepository: UserRepository) {
 

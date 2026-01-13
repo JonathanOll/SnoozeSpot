@@ -1,6 +1,5 @@
 import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.database.selectVisible
-import iut.fauryollivier.snoozespot.api.entities.PostComment
 import iut.fauryollivier.snoozespot.api.entities.SpotComment
 import iut.fauryollivier.snoozespot.api.repositories.RepositoryBase
 import iut.fauryollivier.snoozespot.api.repositories.UserRepository
@@ -9,7 +8,6 @@ import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.time.LocalDateTime
 
 class SpotCommentRepository(private val userRepository: UserRepository) : RepositoryBase() {
 

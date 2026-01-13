@@ -9,7 +9,6 @@ import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.transactions.experimental.suspendedTransactionAsync
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.io.File
@@ -41,19 +40,19 @@ class StoredFileRepository(private val uploadDir: String) : RepositoryBase() {
         )
     }
 
-    suspend fun getFileById(id: Int): Result<StoredFile> {
-        val file = suspendedTransactionAsync {
+    fun getFileById(id: Int): Result<StoredFile> {
+        val file = transaction {
             Tables.Files.select { Tables.Files.id eq id }
                 .map { it.toEntity(false) }
                 .singleOrNull()
-        }.await()
+        }
         if ( file == null) {
             return Result.failure(Exception("File not found"))
         }
         return Result.success(file)
     }
 
-    suspend fun saveFile(inputFile: PartData.FileItem, description: String, type: StoredFileType, usage: StoredFileUsage): Result<Int> {
+    fun saveFile(inputFile: PartData.FileItem, description: String, type: StoredFileType, usage: StoredFileUsage): Result<Int> {
         if(inputFile.originalFileName.isNullOrBlank()) {
             return Result.failure(Exception("File must have a name or extension"))
         }
@@ -74,7 +73,7 @@ class StoredFileRepository(private val uploadDir: String) : RepositoryBase() {
             outputStream.flush()
         }
 
-        val storedFileId = suspendedTransactionAsync {
+        val storedFileId = transaction {
             Tables.Files.insertAndGetId {
                 it[Tables.Files.uuid] = uuid
                 it[Tables.Files.description] = description
@@ -85,17 +84,17 @@ class StoredFileRepository(private val uploadDir: String) : RepositoryBase() {
                 it[Tables.Files.createdAt] = LocalDateTime.now()
                 it[Tables.Files.deletedAt] = null
             }
-        }.await()
+        }
 
         return Result.success(storedFileId.value)
     }
 
-    suspend fun changeFileDescription(uuid: UUID, newDescription: String): Result<Unit> {
-        val updatedRows = suspendedTransactionAsync {
+    fun changeFileDescription(uuid: UUID, newDescription: String): Result<Unit> {
+        val updatedRows = transaction {
             Tables.Files.update({ Tables.Files.uuid eq uuid }) {
                 it[description] = newDescription
             }
-        }.await()
+        }
 
         return if (updatedRows > 0) {
             Result.success(Unit)
