@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,7 +15,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Button
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -43,12 +45,12 @@ import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestinatio
 import iut.fauryollivier.snoozespot.app.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
+import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 
 @Destination
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedScreen(
     navigator: DestinationsNavigator,
@@ -57,7 +59,6 @@ fun FeedScreen(
     resultRecipient: ResultRecipient<NewPostScreenDestination, NewPostResult>,
     vm: FeedViewModel = viewModel()
 ) {
-
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { FeedTopBar() }
         scaffoldController.showBottomBar.value = true
@@ -72,7 +73,7 @@ fun FeedScreen(
                     Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT).show() } }
     }
 
-    val state by vm.screenState.collectAsState()
+    val state by vm.state.collectAsState()
     val listState = remember { LazyListState() }
 
     LazyFeed(
@@ -94,7 +95,13 @@ fun FeedScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(stringResource(state.error!!.stringId))
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(stringResource(state.error!!.stringId))
+
+                    Button(onClick = { vm.refresh() }) {
+                        Text(stringResource(R.string.refresh), color = Color.White)
+                    }
+                }
             }
         } else {
             PullToRefreshBox(
@@ -129,7 +136,6 @@ fun FeedScreen(
         }
 
     }
-
 
 }
 

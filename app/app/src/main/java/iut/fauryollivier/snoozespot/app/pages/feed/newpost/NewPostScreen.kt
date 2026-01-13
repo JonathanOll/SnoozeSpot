@@ -84,10 +84,11 @@ fun NewPostScreen(
                 resultBackNavigator.navigateBack(
                     NewPostResult(
                         text,
-                        pictures.map { it.toString() }.toList(),
+                        pictures.toList(),
                         rating.intValue
                     )
-                ) },
+                )
+            },
             backgroundColor = primaryContainerLight,
             contentColor = primaryLight,
             modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 16.dp)

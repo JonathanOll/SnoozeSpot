@@ -34,7 +34,7 @@ class FeedViewModel : ViewModel() {
     )
 
     private val _state = MutableStateFlow(ScreenState())
-    val screenState: StateFlow<ScreenState> = _state.asStateFlow()
+    val state: StateFlow<ScreenState> = _state.asStateFlow()
 
     private fun loadingState() {
         _state.update { it.copy(isLoading = true) }
@@ -117,7 +117,7 @@ class FeedViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = PostsRepository.createPost(context, data.content, data.uris)
-                if(response.isSuccessful) {
+                if(response.isSuccessful && response.body() != null) {
                     navigator.navigate(FeedDetailsScreenDestination(response.body()?.id!!))
                 } else {
                     _events.emit(UiEvent.ShowToast(R.string.failed_to_create_post))
@@ -131,7 +131,7 @@ class FeedViewModel : ViewModel() {
     fun likePost(post: PostDTO) {
         viewModelScope.launch {
             val result = PostsRepository.likePost(post.id)
-            if (result.isSuccessful) {
+            if (result.isSuccessful && result.body() != null) {
                 val liked = result.body()!!
                 _state.update { current ->
                     current.copy(
