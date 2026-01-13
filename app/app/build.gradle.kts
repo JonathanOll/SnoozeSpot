@@ -149,7 +149,7 @@ dependencies {
 
     implementation(libs.androidx.datastore)
     implementation(libs.kotlinx.serialization.json)
-    implementation (libs.androidx.datastore.preferences.rxjava2)
+    implementation(libs.androidx.datastore.preferences.rxjava2)
     implementation(libs.androidx.datastore.preferences.rxjava3)
 }
 
@@ -158,7 +158,8 @@ configurations.all {
 }
 
 val openApiSpec = "${rootDir.absolutePath}/../api/src/main/resources/openapi/documentation.yaml"
-val srcDirPath = "${rootDir.absolutePath}/app/src/main/java/iut/fauryollivier/snoozespot/api/generated"
+val srcDirPath =
+    "${rootDir.absolutePath}/app/src/main/java/iut/fauryollivier/snoozespot/api/generated"
 val generatedPackageName = "iut.fauryollivier.snoozespot.api.generated"
 
 
@@ -218,52 +219,60 @@ tasks.register("updateRetrofitModel") {
     mustRunAfter("openApiGenerateRoom")
     group = "openapi"
     doLast {
-        val retrofitDir = file("$srcDirPath/src/main/kotlin/iut/fauryollivier/snoozespot/api/generated/model")
+        val retrofitDir =
+            file("$srcDirPath/src/main/kotlin/iut/fauryollivier/snoozespot/api/generated/model")
         val roomDir = file("$srcDirPath/src/main/kotlin/org/openapitools/client/models/room")
 
-        retrofitDir.walkTopDown().filter { it.isFile && it.extension == "kt" }.forEach { retrofitFile ->
-            val className = retrofitFile.nameWithoutExtension
-            val classNameRoomModel = retrofitFile.nameWithoutExtension + "RoomModel"
-            val roomFile = File(roomDir, "$classNameRoomModel.kt")
+        retrofitDir.walkTopDown().filter { it.isFile && it.extension == "kt" }
+            .forEach { retrofitFile ->
+                val className = retrofitFile.nameWithoutExtension
+                val classNameRoomModel = retrofitFile.nameWithoutExtension + "RoomModel"
+                val roomFile = File(roomDir, "$classNameRoomModel.kt")
 
-            if(!roomFile.exists()) {
-                return@forEach
-            }
+                if (!roomFile.exists()) {
+                    return@forEach
+                }
 
-            val retrofitText = retrofitFile.readText()
+                val retrofitText = retrofitFile.readText()
 
-            if (!retrofitText.contains("ITransformForStorage<$className>")) {
+                if (!retrofitText.contains("ITransformForStorage<$className>")) {
 
-                // on parse le deuxieme file
+                    // on parse le deuxieme file
 
-                val packageLine = retrofitText.lines().firstOrNull { it.startsWith("package") } ?: ""
-                val importInjection = """
+                    val packageLine =
+                        retrofitText.lines().firstOrNull { it.startsWith("package") } ?: ""
+                    val importInjection = """
 
                 import org.openapitools.client.infrastructure.ITransformForStorage
                 import org.openapitools.client.models.room.${className}RoomModel""".trimIndent()
 
-                var textWithImport = retrofitText.replaceFirst(packageLine, "$packageLine\n$importInjection")
+                    var textWithImport =
+                        retrofitText.replaceFirst(packageLine, "$packageLine\n$importInjection")
 
-                val pattern = Regex("\\) : Serializable \\{")
-                var textWithInterface = textWithImport.replace(pattern, ") : Serializable, ITransformForStorage<$classNameRoomModel> {")
+                    val pattern = Regex("\\) : Serializable \\{")
+                    var textWithInterface = textWithImport.replace(
+                        pattern,
+                        ") : Serializable, ITransformForStorage<$classNameRoomModel> {"
+                    )
 
-                val toRoomModelRegex = Regex("override fun toRoomModel\\(\\): [^)]*\\)")
-                val companionObjectRegex = Regex("companion object \\{[^\\}]*\\}")
+                    val toRoomModelRegex = Regex("override fun toRoomModel\\(\\): [^)]*\\)")
+                    val companionObjectRegex = Regex("companion object \\{[^\\}]*\\}")
 
-                val toRoomModel = toRoomModelRegex.find(roomFile.readText())?.groupValues?.get(0)
-                if(toRoomModel == null) {
-                    println("no toRoomModel in $classNameRoomModel, skipping")
-                    return@forEach
+                    val toRoomModel =
+                        toRoomModelRegex.find(roomFile.readText())?.groupValues?.get(0)
+                    if (toRoomModel == null) {
+                        println("no toRoomModel in $classNameRoomModel, skipping")
+                        return@forEach
+                    }
+
+                    val finalText = textWithInterface.replace(companionObjectRegex) { it ->
+                        it.value.replace("}", "}\n$toRoomModel")
+                    }
+
+                    retrofitFile.writeText(finalText)
+                    println("updated class $className")
                 }
-
-                val finalText = textWithInterface.replace(companionObjectRegex) { it->
-                    it.value.replace("}", "}\n$toRoomModel")
-                }
-
-                retrofitFile.writeText(finalText)
-                println("updated class $className")
             }
-        }
     }
 }
 
@@ -271,23 +280,26 @@ tasks.register("updateRoomModel") {
     mustRunAfter("updateRetrofitModel")
     group = "openapi"
     doLast {
-        val roomModelDir = file("$srcDirPath/room/src/main/java/org/openapitools/client/models/room")
+        val roomModelDir =
+            file("$srcDirPath/room/src/main/java/org/openapitools/client/models/room")
 
-        roomModelDir.walkTopDown().filter { it.isFile && it.extension == "kt" }.forEach { roomModelFile ->
+        roomModelDir.walkTopDown().filter { it.isFile && it.extension == "kt" }
+            .forEach { roomModelFile ->
 
-            val roomModelText = roomModelFile.readText()
-            val line = roomModelText.lines().firstOrNull { it.startsWith("import iut.fauryollivier") }
-            if(line == null) {
-                println("no import found in ${roomModelFile.nameWithoutExtension}, skipping")
-                return@forEach
+                val roomModelText = roomModelFile.readText()
+                val line =
+                    roomModelText.lines().firstOrNull { it.startsWith("import iut.fauryollivier") }
+                if (line == null) {
+                    println("no import found in ${roomModelFile.nameWithoutExtension}, skipping")
+                    return@forEach
+                }
+
+                val finalText = roomModelText.replace(line, line.replace("room", "retrofit"))
+
+                roomModelFile.writeText(finalText)
+                println("room model ${roomModelFile.nameWithoutExtension} updated")
+
             }
-
-            val finalText = roomModelText.replace(line, line.replace("room", "retrofit"))
-
-            roomModelFile.writeText(finalText)
-            println("room model ${roomModelFile.nameWithoutExtension} updated")
-
-        }
 
     }
 }
@@ -298,21 +310,23 @@ tasks.register("initRoomLists") {
     doLast {
         val roomModelsDir = file("$srcDirPath/src/main/kotlin/org/openapitools/client/models/room")
 
-        roomModelsDir.walkTopDown().filter { it.isFile && it.extension == "kt" }.forEach { roomModelFile ->
-            var text = roomModelFile.readText()
+        roomModelsDir.walkTopDown().filter { it.isFile && it.extension == "kt" }
+            .forEach { roomModelFile ->
+                var text = roomModelFile.readText()
 
-            // Regex qui détecte : @Ignore lateinit var nom: List<Something>
-            val listLateinitRegex = Regex("@Ignore\\s+lateinit var (\\w+): kotlin\\.collections\\.List<[^>]+>")
+                // Regex qui détecte : @Ignore lateinit var nom: List<Something>
+                val listLateinitRegex =
+                    Regex("@Ignore\\s+lateinit var (\\w+): kotlin\\.collections\\.List<[^>]+>")
 
-            // Remplace par : var nom: List<Type> = emptyList()
-            text = listLateinitRegex.replace(text) { match ->
-                val propName = match.groupValues[1]
-                "@Ignore var $propName: ${match.value.substringAfter(": ")} = emptyList()"
+                // Remplace par : var nom: List<Type> = emptyList()
+                text = listLateinitRegex.replace(text) { match ->
+                    val propName = match.groupValues[1]
+                    "@Ignore var $propName: ${match.value.substringAfter(": ")} = emptyList()"
+                }
+
+                roomModelFile.writeText(text)
+                println("Initialisé les listes dans ${roomModelFile.name}")
             }
-
-            roomModelFile.writeText(text)
-            println("Initialisé les listes dans ${roomModelFile.name}")
-        }
     }
 }
 
@@ -328,21 +342,22 @@ tasks.register("cleanupAndMergeGenerated") {
         val targetBaseDir = "$srcDirPath/src/main/kotlin/org/openapitools/client/"
         val targetITransformFile = file("$targetBaseDir/infrastructure/ITransformForStorage.kt")
         val targetModelsDir = file("$targetBaseDir/models/room")
-        if(true) {
+        if (true) {
             val success = sourceITransformFile.renameTo(targetITransformFile)
             println(if (success) "Fichier ITransform déplacé" else "erreur du déplacement de ITransform")
         }
         targetModelsDir.mkdirs()
 
-        val files = sourceModelsDir.listFiles { file -> file.isFile && file.extension == "kt" } ?: arrayOf()
+        val files =
+            sourceModelsDir.listFiles { file -> file.isFile && file.extension == "kt" } ?: arrayOf()
 
-        files.forEach {  f->
+        files.forEach { f ->
             val targetFile = File(targetModelsDir, f.name)
             val success = f.renameTo(targetFile)
             println(if (success) "Fichier ${f.nameWithoutExtension} déplacé" else "erreur du déplacement de ${f.nameWithoutExtension}")
         }
 
-        if(true) {
+        if (true) {
             val success = file("$srcDirPath/room").deleteRecursively()
             println(if (success) "Dossier room supprimé" else "erreur de la suppression du dossier room")
         }
@@ -351,13 +366,21 @@ tasks.register("cleanupAndMergeGenerated") {
 }
 
 tasks.register("openApiGenerateAll") {
-    dependsOn("openApiGenerateRetrofit", "openApiGenerateRoom", "updateRetrofitModel", "updateRoomModel", "initRoomLists", "cleanupAndMergeGenerated")
+    dependsOn(
+        "openApiGenerateRetrofit",
+        "openApiGenerateRoom",
+        "updateRetrofitModel",
+        "updateRoomModel",
+        "initRoomLists",
+        "cleanupAndMergeGenerated"
+    )
     group = "openapi"
 }
 
 tasks.register("copyCertificate") {
     doLast {
-        val certificatePath = "${rootDir.absolutePath}/../api/build/exportedCertificateForAndroid.cer"
+        val certificatePath =
+            "${rootDir.absolutePath}/../api/build/exportedCertificateForAndroid.cer"
         val certificateFile = file(certificatePath)
         val targetDir = file("src/main/res/raw")
         val targetFile = File(targetDir, "auto_signed_api_certificate.cer")

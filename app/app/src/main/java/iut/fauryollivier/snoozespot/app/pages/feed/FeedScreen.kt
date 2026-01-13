@@ -45,7 +45,6 @@ import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestinatio
 import iut.fauryollivier.snoozespot.app.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
-import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -70,7 +69,10 @@ fun FeedScreen(
         vm.events.collect { event ->
             when (event) {
                 is UiEvent.ShowToast ->
-                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT).show() } }
+                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT)
+                        .show()
+            }
+        }
     }
 
     val state by vm.state.collectAsState()
@@ -90,7 +92,7 @@ fun FeedScreen(
 
     Box(modifier = modifier) {
 
-        if(state.error != null) {
+        if (state.error != null) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -109,10 +111,10 @@ fun FeedScreen(
                 onRefresh = { vm.refresh() },
                 modifier = Modifier.fillMaxSize()
             ) {
-                if(state.isLoading && state.posts.isEmpty())
+                if (state.isLoading && state.posts.isEmpty())
                     Loader()
                 else {
-                    LazyColumn (state = listState, modifier = Modifier.fillMaxSize()) {
+                    LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
                         items(state.posts) { post ->
                             FeedElement(
                                 navigator,

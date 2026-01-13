@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -59,6 +57,7 @@ data class NewSpotResult(
 fun NewSpotScreen(
     navigator: DestinationsNavigator,
     scaffoldController: ScaffoldController,
+    modifier: Modifier = Modifier,
     resultBackNavigator: ResultBackNavigator<NewSpotResult>
 ) {
     LaunchedEffect(true) {
@@ -75,9 +74,9 @@ fun NewSpotScreen(
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 
-    Box (modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
 
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
@@ -133,7 +132,9 @@ fun NewSpotScreen(
             },
             backgroundColor = primaryContainerLight,
             contentColor = primaryLight,
-            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 16.dp)
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 16.dp, bottom = 16.dp)
         ) {
             Icon(Icons.Filled.Check, stringResource(R.string.post))
         }

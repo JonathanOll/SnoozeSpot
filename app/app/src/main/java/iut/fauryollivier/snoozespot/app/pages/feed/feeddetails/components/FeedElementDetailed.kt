@@ -33,7 +33,7 @@ fun FeedElementDetailed(
     onDelete: (post: PostDTO) -> Unit = {},
     onCommentDelete: (post: PostCommentDTO) -> Unit = {},
 ) {
-    LazyColumn (modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    LazyColumn(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         item {
             FeedElement(
                 navigator,
@@ -44,7 +44,7 @@ fun FeedElementDetailed(
             Box(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).height(2.dp).border(1.dp, Color(0xFFDDDDDD)))
         }
 
-        items(postDTO.comments) { comment->
+        items(postDTO.comments) { comment ->
             FeedElement(
                 navigator,
                 comment,

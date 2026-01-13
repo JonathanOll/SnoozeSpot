@@ -84,21 +84,22 @@ fun BottomBar(navController: NavHostController) {
                 for (index in icons.indices) {
                     if (index != 0) Spacer(modifier = Modifier.weight(1f))
 
-                    Box(modifier = Modifier
-                        .fillMaxHeight()
-                        .clickable (
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) {
-                            navController.navigate(destinations[index].route) {
-                                launchSingleTop = true
-                                restoreState = true
-                                popUpTo(navController.graph.startDestinationId) {
-                                    saveState = true
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) {
+                                navController.navigate(destinations[index].route) {
+                                    launchSingleTop = true
+                                    restoreState = true
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
                                 }
                             }
-                        }
-                        .size(64.dp)) {
+                            .size(64.dp)) {
 
                         androidx.compose.animation.AnimatedVisibility(
                             visible = currentDestination.value?.route == destinations[index].route,
@@ -117,7 +118,7 @@ fun BottomBar(navController: NavHostController) {
                             (if (currentDestination.value?.route == destinations[index].route)
                                 invertedIcons
                             else
-                                icons) [index],
+                                icons)[index],
                             contentDescription = stringResource(R.string.icon_n, index),
                             modifier = Modifier
                                 .size(32.dp)

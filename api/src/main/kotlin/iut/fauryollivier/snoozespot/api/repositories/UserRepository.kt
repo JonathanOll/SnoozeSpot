@@ -81,7 +81,7 @@ class UserRepository : RepositoryBase() {
                 .map { it[Tables.Users.id] }
                 .firstOrNull()
         }
-        if(id?.value == null) {
+        if (id?.value == null) {
             return Result.failure(Exception("User not found"))
         }
         return Result.success(id.value)
@@ -96,7 +96,7 @@ class UserRepository : RepositoryBase() {
                 .map { it[Tables.Users.password] }
                 .firstOrNull()
         }
-        if(password == null) {
+        if (password == null) {
             return Result.failure(Exception("User not found"))
         }
         return Result.success(password)
@@ -111,17 +111,17 @@ class UserRepository : RepositoryBase() {
         return Result.success(res)
     }
 
-    fun getById(id: Int, loadRelations: Boolean = false) : Result<User> {
+    fun getById(id: Int, loadRelations: Boolean = false): Result<User> {
         val user = transaction {
             Tables.Users.select { Tables.Users.id eq id }.map {
                 it.toEntity(loadRelations = loadRelations)
             }
         }.firstOrNull()
-        if(user == null) return Result.failure(Exception("User not found"))
+        if (user == null) return Result.failure(Exception("User not found"))
         return Result.success(user)
     }
 
-    fun getByUsername(username: String) : Result<User> {
+    fun getByUsername(username: String): Result<User> {
         val id = transaction {
             Tables.Users
                 .select { Tables.Users.username eq username }
@@ -129,7 +129,7 @@ class UserRepository : RepositoryBase() {
                 .map { it[Tables.Users.id] }
                 .firstOrNull()
         }
-        if(id == null) return Result.failure(Exception("User not found"))
+        if (id == null) return Result.failure(Exception("User not found"))
         return getById(id.value)
     }
 

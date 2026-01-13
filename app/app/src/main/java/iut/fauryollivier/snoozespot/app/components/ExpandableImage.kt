@@ -52,10 +52,12 @@ fun ExpandableImageWithDownload(
             modifier = Modifier
                 .padding(16.dp)
                 .size(48.dp)
-                .clickable { scope.launch {
-                    saveImageToGallery(context, imageUri)
-                    Toast.makeText(context, downloadedText, Toast.LENGTH_SHORT).show()
-                } },
+                .clickable {
+                    scope.launch {
+                        saveImageToGallery(context, imageUri)
+                        Toast.makeText(context, downloadedText, Toast.LENGTH_SHORT).show()
+                    }
+                },
             contentAlignment = Alignment.Center,
         ) {
             Icon(Icons.Filled.Download, contentDescription = "Download", tint = Color.White)

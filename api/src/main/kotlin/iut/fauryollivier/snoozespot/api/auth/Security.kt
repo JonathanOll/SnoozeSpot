@@ -26,7 +26,7 @@ fun Application.configureSecurity() {
         jwt("jwtAuth") {
             verifier(jwtService.verifier())
             validate { credential ->
-                val sub = credential.payload.subject ?: return@validate null
+                credential.payload.subject ?: return@validate null
                 JWTPrincipal(credential.payload)
             }
             challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized, "Invalid or missing token") }
@@ -49,7 +49,7 @@ fun ApplicationCall.currentUserId(): Result<Int> {
         return Result.failure(Exception("Invalid token"))
     }
     val userRepository by inject<UserRepository>()
-    val idResult = userRepository.getUserIdByUUID(uuid);
+    val idResult = userRepository.getUserIdByUUID(uuid)
     if (idResult.isFailure) return Result.failure(Exception("Unauthorized"))
     return Result.success(idResult.getOrThrow())
 }

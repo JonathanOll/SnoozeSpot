@@ -43,7 +43,7 @@ fun SplashScreen(
 ) {
 
     LaunchedEffect(true) {
-        scaffoldController.topBar.value = {  }
+        scaffoldController.topBar.value = { }
         scaffoldController.showBottomBar.value = false
     }
 
@@ -86,16 +86,21 @@ fun SplashScreen(
             iterations = LottieConstants.IterateForever,
             restartOnPlay = true,
             modifier = Modifier
-                        .fillMaxWidth(1f)
-                        .scale(scale)
+                .fillMaxWidth(1f)
+                .scale(scale)
         )
 
         if (BuildConfig.FLAVOR.contains("dev") || BuildConfig.FLAVOR.contains("beta"))
-            Text(BuildConfig.VERSION_NAME, modifier = Modifier.align(Alignment.BottomEnd).padding(8.dp))
+            Text(
+                BuildConfig.VERSION_NAME,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(8.dp)
+            )
     }
 
     LaunchedEffect(loaded) {
-        if(loaded)
+        if (loaded)
             navigator.navigate(FeedScreenDestination)
     }
 }

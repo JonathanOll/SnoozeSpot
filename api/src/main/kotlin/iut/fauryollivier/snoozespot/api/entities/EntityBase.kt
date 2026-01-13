@@ -4,5 +4,5 @@ import iut.fauryollivier.snoozespot.api.dtos.DTOBase
 
 abstract class EntityBase {
 
-    abstract fun toDTO() : DTOBase
+    abstract fun toDTO(): DTOBase
 }

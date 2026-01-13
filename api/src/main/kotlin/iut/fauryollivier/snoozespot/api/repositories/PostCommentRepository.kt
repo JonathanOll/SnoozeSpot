@@ -41,11 +41,11 @@ class PostCommentRepository(private val userRepository: UserRepository) : Reposi
 
     fun getById(id: Int): Result<PostComment> {
         val postComment = transaction {
-            Tables.PostComments.select { Tables.PostComments.id eq id }.selectVisible().map { it ->
+            Tables.PostComments.select { Tables.PostComments.id eq id }.selectVisible().map {
                 it.toEntity(true)
             }.firstOrNull()
         }
-        if(postComment == null) return Result.failure(Exception("Post not found"))
+        if (postComment == null) return Result.failure(Exception("Post not found"))
         return Result.success(postComment)
     }
 
