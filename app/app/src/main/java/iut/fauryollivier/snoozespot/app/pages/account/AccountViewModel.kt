@@ -17,10 +17,10 @@ class AccountViewModel: ViewModel() {
     private val _events = MutableSharedFlow<UiEvent>()
     val events = _events.asSharedFlow()
 
-    fun logout(context: Context) {
+    fun logout(localStorage: LocalStorage) {
         viewModelScope.launch {
-            LocalStorage(context).saveAuthToken(null)
-            LocalStorage(context).saveUser(null)
+            localStorage.saveAuthToken(null)
+            localStorage.saveUser(null)
             // TODO envoyer une requête à l'api pour invalider le token
         }
     }

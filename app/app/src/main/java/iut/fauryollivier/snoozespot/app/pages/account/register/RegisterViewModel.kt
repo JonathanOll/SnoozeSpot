@@ -1,50 +1,55 @@
-package iut.fauryollivier.snoozespot.app.pages.account.login
+package iut.fauryollivier.snoozespot.app.pages.account.register
 
-import android.content.Context
-import android.widget.Toast
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.UserAuthRequest
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
+import iut.fauryollivier.snoozespot.utils.UiEvent
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegisterViewModel : ViewModel() {
 
-    var email by mutableStateOf("")
-        private set
-    var username by mutableStateOf("")
-        private set
-    var password by mutableStateOf("")
-        private set
+    private val _events = MutableSharedFlow<UiEvent>()
+    val events = _events.asSharedFlow()
+
+    private val _email = MutableStateFlow("")
+    var email = _email.asStateFlow()
+
+    private val _username = MutableStateFlow("")
+    var username = _username.asStateFlow()
+
+    private val _password = MutableStateFlow("")
+    var password = _password.asStateFlow()
 
     fun onEmailChanged(new: String) {
-        email = new
+        _email.update { new }
     }
 
     fun onUsernameChanged(new: String) {
-        username = new
+        _username.update { new }
     }
 
     fun onPasswordChanged(new: String) {
-        password = new
+        _password.update { new }
     }
 
-    fun register(context: Context, navigator: DestinationsNavigator) {
+    fun register(localStorage: LocalStorage, navigateUp: () -> Unit) {
         viewModelScope.launch {
-            val response = NetworkDataSource.api.authSignupPost(UserAuthRequest(username, password))
-            if (response.isSuccessful) {
+            val response = NetworkDataSource.api.authSignupPost(UserAuthRequest(_username.value, _password.value, _email.value))
+            if (response.isSuccessful && response.body() != null) {
                 val data = response.body()!!
-                LocalStorage(context).saveAuthToken(data.accessToken)
-                LocalStorage(context).saveUser(data.user)
-                navigator.navigateUp()
+                localStorage.saveAuthToken(data.accessToken)
+                localStorage.saveUser(data.user)
+                navigateUp()
             } else {
-                Toast.makeText(context, context.getString(R.string.couldNotLogin), Toast.LENGTH_LONG).show()
+                _events.emit(UiEvent.ShowToast(R.string.could_not_register))
             }
         }
     }
