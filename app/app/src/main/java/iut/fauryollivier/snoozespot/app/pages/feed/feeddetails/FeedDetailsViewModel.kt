@@ -2,17 +2,24 @@ package iut.fauryollivier.snoozespot.app.pages.feed.feeddetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
+import iut.fauryollivier.snoozespot.utils.UiEvent
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FeedDetailsViewModel : ViewModel() {
+
+    private val _events = MutableSharedFlow<UiEvent>()
+    val events = _events.asSharedFlow()
 
     private val postDTOState: MutableStateFlow<PostDTO?> = MutableStateFlow(null)
     val postDTO: StateFlow<PostDTO?> = postDTOState.asStateFlow()
@@ -41,7 +48,7 @@ class FeedDetailsViewModel : ViewModel() {
                     )
                 }
             } else {
-                // TODO: afficher un toast d'erreur
+                _events.emit(UiEvent.ShowToast(R.string.failed_to_like_post))
             }
         }
     }
@@ -50,7 +57,7 @@ class FeedDetailsViewModel : ViewModel() {
         viewModelScope.launch {
             val result = PostsRepository.createPostComment(postDTOState.value!!.id, data.content)
             if (!result.isSuccessful) {
-                // TODO: afficher un toast d'erreur
+                _events.emit(UiEvent.ShowToast(R.string.failed_to_comment_post))
             }
         }
     }

@@ -45,4 +45,11 @@
     <string name="no_review">Aucun avis</string>
     <string name="save_offline">Sauvegarder hors ligne</string>
     <string name="image_downloaded">Image téléchargée</string>
+    <string name="failed_to_create_post">Erreur lors de la création du post</string>
+    <string name="failed_to_like_post">Impossible d\'aimer le post</string>
+    <string name="failed_to_comment_post">Impossible de commenter le post</string>
+    <string name="failed_to_change_profile_pic">Impossible de modifier la photo de profil</string>
+    <string name="failed_to_fetch_data">Impossible de charger les données</string>
+    <string name="failed_to_comment">Impossible d\'ajouter un commentaire</string>
+    <string name="failed_to_create_spot">Impossible de créer le spot</string>
 </resources>

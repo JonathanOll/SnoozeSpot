@@ -45,4 +45,11 @@
     <string name="no_review">No review</string>
     <string name="save_offline">Save offline</string>
     <string name="image_downloaded">Image downloaded</string>
+    <string name="failed_to_create_post">Failed to create post</string>
+    <string name="failed_to_like_post">Failed to like post</string>
+    <string name="failed_to_comment_post">Failed to comment post</string>
+    <string name="failed_to_change_profile_pic">Failed to change profile pic</string>
+    <string name="failed_to_fetch_data">Failed to fetch data</string>
+    <string name="failed_to_comment">Failed to comment</string>
+    <string name="failed_to_create_spot">Failed to create spot</string>
 </resources>

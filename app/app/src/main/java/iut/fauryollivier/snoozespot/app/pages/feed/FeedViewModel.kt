@@ -4,18 +4,25 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
+import iut.fauryollivier.snoozespot.utils.UiEvent
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FeedViewModel : ViewModel() {
+
+    private val _events = MutableSharedFlow<UiEvent>()
+    val events = _events.asSharedFlow()
 
     data class ScreenState(
         val posts: List<PostDTO> = emptyList(),
@@ -112,9 +119,11 @@ class FeedViewModel : ViewModel() {
                 val response = PostsRepository.createPost(context, data.content, data.uris)
                 if(response.isSuccessful) {
                     navigator.navigate(FeedDetailsScreenDestination(response.body()?.id!!))
+                } else {
+                    _events.emit(UiEvent.ShowToast(R.string.failed_to_create_post))
                 }
             } catch(e: Exception) {
-                // TODO: afficher un toast d'erreur
+                _events.emit(UiEvent.ShowToast(R.string.failed_to_create_post))
             }
         }
     }
@@ -134,7 +143,7 @@ class FeedViewModel : ViewModel() {
                     )
                 }
             } else {
-                // TODO: afficher un toast d'erreur
+                _events.emit(UiEvent.ShowToast(R.string.failed_to_like_post))
             }
         }
     }

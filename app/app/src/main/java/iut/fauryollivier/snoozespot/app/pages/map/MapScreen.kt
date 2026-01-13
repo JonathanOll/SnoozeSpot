@@ -1,7 +1,9 @@
 package iut.fauryollivier.snoozespot.app.pages.map
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,6 +51,7 @@ import iut.fauryollivier.snoozespot.app.destinations.OfflineSpotListScreenDestin
 import iut.fauryollivier.snoozespot.app.destinations.SpotDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.app.pages.map.newspot.NewSpotResult
+import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 
@@ -86,7 +89,14 @@ fun MapScreen(
         scaffoldController.showBottomBar.value = true
     }
 
-    val context = LocalContext.current
+    val context: Context = LocalContext.current
+
+    LaunchedEffect(true) {
+        vm.events.collect { event ->
+            when (event) {
+                is UiEvent.ShowToast ->
+                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT).show() } }
+    }
 
     val state by vm.screenState.collectAsState()
 

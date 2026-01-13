@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot.app.pages.feed.feeddetails
+package iut.fauryollivier.snoozespot.app.pages.feed.accountdetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

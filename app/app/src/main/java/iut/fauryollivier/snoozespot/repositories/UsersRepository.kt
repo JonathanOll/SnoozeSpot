@@ -1,14 +1,9 @@
 package iut.fauryollivier.snoozespot.repositories
 
 import android.content.Context
-import android.net.Uri
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
-import iut.fauryollivier.snoozespot.api.generated.model.CreatePostRequest
-import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.api.generated.model.UserDTO
 import iut.fauryollivier.snoozespot.utils.buildFilePart
-import iut.fauryollivier.snoozespot.utils.buildFileParts
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import java.util.UUID
@@ -17,17 +12,11 @@ object UsersRepository {
 
     suspend fun getUser(i: UUID): Response<UserDTO> {
         try {
-            val post = NetworkDataSource.api.usersUuidGet(i.toString())
-            return Response.success(post.body())
-        } catch(e: Exception) {
-            return Response.error(500, ResponseBody.EMPTY)
-        }
-    }
-
-    suspend fun getUsers(): Response<List<UserDTO>> {
-        try {
-            val posts = NetworkDataSource.api.usersGet()
-            return Response.success(posts.body())
+            val user = NetworkDataSource.api.usersUuidGet(i.toString())
+            if (user.isSuccessful)
+                return Response.success(user.body())
+            else
+                return Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
         }
@@ -38,7 +27,10 @@ object UsersRepository {
             val result = NetworkDataSource.api.changeProfilePic(
                 file = buildFilePart(context, uri)
             )
-            return Response.success(Unit)
+            if (result.isSuccessful)
+                return Response.success(Unit)
+            else
+                return Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
         }

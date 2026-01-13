@@ -1,6 +1,7 @@
 package iut.fauryollivier.snoozespot.app.pages.account
 
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -42,6 +43,7 @@ import iut.fauryollivier.snoozespot.app.components.HorizontalLine
 import iut.fauryollivier.snoozespot.app.destinations.LoginScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.account.components.UserProfileCard
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
+import iut.fauryollivier.snoozespot.utils.UiEvent
 
 @Destination
 @Composable
@@ -57,6 +59,13 @@ fun AccountScreen(
     }
 
     val context = LocalContext.current
+
+    LaunchedEffect(true) {
+        vm.events.collect { event ->
+            when (event) {
+                is UiEvent.ShowToast ->
+                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT).show() } }
+    }
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         if (uri != null)
