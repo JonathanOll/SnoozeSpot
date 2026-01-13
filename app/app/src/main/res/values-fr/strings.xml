@@ -23,9 +23,9 @@
     <string name="username">Nom d\'utilisateur</string>
     <string name="password">Mot de passe</string>
     <string name="login">Connexion</string>
-    <string name="couldNotLogin">Connexion impossible</string>
+    <string name="could_not_login">Connexion impossible</string>
     <string name="logout">Déconnexion</string>
-    <string name="registerInstead">Pas de compte ? Inscrivez vous</string>
+    <string name="register_instead">Pas de compte ? Inscrivez vous</string>
     <string name="register">S\'inscrire</string>
     <string name="loginInstead">Déjà un compte ? Connectez vous</string>
     <string name="email">Adresse mail</string>
@@ -52,4 +52,5 @@
     <string name="failed_to_fetch_data">Impossible de charger les données</string>
     <string name="failed_to_comment">Impossible d\'ajouter un commentaire</string>
     <string name="failed_to_create_spot">Impossible de créer le spot</string>
+    <string name="could_not_register">Inscription impossible</string>
 </resources>

@@ -69,7 +69,7 @@ fun AccountScreen(
 
     AnonymousOnly {
         Column (
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -88,7 +88,10 @@ fun AccountScreen(
 
     AuthOnly {
         if (user != null)
-            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+            Column(
+                modifier = modifier.verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 UserProfileCard(
                     user!!
                 ) {
@@ -97,7 +100,7 @@ fun AccountScreen(
                     )
                 }
                 HorizontalLine()
-                Button(onClick = {vm.logout(context)}) {
+                Button(onClick = { vm.logout(LocalStorage(context)) }) {
                     Text(stringResource(R.string.logout), color = Color.White)
                 }
             }

@@ -23,9 +23,9 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="couldNotLogin">Could not log in</string>
+    <string name="could_not_login">Could not log in</string>
     <string name="logout">Logout</string>
-    <string name="registerInstead">No account? Register instead</string>
+    <string name="register_instead">No account? Register instead</string>
     <string name="register">Register</string>
     <string name="loginInstead">Already got an account? Login instead</string>
     <string name="email">Email address</string>
@@ -52,4 +52,5 @@
     <string name="failed_to_fetch_data">Failed to fetch data</string>
     <string name="failed_to_comment">Failed to comment</string>
     <string name="failed_to_create_spot">Failed to create spot</string>
+    <string name="could_not_register">Could not register</string>
 </resources>
