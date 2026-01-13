@@ -7,9 +7,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.repositories.SpotsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import iut.fauryollivier.snoozespot.app.pages.map.newspot.NewSpotResult
+import iut.fauryollivier.snoozespot.repositories.SpotsRepository
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,7 +61,7 @@ class MapViewModel : ViewModel() {
                 data.uris
             )
 
-            if(!result.isSuccessful)
+            if (!result.isSuccessful)
                 _events.emit(UiEvent.ShowToast(R.string.failed_to_create_spot))
         }
     }

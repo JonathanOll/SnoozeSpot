@@ -27,15 +27,17 @@ fun SpotComment(
     navigator: DestinationsNavigator,
     comment: SpotCommentDTO
 ) {
-    Column (modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier.padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Row (
+            Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable {  navigator.navigate(
-                    iut.fauryollivier.snoozespot.app.destinations.AccountDetailsScreenDestination(
-                        comment.user.uuid
+                modifier = Modifier.clickable {
+                    navigator.navigate(
+                        iut.fauryollivier.snoozespot.app.destinations.AccountDetailsScreenDestination(
+                            comment.user.uuid
+                        )
                     )
-                ) }
+                }
             ) {
                 Image(
                     painterResource(R.drawable.lobster),
