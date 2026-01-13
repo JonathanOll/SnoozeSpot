@@ -13,62 +13,65 @@ import retrofit2.Response
 object PostsRepository {
 
     suspend fun getPost(i: Int): Response<PostDTO> {
-        try {
+        return try {
             val post = NetworkDataSource.api.postsIdGet(i)
             if (post.isSuccessful)
-                return Response.success(post.body())
+                Response.success(post.body())
             else
-                return Response.error(500, ResponseBody.EMPTY)
+                Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
-            return Response.error(500, ResponseBody.EMPTY)
+            Response.error(500, ResponseBody.EMPTY)
         }
     }
 
     suspend fun getPosts(page: Int = 0): Response<List<PostDTO>> {
-        try {
+        return try {
             val posts = NetworkDataSource.api.postsGet(page)
-            return Response.success(posts.body())
+            if (posts.isSuccessful)
+                Response.success(posts.body())
+            else
+                Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
-            return Response.error(500, ResponseBody.EMPTY)
+            Response.error(500, ResponseBody.EMPTY)
         }
     }
 
     suspend fun createPost(context: Context, content: String, files: List<String>): Response<PostDTO> {
-        try {
+        return try {
             val post = NetworkDataSource.api.createPost(
                 content.toRequestBody(),
                 buildFileParts(context, files)
             )
             if (post.isSuccessful)
-                return Response.success(post.body())
+                Response.success(post.body())
             else
-                return Response.error(500, ResponseBody.EMPTY)
+                Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
-            return Response.error(500, ResponseBody.EMPTY)
+            Response.error(500, ResponseBody.EMPTY)
         }
     }
 
     suspend fun likePost(postId: Int): Response<Boolean> {
-        try {
+        return try {
             val result = NetworkDataSource.api.postsIdLikePost(postId)
             if (result.isSuccessful)
-                return Response.success(result.body())
+                Response.success(result.body())
             else
-                return Response.error(500, ResponseBody.EMPTY)
+                Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
-            return Response.error(500, ResponseBody.EMPTY)
+            Response.error(500, ResponseBody.EMPTY)
         }
     }
 
     suspend fun createPostComment(postId: Int, content: String): Response<PostCommentDTO> {
-        try {
+        return try {
             val result = NetworkDataSource.api.postsIdCommentPost(postId, CreatePostCommentRequest(content))
             if (result.isSuccessful)
-                return Response.success(result.body())
+                Response.success(result.body())
             else
-                return Response.error(500, ResponseBody.EMPTY)
+                Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
-            return Response.error(500, ResponseBody.EMPTY)
+            Response.error(500, ResponseBody.EMPTY)
         }
     }
 
