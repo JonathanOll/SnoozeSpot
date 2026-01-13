@@ -6,6 +6,10 @@ https://github.com/Cortard/SnoozeSpot/pulls?q=is%3Apr+is%3Aclosed
 
 ---
 
+Note : Each part of this project have a README.md at his root
+
+---
+
 # ⚙️ Api Setup Guide (`/api`)
 
 This guide explains how to run the mobile api located in the `api` subdirectory of the repository.  
