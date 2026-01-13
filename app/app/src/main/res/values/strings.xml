@@ -57,4 +57,5 @@
     <string name="delete">Delete</string>
     <string name="failed_to_delete_post">Failed to delete post</string>
     <string name="failed_to_delete_comment">Failed to delete comment</string>
+    <string name="logged_out">Logged out</string>
 </resources>

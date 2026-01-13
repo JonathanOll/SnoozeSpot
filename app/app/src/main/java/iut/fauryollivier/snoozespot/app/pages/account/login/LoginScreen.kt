@@ -23,7 +23,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.ScaffoldController
-import iut.fauryollivier.snoozespot.app.destinations.RegisterScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.RegisterScreenDestination
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.utils.UiEvent
 

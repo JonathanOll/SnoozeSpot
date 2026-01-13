@@ -33,7 +33,7 @@ import iut.fauryollivier.snoozespot.app.components.AnonymousOnly
 import iut.fauryollivier.snoozespot.app.components.AuthOnly
 import iut.fauryollivier.snoozespot.app.components.DefaultTopBar
 import iut.fauryollivier.snoozespot.app.components.HorizontalLine
-import iut.fauryollivier.snoozespot.app.destinations.LoginScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.LoginScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.account.components.UserProfileCard
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.utils.UiEvent

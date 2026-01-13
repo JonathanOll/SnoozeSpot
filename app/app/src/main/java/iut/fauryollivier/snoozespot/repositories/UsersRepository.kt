@@ -67,4 +67,16 @@ object UsersRepository {
         }
     }
 
+    suspend fun getMe(): Response<UserDTO> {
+        return try {
+            val result = NetworkDataSource.api.usersMeGet()
+            if (result.isSuccessful)
+                Response.success(result.body())
+            else
+                Response.error(500, ResponseBody.EMPTY)
+        } catch(e: Exception) {
+            Response.error(500, ResponseBody.EMPTY)
+        }
+    }
+
 }

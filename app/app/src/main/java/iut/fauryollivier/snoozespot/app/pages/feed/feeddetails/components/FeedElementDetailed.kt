@@ -21,7 +21,7 @@ import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.components.AnonymousOnly
 import iut.fauryollivier.snoozespot.app.components.AuthOnly
-import iut.fauryollivier.snoozespot.app.destinations.NewPostScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
 
 @Composable
