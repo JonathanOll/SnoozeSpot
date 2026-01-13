@@ -38,10 +38,10 @@ import androidx.navigation.NavHostController
 import com.example.compose.SnoozeSpotTheme
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.app.destinations.AccountScreenDestination
-import iut.fauryollivier.snoozespot.app.destinations.FeedScreenDestination
-import iut.fauryollivier.snoozespot.app.destinations.FriendsScreenDestination
-import iut.fauryollivier.snoozespot.app.destinations.MapScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.AccountScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.FeedScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.FriendsScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.MapScreenDestination
 
 @Composable
 fun BottomBar(navController: NavHostController) {

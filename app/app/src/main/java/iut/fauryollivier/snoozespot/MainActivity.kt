@@ -17,10 +17,10 @@ import com.example.compose.SnoozeSpotTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.dependency
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
-import iut.fauryollivier.snoozespot.app.NavGraphs
 import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.BottomBar
 import iut.fauryollivier.snoozespot.app.components.TopBar
+import iut.fauryollivier.snoozespot.app.pages.NavGraphs
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.room.DatabaseBuilder
 

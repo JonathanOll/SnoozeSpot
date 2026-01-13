@@ -22,8 +22,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.app.components.StarRating
-import iut.fauryollivier.snoozespot.app.destinations.SpotDetailsScreenDestination
-import iut.fauryollivier.snoozespot.app.destinations.SpotDetailsScreenDestination.invoke
+import iut.fauryollivier.snoozespot.app.pages.destinations.SpotDetailsScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.SpotDetailsScreenDestination.invoke
 import iut.fauryollivier.snoozespot.utils.UiEvent
 
 @Composable

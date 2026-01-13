@@ -1,5 +1,6 @@
-package iut.fauryollivier.snoozespot.app.components.splashscreen
+package iut.fauryollivier.snoozespot.app.pages.splashscreen
 
+import android.content.Context
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,7 +33,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.BuildConfig
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.ScaffoldController
-import iut.fauryollivier.snoozespot.app.destinations.FeedScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.FeedScreenDestination
+import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import kotlinx.coroutines.delay
 
 @Destination(start = true)
@@ -41,11 +44,12 @@ fun SplashScreen(
     scaffoldController: ScaffoldController,
     vm: SplashScreenViewModel = viewModel()
 ) {
-
     LaunchedEffect(true) {
         scaffoldController.topBar.value = {  }
         scaffoldController.showBottomBar.value = false
     }
+
+    val context: Context = LocalContext.current
 
     val anim by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.splash_screen))
     val loaded by vm.loaded.collectAsState()
@@ -59,7 +63,7 @@ fun SplashScreen(
     )
 
     LaunchedEffect(true) {
-        vm.load()
+        vm.load(LocalStorage(context))
         delay(100)
         startAnimation = true
     }

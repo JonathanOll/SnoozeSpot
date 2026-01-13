@@ -34,9 +34,9 @@ import com.ramcosta.composedestinations.result.ResultRecipient
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.PlusTopBar
-import iut.fauryollivier.snoozespot.app.destinations.NewSpotScreenDestination
-import iut.fauryollivier.snoozespot.app.destinations.OfflineSpotListScreenDestination
-import iut.fauryollivier.snoozespot.app.destinations.SpotDetailsScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.NewSpotScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.OfflineSpotListScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.SpotDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.map.newspot.NewSpotResult
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.FlowPreview

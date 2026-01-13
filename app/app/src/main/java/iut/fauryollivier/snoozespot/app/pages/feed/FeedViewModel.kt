@@ -7,7 +7,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
-import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import iut.fauryollivier.snoozespot.utils.UiEvent

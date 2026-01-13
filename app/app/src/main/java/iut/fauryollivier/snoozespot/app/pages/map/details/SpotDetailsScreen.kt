@@ -57,7 +57,7 @@ import iut.fauryollivier.snoozespot.app.components.ExpandableImageWithDownload
 import iut.fauryollivier.snoozespot.app.components.HorizontalLine
 import iut.fauryollivier.snoozespot.app.components.StarRating
 import iut.fauryollivier.snoozespot.app.components.TransparentBackTopBar
-import iut.fauryollivier.snoozespot.app.destinations.NewPostScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.app.pages.map.details.components.SpotComment
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
