@@ -1,7 +1,9 @@
-package iut.fauryollivier.snoozespot.app.pages.feed.feeddetails
+package iut.fauryollivier.snoozespot.app.pages.feed.accountdetails
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,21 +11,27 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.app.components.HorizontalLine
 import iut.fauryollivier.snoozespot.app.pages.account.components.UserProfileCard
-import iut.fauryollivier.snoozespot.app.pages.feed.accountdetails.AccountDetailsViewModel
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import java.util.UUID
 
 @Destination
 @Composable
-fun AccountDetailsScreen(navigator: DestinationsNavigator, userId: UUID, scaffoldController: ScaffoldController, vm: AccountDetailsViewModel = viewModel()){
+fun AccountDetailsScreen(
+    navigator: DestinationsNavigator,
+    userId: UUID,
+    scaffoldController: ScaffoldController,
+    vm: AccountDetailsViewModel = viewModel()
+){
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { BackTopBar(navigator) }
         scaffoldController.showBottomBar.value = false
@@ -41,17 +49,20 @@ fun AccountDetailsScreen(navigator: DestinationsNavigator, userId: UUID, scaffol
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(stringResource(errorMessage!!.stringId))
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(stringResource(errorMessage!!.stringId))
+
+                Button(onClick = { vm.fetchUser(userId) }) {
+                    Text(stringResource(R.string.refresh), color = Color.White)
+                }
+            }
         }
     } else {
         account?.let {
             UserProfileCard(account!!)
-
             HorizontalLine()
         }
     }
-
-
 
     /*
     val postDTO: PostDTO? by vm.postDTO.collectAsState()

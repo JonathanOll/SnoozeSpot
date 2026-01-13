@@ -53,4 +53,5 @@
     <string name="failed_to_comment">Impossible d\'ajouter un commentaire</string>
     <string name="failed_to_create_spot">Impossible de créer le spot</string>
     <string name="could_not_register">Inscription impossible</string>
+    <string name="refresh">Refresh</string>
 </resources>

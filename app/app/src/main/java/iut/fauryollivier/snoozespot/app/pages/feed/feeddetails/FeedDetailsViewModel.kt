@@ -21,18 +21,21 @@ class FeedDetailsViewModel : ViewModel() {
     private val _events = MutableSharedFlow<UiEvent>()
     val events = _events.asSharedFlow()
 
-    private val postDTOState: MutableStateFlow<PostDTO?> = MutableStateFlow(null)
-    val postDTO: StateFlow<PostDTO?> = postDTOState.asStateFlow()
-    private var errorMessageState = MutableStateFlow<ErrorMessage?>(null)
-    var errorMessage: StateFlow<ErrorMessage?> = errorMessageState.asStateFlow()
+    private val _state: MutableStateFlow<PostDTO?> = MutableStateFlow(null)
+    val state: StateFlow<PostDTO?> = _state.asStateFlow()
+
+    private var _errorMessage = MutableStateFlow<ErrorMessage?>(null)
+    var errorMessage: StateFlow<ErrorMessage?> = _errorMessage.asStateFlow()
 
     fun fetchPost(id: Int) {
+        _errorMessage.update { null }
+
         viewModelScope.launch {
             val post = PostsRepository.getPost(id)
             if(post.isSuccessful && post.body() != null)
-                postDTOState.value = post.body()!!
+                _state.value = post.body()!!
             else
-                errorMessageState.value = ErrorMessage.COULD_NOT_FETCH_ERROR
+                _errorMessage.value = ErrorMessage.COULD_NOT_FETCH_ERROR
         }
     }
 
@@ -41,7 +44,7 @@ class FeedDetailsViewModel : ViewModel() {
             val result = PostsRepository.likePost(id)
             if (result.isSuccessful) {
                 val liked = result.body()!!
-                postDTOState.update { current ->
+                _state.update { current ->
                     current?.copy(
                         likedByUser = liked,
                         likeCount = current.likeCount + (if (liked) 1 else -1)
@@ -54,8 +57,10 @@ class FeedDetailsViewModel : ViewModel() {
     }
 
     fun sendPostComment(data: NewPostResult) {
+        state.value ?: return
+
         viewModelScope.launch {
-            val result = PostsRepository.createPostComment(postDTOState.value!!.id, data.content)
+            val result = PostsRepository.createPostComment(_state.value!!.id, data.content)
             if (!result.isSuccessful) {
                 _events.emit(UiEvent.ShowToast(R.string.failed_to_comment_post))
             }

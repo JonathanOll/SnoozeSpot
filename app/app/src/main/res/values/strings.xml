@@ -53,4 +53,5 @@
     <string name="failed_to_comment">Failed to comment</string>
     <string name="failed_to_create_spot">Failed to create spot</string>
     <string name="could_not_register">Could not register</string>
+    <string name="refresh">Refresh</string>
 </resources>
