@@ -1,10 +1,8 @@
 package iut.fauryollivier.snoozespot.repositories
 
 import android.content.Context
-import android.util.Log
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.CreatePostCommentRequest
-import iut.fauryollivier.snoozespot.api.generated.model.CreatePostRequest
 import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.utils.buildFileParts

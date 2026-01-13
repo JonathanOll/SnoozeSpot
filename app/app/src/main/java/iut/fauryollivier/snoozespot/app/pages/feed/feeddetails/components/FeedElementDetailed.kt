@@ -1,7 +1,6 @@
 package iut.fauryollivier.snoozespot.app.pages.feed.feeddetails.components
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,15 +16,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.result.NavResult
-import com.ramcosta.composedestinations.result.ResultRecipient
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.components.AnonymousOnly
 import iut.fauryollivier.snoozespot.app.components.AuthOnly
 import iut.fauryollivier.snoozespot.app.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
-import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 
 @Composable
 fun FeedElementDetailed(

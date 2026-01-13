@@ -1,15 +1,14 @@
 package iut.fauryollivier.snoozespot.app.pages.map
 
 import android.content.Context
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import iut.fauryollivier.snoozespot.repositories.SpotsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import iut.fauryollivier.snoozespot.app.pages.map.newspot.NewSpotResult
+import iut.fauryollivier.snoozespot.repositories.SpotsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

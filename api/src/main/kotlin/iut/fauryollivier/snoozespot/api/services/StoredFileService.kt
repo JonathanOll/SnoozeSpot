@@ -1,13 +1,11 @@
 package iut.fauryollivier.snoozespot.api.services
 
 import io.ktor.http.content.*
-import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
 import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
 import iut.fauryollivier.snoozespot.api.repositories.StoredFileRepository
-import java.util.UUID
-import kotlin.uuid.Uuid
+import java.util.*
 
 class StoredFileService(private val storedFileRepository: StoredFileRepository) {
 

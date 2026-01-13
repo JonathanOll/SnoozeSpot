@@ -1,9 +1,6 @@
 package iut.fauryollivier.snoozespot.api.entities
 
-import iut.fauryollivier.snoozespot.api.database.Tables
 import iut.fauryollivier.snoozespot.api.dtos.SpotDTO
-import iut.fauryollivier.snoozespot.api.repositories.UserRepository
-import org.jetbrains.exposed.sql.ResultRow
 import java.time.LocalDateTime
 
 data class Spot(

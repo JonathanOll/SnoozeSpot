@@ -1,9 +1,7 @@
 package iut.fauryollivier.snoozespot.api.data
 
 import android.content.Context
-import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.datastore.TokenHolder
-import kotlinx.coroutines.flow.collect
 import okhttp3.Interceptor
 import okhttp3.Response
 
