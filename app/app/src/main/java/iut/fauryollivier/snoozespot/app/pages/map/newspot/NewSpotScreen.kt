@@ -81,7 +81,6 @@ fun NewSpotScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .verticalScroll(rememberScrollState())
         ) {
             ImagePicker(pictures)
 

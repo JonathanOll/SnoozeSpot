@@ -57,5 +57,8 @@ dependencies {
 
     //Dev certificate
     implementation("io.ktor:ktor-network-tls-certificates")
+
+    // Hikari (pool pour la DB)
+    implementation("com.zaxxer:HikariCP:5.1.0")
 }
 

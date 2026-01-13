@@ -18,6 +18,10 @@ object NetworkDataSource {
         val client = OkHttpClient.Builder().apply {
             this.addInterceptor(intercepter)
             this.addInterceptor(AuthInterceptor(context))
+
+            this.connectTimeout(60, TimeUnit.SECONDS)
+            this.readTimeout(60, TimeUnit.SECONDS)
+            this.writeTimeout(60, TimeUnit.SECONDS)
         }.build()
 
         apiInstance = Retrofit.Builder()
