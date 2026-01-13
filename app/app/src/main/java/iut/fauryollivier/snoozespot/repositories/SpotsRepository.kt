@@ -18,8 +18,11 @@ object SpotsRepository {
 
     suspend fun getSpot(i: Int): Response<SpotDTO> {
         try {
-            val post = NetworkDataSource.api.spotsIdGet(i)
-            return Response.success(post.body())
+            val spot = NetworkDataSource.api.spotsIdGet(i)
+            if (spot.isSuccessful)
+                return Response.success(spot.body())
+            else
+                return Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
         }
@@ -46,7 +49,10 @@ object SpotsRepository {
                 BigDecimal(bottomRight.latitude),
                 BigDecimal(bottomRight.longitude)
             )
-            return Response.success(spots.body())
+            if (spots.isSuccessful)
+                return Response.success(spots.body())
+            else
+                return Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
         }
@@ -55,7 +61,10 @@ object SpotsRepository {
     suspend fun createSpotComment(spotId: Int, content: String, rating: Int): Response<SpotCommentDTO> {
         try {
             val result = NetworkDataSource.api.spotsIdCommentPost(spotId, CreateSpotCommentRequest(content, rating))
-            return Response.success(result.body())
+            if (result.isSuccessful)
+                return Response.success(result.body())
+            else
+                return Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
         }

@@ -15,7 +15,10 @@ object PostsRepository {
     suspend fun getPost(i: Int): Response<PostDTO> {
         try {
             val post = NetworkDataSource.api.postsIdGet(i)
-            return Response.success(post.body())
+            if (post.isSuccessful)
+                return Response.success(post.body())
+            else
+                return Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
         }
@@ -36,7 +39,10 @@ object PostsRepository {
                 content.toRequestBody(),
                 buildFileParts(context, files)
             )
-            return Response.success(post.body())
+            if (post.isSuccessful)
+                return Response.success(post.body())
+            else
+                return Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
         }
@@ -45,7 +51,10 @@ object PostsRepository {
     suspend fun likePost(postId: Int): Response<Boolean> {
         try {
             val result = NetworkDataSource.api.postsIdLikePost(postId)
-            return Response.success(result.body())
+            if (result.isSuccessful)
+                return Response.success(result.body())
+            else
+                return Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
         }
@@ -54,7 +63,10 @@ object PostsRepository {
     suspend fun createPostComment(postId: Int, content: String): Response<PostCommentDTO> {
         try {
             val result = NetworkDataSource.api.postsIdCommentPost(postId, CreatePostCommentRequest(content))
-            return Response.success(result.body())
+            if (result.isSuccessful)
+                return Response.success(result.body())
+            else
+                return Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
             return Response.error(500, ResponseBody.EMPTY)
         }

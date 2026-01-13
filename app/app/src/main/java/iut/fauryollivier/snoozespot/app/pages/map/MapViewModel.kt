@@ -6,16 +6,23 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import iut.fauryollivier.snoozespot.R
+import iut.fauryollivier.snoozespot.repositories.SpotsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import iut.fauryollivier.snoozespot.app.pages.map.newspot.NewSpotResult
-import iut.fauryollivier.snoozespot.repositories.SpotsRepository
+import iut.fauryollivier.snoozespot.utils.UiEvent
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MapViewModel : ViewModel() {
+
+    private val _events = MutableSharedFlow<UiEvent>()
+    val events = _events.asSharedFlow()
 
     data class ScreenState(
         val spots: List<SpotDTO> = emptyList()
@@ -37,13 +44,15 @@ class MapViewModel : ViewModel() {
                 _state.update {
                     it.copy(spots = result.body()!!)
                 }
+            } else if (!result.isSuccessful) {
+                _events.emit(UiEvent.ShowToast(R.string.failed_to_fetch_data))
             }
         }
     }
 
     fun newSpot(data: NewSpotResult, context: Context) {
         viewModelScope.launch {
-            SpotsRepository.createSpot(
+            val result = SpotsRepository.createSpot(
                 context,
                 data.name,
                 data.description,
@@ -51,6 +60,9 @@ class MapViewModel : ViewModel() {
                 data.location.longitude,
                 data.uris
             )
+
+            if(!result.isSuccessful)
+                _events.emit(UiEvent.ShowToast(R.string.failed_to_create_spot))
         }
     }
 
