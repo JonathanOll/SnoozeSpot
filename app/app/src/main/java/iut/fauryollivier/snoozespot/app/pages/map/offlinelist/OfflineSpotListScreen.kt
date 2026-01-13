@@ -23,7 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.ScaffoldController
+import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.app.components.PlusTopBar
 import iut.fauryollivier.snoozespot.app.components.StarRating
@@ -33,7 +33,11 @@ import iut.fauryollivier.snoozespot.app.destinations.SpotDetailsScreenDestinatio
 
 @Composable
 @Destination
-fun OfflineSpotListScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, vm: OfflineSpotListViewModel = viewModel()) {
+fun OfflineSpotListScreen(
+    navigator: DestinationsNavigator,
+    scaffoldController: ScaffoldController,
+    vm: OfflineSpotListViewModel = viewModel()
+) {
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { BackTopBar(navigator) }
         scaffoldController.showBottomBar.value = false

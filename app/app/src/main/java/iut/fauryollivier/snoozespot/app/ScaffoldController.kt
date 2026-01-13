@@ -1,4 +1,4 @@
-package iut.fauryollivier.snoozespot
+package iut.fauryollivier.snoozespot.app
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState

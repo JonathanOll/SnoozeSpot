@@ -30,7 +30,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
-import iut.fauryollivier.snoozespot.ScaffoldController
+import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.EditableStarRating
 import iut.fauryollivier.snoozespot.app.components.ImagePicker
 import java.io.Serializable

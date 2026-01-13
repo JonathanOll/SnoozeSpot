@@ -37,7 +37,7 @@ import com.ramcosta.composedestinations.result.ResultRecipient
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.components.Loader
 import iut.fauryollivier.snoozespot.app.components.FeedTopBar
-import iut.fauryollivier.snoozespot.ScaffoldController
+import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestination
 import iut.fauryollivier.snoozespot.app.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement

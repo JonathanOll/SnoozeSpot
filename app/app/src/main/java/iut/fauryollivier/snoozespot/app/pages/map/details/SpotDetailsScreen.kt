@@ -49,9 +49,9 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.NavResult
 import com.ramcosta.composedestinations.result.ResultRecipient
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.ScaffoldController
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
+import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.AnonymousOnly
 import iut.fauryollivier.snoozespot.app.components.AuthOnly
 import iut.fauryollivier.snoozespot.app.components.ExpandableImage

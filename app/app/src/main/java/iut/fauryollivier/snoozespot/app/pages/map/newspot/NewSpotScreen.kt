@@ -44,7 +44,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.ScaffoldController
+import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.app.components.ImagePicker
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
@@ -59,7 +59,11 @@ data class NewSpotResult(
 
 @Destination
 @Composable
-fun NewSpotScreen(navigator: DestinationsNavigator, scaffoldController: ScaffoldController, resultBackNavigator: ResultBackNavigator<NewSpotResult>) {
+fun NewSpotScreen(
+    navigator: DestinationsNavigator,
+    scaffoldController: ScaffoldController,
+    resultBackNavigator: ResultBackNavigator<NewSpotResult>
+) {
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { BackTopBar(navigator) }
         scaffoldController.showBottomBar.value = false
