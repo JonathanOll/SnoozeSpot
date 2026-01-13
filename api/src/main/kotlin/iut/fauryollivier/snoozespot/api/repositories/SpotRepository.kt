@@ -2,23 +2,12 @@ package iut.fauryollivier.snoozespot.api.repositories
 
 import SpotCommentRepository
 import iut.fauryollivier.snoozespot.api.database.Tables
-import iut.fauryollivier.snoozespot.api.database.Tables.SpotComments.rating
 import iut.fauryollivier.snoozespot.api.database.selectVisible
-import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
 import iut.fauryollivier.snoozespot.api.entities.Spot
 import iut.fauryollivier.snoozespot.api.entities.SpotAttribute
-import iut.fauryollivier.snoozespot.api.entities.SpotComment
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import iut.fauryollivier.snoozespot.api.routes.CreateSpotRequest
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.SortOrder
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.andWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.insertAndGetId
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class SpotRepository(

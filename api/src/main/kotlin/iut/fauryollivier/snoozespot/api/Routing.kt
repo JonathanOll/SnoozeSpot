@@ -2,16 +2,13 @@ package iut.fauryollivier.snoozespot.api
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.http.content.staticFileSystem
+import io.ktor.server.http.content.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import iut.fauryollivier.snoozespot.api.config.Config
-import iut.fauryollivier.snoozespot.api.routes.authRoutes
-import iut.fauryollivier.snoozespot.api.routes.postRoutes
-import iut.fauryollivier.snoozespot.api.routes.spotRoutes
-import iut.fauryollivier.snoozespot.api.routes.userRoutes
+import iut.fauryollivier.snoozespot.api.routes.*
 
 fun Application.configureRouting() {
     install(StatusPages) {

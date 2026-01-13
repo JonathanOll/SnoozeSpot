@@ -1,11 +1,10 @@
 package iut.fauryollivier.snoozespot.api.dtos
 
 import iut.fauryollivier.snoozespot.api.entities.User
-import iut.fauryollivier.snoozespot.api.repositories.UserRepository
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 @Serializable
 data class UserDTO(

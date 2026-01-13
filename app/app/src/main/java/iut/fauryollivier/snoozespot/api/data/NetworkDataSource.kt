@@ -1,12 +1,10 @@
 package iut.fauryollivier.snoozespot.api.data
 
 import android.content.Context
-import iut.fauryollivier.snoozespot.api.generated.api.DefaultApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 object NetworkDataSource {
     public const val BASE_URL = "https://localhost:8080/"

@@ -1,6 +1,5 @@
 package iut.fauryollivier.snoozespot.app.components.splashscreen
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay

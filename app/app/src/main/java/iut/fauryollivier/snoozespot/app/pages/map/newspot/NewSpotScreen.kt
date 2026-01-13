@@ -1,7 +1,6 @@
 package iut.fauryollivier.snoozespot.app.pages.map.newspot
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -47,7 +45,6 @@ import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.app.components.ImagePicker
-import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import java.io.Serializable
 
 data class NewSpotResult(
