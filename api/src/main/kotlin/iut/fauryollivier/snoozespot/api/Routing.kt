@@ -8,7 +8,10 @@ import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import iut.fauryollivier.snoozespot.api.config.Config
-import iut.fauryollivier.snoozespot.api.routes.*
+import iut.fauryollivier.snoozespot.api.routes.authRoutes
+import iut.fauryollivier.snoozespot.api.routes.postRoutes
+import iut.fauryollivier.snoozespot.api.routes.spotRoutes
+import iut.fauryollivier.snoozespot.api.routes.userRoutes
 
 fun Application.configureRouting() {
     install(StatusPages) {
