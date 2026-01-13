@@ -13,52 +13,52 @@ import java.util.UUID
 object UsersRepository {
 
     suspend fun getUser(i: UUID): Response<UserDTO> {
-        try {
+        return try {
             val user = NetworkDataSource.api.usersUuidGet(i.toString())
             if (user.isSuccessful)
-                return Response.success(user.body())
+                Response.success(user.body())
             else
-                return Response.error(500, ResponseBody.EMPTY)
+                Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
-            return Response.error(500, ResponseBody.EMPTY)
+            Response.error(500, ResponseBody.EMPTY)
         }
     }
 
     suspend fun changeProfilePic(context: Context, uri: String): Response<Unit> {
-        try {
+        return try {
             val result = NetworkDataSource.api.changeProfilePic(
                 file = buildFilePart(context, uri)
             )
             if (result.isSuccessful)
-                return Response.success(Unit)
+                Response.success(Unit)
             else
-                return Response.error(500, ResponseBody.EMPTY)
+                Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
-            return Response.error(500, ResponseBody.EMPTY)
+            Response.error(500, ResponseBody.EMPTY)
         }
     }
 
     suspend fun login(username: String, password: String): Response<AuthResponseDTO> {
-        try {
+        return try {
             val result = NetworkDataSource.api.authLoginPost(UserAuthRequest(username, password))
             if (result.isSuccessful)
-                return Response.success(result.body())
+                Response.success(result.body())
             else
-                return Response.error(500, ResponseBody.EMPTY)
+                Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
-            return Response.error(500, ResponseBody.EMPTY)
+            Response.error(500, ResponseBody.EMPTY)
         }
     }
 
     suspend fun register(email: String, username: String, password: String): Response<AuthResponseDTO> {
-        try {
+        return try {
             val result = NetworkDataSource.api.authSignupPost(UserAuthRequest(username, password, email))
             if (result.isSuccessful)
-                return Response.success(result.body())
+                Response.success(result.body())
             else
-                return Response.error(500, ResponseBody.EMPTY)
+                Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {
-            return Response.error(500, ResponseBody.EMPTY)
+            Response.error(500, ResponseBody.EMPTY)
         }
     }
 
