@@ -1,27 +1,16 @@
 package iut.fauryollivier.snoozespot.api.routes
 
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.content.PartData
-import io.ktor.http.content.forEachPart
-import io.ktor.server.auth.authenticate
-import io.ktor.server.request.receive
-import io.ktor.server.request.receiveMultipart
+import io.ktor.http.*
+import io.ktor.server.auth.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.get
-import io.ktor.server.routing.post
-import io.ktor.server.routing.route
+import io.ktor.server.routing.*
 import iut.fauryollivier.snoozespot.api.auth.currentUserId
 import iut.fauryollivier.snoozespot.api.auth.handleMultipart
-import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
-import iut.fauryollivier.snoozespot.api.entities.StoredFile
-import iut.fauryollivier.snoozespot.api.enums.StoredFileType
-import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
 import iut.fauryollivier.snoozespot.api.services.SpotService
 import iut.fauryollivier.snoozespot.api.services.StoredFileService
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
-import kotlin.getValue
 
 @Serializable
 data class CreateSpotRequest(

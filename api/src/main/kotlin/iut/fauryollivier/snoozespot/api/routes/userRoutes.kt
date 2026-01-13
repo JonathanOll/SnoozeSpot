@@ -1,7 +1,7 @@
 package iut.fauryollivier.snoozespot.api.routes
 
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.auth.authenticate
+import io.ktor.http.*
+import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import iut.fauryollivier.snoozespot.api.auth.currentUserId
@@ -9,7 +9,7 @@ import iut.fauryollivier.snoozespot.api.auth.handleMultipart
 import iut.fauryollivier.snoozespot.api.services.StoredFileService
 import iut.fauryollivier.snoozespot.api.services.UserService
 import org.koin.ktor.ext.inject
-import java.util.UUID
+import java.util.*
 
 // route("/users")
 fun Route.userRoutes() {

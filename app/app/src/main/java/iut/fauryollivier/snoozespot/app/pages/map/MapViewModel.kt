@@ -1,7 +1,6 @@
 package iut.fauryollivier.snoozespot.app.pages.map
 
 import android.content.Context
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.GoogleMap

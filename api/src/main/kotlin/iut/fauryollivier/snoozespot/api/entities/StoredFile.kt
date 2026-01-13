@@ -1,13 +1,11 @@
 package iut.fauryollivier.snoozespot.api.entities
 
 import iut.fauryollivier.snoozespot.api.config.Config
-import iut.fauryollivier.snoozespot.api.enums.StoredFileType
 import iut.fauryollivier.snoozespot.api.dtos.StoredFileDTO
+import iut.fauryollivier.snoozespot.api.enums.StoredFileType
 import iut.fauryollivier.snoozespot.api.enums.StoredFileUsage
-import java.nio.file.Path
 import java.time.LocalDateTime
-import java.util.UUID
-import kotlin.io.path.Path
+import java.util.*
 
 data class StoredFile(
 

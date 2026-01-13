@@ -21,7 +21,6 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.generated.model.SpotCommentDTO
 import iut.fauryollivier.snoozespot.app.components.StarRating
-import iut.fauryollivier.snoozespot.app.destinations.AccountDetailsScreenDestination.invoke
 
 @Composable
 fun SpotComment(

@@ -3,9 +3,9 @@ package iut.fauryollivier.snoozespot.app.pages.map.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.repositories.SpotsRepository
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
+import iut.fauryollivier.snoozespot.repositories.SpotsRepository
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.flow.MutableSharedFlow

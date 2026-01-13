@@ -37,7 +37,6 @@ import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
-import iut.fauryollivier.snoozespot.app.components.ExpandableImage
 import iut.fauryollivier.snoozespot.app.components.ExpandableImageWithDownload
 import iut.fauryollivier.snoozespot.app.destinations.AccountDetailsScreenDestination
 

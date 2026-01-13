@@ -1,5 +1,4 @@
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
-import java.io.File
 
 plugins {
     alias(libs.plugins.android.application)
