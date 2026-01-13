@@ -13,7 +13,7 @@ data class PostCommentDTO(
     val content: String,
     @Contextual val createdAt: LocalDateTime?,
 
-) : DTOBase() {
+    ) : DTOBase() {
 
     override fun toEntity(): PostComment = PostComment(
         id = id,

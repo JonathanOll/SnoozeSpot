@@ -23,7 +23,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.ScaffoldController
-import iut.fauryollivier.snoozespot.app.components.DefaultTopBar
 import iut.fauryollivier.snoozespot.app.destinations.LoginScreenDestination
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.utils.UiEvent
@@ -47,14 +46,17 @@ fun RegisterScreen(
         vm.events.collect { event ->
             when (event) {
                 is UiEvent.ShowToast ->
-                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT).show() } }
+                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT)
+                        .show()
+            }
+        }
     }
 
     val email by vm.email.collectAsState()
     val username by vm.username.collectAsState()
     val password by vm.password.collectAsState()
 
-    Column (
+    Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -86,7 +88,11 @@ fun RegisterScreen(
 
         Text(
             stringResource(R.string.loginInstead),
-            modifier = Modifier.clickable { navigator.popBackStack(); navigator.navigate(LoginScreenDestination) }
+            modifier = Modifier.clickable {
+                navigator.popBackStack(); navigator.navigate(
+                LoginScreenDestination
+            )
+            }
         )
     }
 }

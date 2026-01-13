@@ -103,9 +103,11 @@ fun SpotDetailsScreen(
             vm.setSpot(spotData!!)
     }
     Box {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+        ) {
             if (spot != null) {
                 if (!spot!!.pictures.isEmpty()) {
                     ExpandableImageWithDownload(

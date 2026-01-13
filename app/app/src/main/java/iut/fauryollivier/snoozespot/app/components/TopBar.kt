@@ -38,7 +38,7 @@ import iut.fauryollivier.snoozespot.R
 fun TopBar(modifier: Modifier = Modifier, content: @Composable () -> Unit = {}) {
     TopAppBar(
         title = {
-            Row (
+            Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 content()
@@ -69,7 +69,10 @@ fun BackTopBar(navigator: DestinationsNavigator) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransparentBackTopBar(navigator: DestinationsNavigator, rightElement: @Composable () -> Unit = {}) {
+fun TransparentBackTopBar(
+    navigator: DestinationsNavigator,
+    rightElement: @Composable () -> Unit = {}
+) {
     TopAppBar(
         modifier = Modifier
             .background(
@@ -80,7 +83,7 @@ fun TransparentBackTopBar(navigator: DestinationsNavigator, rightElement: @Compo
                 )
             ),
         title = {
-            Row (
+            Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
@@ -112,9 +115,10 @@ fun TransparentBackTopBar(navigator: DestinationsNavigator, rightElement: @Compo
 fun DefaultTopBar() {
     TopBar {
         Row(
-            modifier = Modifier.fillMaxWidth()
-                        .padding(end = 4.dp)
-                        .height(28.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 4.dp)
+                .height(28.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -148,7 +152,9 @@ fun FeedTopBar() {
 fun PlusTopBar(onClick: () -> Unit, leftContent: @Composable () -> Unit = {}) {
     TopBar {
         Row(
-            modifier = Modifier.fillMaxWidth().clickable(onClick=onClick),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onClick),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             leftContent()

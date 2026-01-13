@@ -15,7 +15,7 @@ enum class StoredFileType(val value: Int) {
         fun fromInt(value: Int) = ALL_VALUES.firstOrNull { it.value == value }
 
         fun getPathForType(type: StoredFileType): String {
-            return when(type) {
+            return when (type) {
                 UNKNOWN -> "unknown"
                 IMAGE -> "images"
                 VIDEO -> "videos"

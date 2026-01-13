@@ -66,7 +66,7 @@ fun UserProfileCard(
                     .size(100.dp)
                     .clip(CircleShape)
                     .border(2.dp, Color.Gray, CircleShape)
-                    .clickable { onClickOnProfilePic()}
+                    .clickable { onClickOnProfilePic() }
             )
 
         Spacer(modifier = Modifier.height(8.dp))

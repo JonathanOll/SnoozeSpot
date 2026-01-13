@@ -16,7 +16,7 @@ enum class StoredFileUsage(val value: Int) {
         fun fromInt(value: Int) = ALL_VALUES.firstOrNull { it.value == value }
 
         fun getPathForUsage(usage: StoredFileUsage): String {
-            return when(usage) {
+            return when (usage) {
                 UNKNOW -> "unknown"
                 SPOT_ATTRIBUTES_ICON -> "spot_attributes_icons"
                 PROFILE_PICTURE -> "profile_pictures"

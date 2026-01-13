@@ -21,7 +21,7 @@ data class SpotDTO(
     val attributes: List<SpotAttributeDTO> = emptyList(),
     val comments: List<SpotCommentDTO> = emptyList(),
 
-) : DTOBase() {
+    ) : DTOBase() {
 
     override fun toEntity() = Spot(
         id = id,
