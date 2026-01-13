@@ -43,7 +43,7 @@ SnoozeSpot is a mobile-first Android application designed to help users discover
 ### Core Capabilities
 
 - **Location Mapping**: Integration with Google Maps to display and explore rest spots globally
-- **Post Management**: Create, edit, and delete posts about discovered spots
+- **Post Management**: Create, and delete posts about discovered spots
 - **Comments & Discussion**: Community engagement through comments on posts
 - **User Authentication**: Secure user registration and login
 - **Multi-environment Support**: Development, beta, and production builds with separate configurations
@@ -109,20 +109,16 @@ Composed of multiple data sources:
 
 ### 1. Spot Discovery & Mapping
 - **Google Maps Integration**: Display all rest spots on an interactive map
-- **Real-time Location Tracking**: Show user's current location
-- **Spot Details**: Comprehensive information about each spot (location, amenities, ratings)
-- **Search & Filtering**: Find spots by category, distance, or rating
+- **Spot Details**: Comprehensive information about each spot (location, ratings)
 
 ### 2. Post Management
 - **Create Posts**: Users can submit new rest spot discoveries
-- **Edit Posts**: Modify existing post information
 - **Delete Posts**: Remove posts (with appropriate permissions)
-- **Rich Content**: Support for images, descriptions, and metadata
+- **Rich Content**: Support for images
 
 ### 3. User Engagement
 - **Comments**: Discuss spots with other users
 - **Ratings & Reviews**: Rate spots on safety, cleanliness, comfort
-- **Community Feedback**: Upvote/downvote system (if applicable)
 
 ### 4. User Management
 - **Authentication**: Secure login and registration
@@ -478,17 +474,6 @@ openApiGenerator {
 }
 ```
 
-### ProGuard/R8 Obfuscation
-
-The release build applies obfuscation rules defined in `proguard-rules.pro`:
-
-```proguard
-# Example rules
--keep class iut.fauryollivier.snoozespot.** { *; }
--keepclassmembers class * extends android.content.Context { *; }
--dontnote **
-```
-
 ### Signing Configuration
 
 For production releases, configure signing in `build.gradle.kts`:
@@ -672,32 +657,6 @@ data class PostDTO(
     @SerialName("created_at")
     val createdAt: String
 )
-```
-
-### Rate Limiting & Caching
-
-Implement intelligent caching to reduce API calls:
-
-```kotlin
-// Room acts as cache
-class SpotRepository(
-    private val apiService: SpotApiService,
-    private val spotDao: SpotDao
-) {
-    fun getSpots(): Flow<List<Spot>> = flow {
-        // Emit cached data first
-        emit(spotDao.getAllSpots().map { it.toDomain() })
-        
-        // Fetch fresh data
-        try {
-            val fresh = apiService.getSpots()
-            spotDao.insertSpots(fresh.map { it.toRoomEntity() })
-            emit(spotDao.getAllSpots().map { it.toDomain() })
-        } catch (e: Exception) {
-            // Keep using cached data
-        }
-    }
-}
 ```
 
 ### Testing API Integration
@@ -1128,57 +1087,6 @@ class SpotListViewModel(private val repository: SpotRepository) : ViewModel() {
     }
 }
 ```
-
-### Logging
-
-```kotlin
-// Simple logging utility
-object Logger {
-    fun d(tag: String, message: String) {
-        if (BuildConfig.DEBUG) {
-            Log.d(tag, message)
-        }
-    }
-
-    fun e(tag: String, message: String, throwable: Throwable? = null) {
-        Log.e(tag, message, throwable)
-    }
-}
-
-// Usage
-Logger.d("SpotRepository", "Fetching spots from network")
-Logger.e("SpotRepository", "Failed to fetch spots", exception)
-```
-
-### Testing Best Practices
-
-```kotlin
-// Unit test example
-class SpotRepositoryTest {
-    private lateinit var repository: SpotRepository
-    private val mockApiService = mockk<SpotApiService>()
-    private val mockDao = mockk<SpotDao>()
-
-    @Before
-    fun setup() {
-        repository = SpotRepository(mockApiService, mockDao)
-    }
-
-    @Test
-    fun testGetSpotsFallsBackToCache() = runTest {
-        // Mock API failure
-        coEvery { mockApiService.getSpots() } throws IOException()
-        
-        // Mock cached data
-        coEvery { mockDao.getAllSpots() } returns flowOf(listOf(mockEntity))
-
-        // Assert
-        repository.getSpots().test {
-            assertTrue(awaitItem() is Result.Success)
-        }
-    }
-}
-
 // UI test example
 class SpotListScreenTest {
     @get:Rule
