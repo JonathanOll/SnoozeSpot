@@ -6,6 +6,7 @@ import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.UserAuthRequest
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
+import iut.fauryollivier.snoozespot.repositories.UsersRepository
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,7 +43,7 @@ class RegisterViewModel : ViewModel() {
 
     fun register(localStorage: LocalStorage, navigateUp: () -> Unit) {
         viewModelScope.launch {
-            val response = NetworkDataSource.api.authSignupPost(UserAuthRequest(_username.value, _password.value, _email.value))
+            val response = UsersRepository.register(_username.value, _password.value, _email.value)
             if (response.isSuccessful && response.body() != null) {
                 val data = response.body()!!
                 localStorage.saveAuthToken(data.accessToken)

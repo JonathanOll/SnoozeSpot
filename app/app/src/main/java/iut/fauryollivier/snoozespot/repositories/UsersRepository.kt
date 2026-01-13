@@ -2,6 +2,8 @@ package iut.fauryollivier.snoozespot.repositories
 
 import android.content.Context
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
+import iut.fauryollivier.snoozespot.api.generated.model.AuthResponseDTO
+import iut.fauryollivier.snoozespot.api.generated.model.UserAuthRequest
 import iut.fauryollivier.snoozespot.api.generated.model.UserDTO
 import iut.fauryollivier.snoozespot.utils.buildFilePart
 import okhttp3.ResponseBody
@@ -29,6 +31,30 @@ object UsersRepository {
             )
             if (result.isSuccessful)
                 return Response.success(Unit)
+            else
+                return Response.error(500, ResponseBody.EMPTY)
+        } catch(e: Exception) {
+            return Response.error(500, ResponseBody.EMPTY)
+        }
+    }
+
+    suspend fun login(username: String, password: String): Response<AuthResponseDTO> {
+        try {
+            val result = NetworkDataSource.api.authLoginPost(UserAuthRequest(username, password))
+            if (result.isSuccessful)
+                return Response.success(result.body())
+            else
+                return Response.error(500, ResponseBody.EMPTY)
+        } catch(e: Exception) {
+            return Response.error(500, ResponseBody.EMPTY)
+        }
+    }
+
+    suspend fun register(email: String, username: String, password: String): Response<AuthResponseDTO> {
+        try {
+            val result = NetworkDataSource.api.authSignupPost(UserAuthRequest(username, password, email))
+            if (result.isSuccessful)
+                return Response.success(result.body())
             else
                 return Response.error(500, ResponseBody.EMPTY)
         } catch(e: Exception) {

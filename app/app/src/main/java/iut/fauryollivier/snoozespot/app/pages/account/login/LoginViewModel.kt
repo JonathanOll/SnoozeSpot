@@ -3,9 +3,8 @@ package iut.fauryollivier.snoozespot.app.pages.account.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
-import iut.fauryollivier.snoozespot.api.generated.model.UserAuthRequest
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
+import iut.fauryollivier.snoozespot.repositories.UsersRepository
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,8 +34,8 @@ class LoginViewModel : ViewModel() {
 
     fun login(localStorage: LocalStorage, navigateUp: () -> Unit) {
         viewModelScope.launch {
-            val response = NetworkDataSource.api.authLoginPost(UserAuthRequest(_username.value, _password.value))
-            if (response.isSuccessful) {
+            val response = UsersRepository.login(_username.value, _password.value)
+            if (response.isSuccessful && response.body() != null) {
                 val data = response.body()!!
                 localStorage.saveAuthToken(data.accessToken)
                 localStorage.saveUser(data.user)
