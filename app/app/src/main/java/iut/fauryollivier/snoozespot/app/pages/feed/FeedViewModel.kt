@@ -148,4 +148,21 @@ class FeedViewModel : ViewModel() {
         }
     }
 
+    fun deletePost(post: PostDTO) {
+        viewModelScope.launch {
+            val result = PostsRepository.deletePost(post.id)
+            if (result.isSuccessful) {
+                _state.update { current ->
+                    current.copy(
+                        posts = current.posts.filter { p->
+                            p.id != post.id
+                        }
+                    )
+                }
+            } else {
+                _events.emit(UiEvent.ShowToast(R.string.failed_to_delete_post))
+            }
+        }
+    }
+
 }

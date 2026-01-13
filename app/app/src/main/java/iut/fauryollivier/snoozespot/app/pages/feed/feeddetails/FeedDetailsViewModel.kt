@@ -67,4 +67,30 @@ class FeedDetailsViewModel : ViewModel() {
         }
     }
 
+    fun deletePost(id: Int, navigateUp: () -> Unit) {
+        viewModelScope.launch {
+            val result = PostsRepository.deletePost(id)
+            if (result.isSuccessful) {
+                navigateUp()
+            } else {
+                _events.emit(UiEvent.ShowToast(R.string.failed_to_delete_post))
+            }
+        }
+    }
+
+    fun deleteComment(id: Int) {
+        viewModelScope.launch {
+            val result = PostsRepository.deletePostComment(id)
+            if (result.isSuccessful) {
+                _state.update { it->
+                    it!!.copy(
+                        comments = it.comments.filter { it.id != id }
+                    )
+                }
+            } else {
+                _events.emit(UiEvent.ShowToast(R.string.failed_to_delete_comment))
+            }
+        }
+    }
+
 }

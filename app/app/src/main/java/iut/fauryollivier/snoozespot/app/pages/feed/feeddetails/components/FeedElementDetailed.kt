@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
+import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.components.AnonymousOnly
 import iut.fauryollivier.snoozespot.app.components.AuthOnly
@@ -28,11 +29,18 @@ fun FeedElementDetailed(
     navigator: DestinationsNavigator,
     postDTO: PostDTO,
     modifier: Modifier = Modifier,
-    likePost: (post: PostDTO) -> Unit = {},
+    onLike: (post: PostDTO) -> Unit = {},
+    onDelete: (post: PostDTO) -> Unit = {},
+    onCommentDelete: (post: PostCommentDTO) -> Unit = {},
 ) {
     LazyColumn (modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         item {
-            FeedElement(navigator, postDTO, likePost = likePost)
+            FeedElement(
+                navigator,
+                postDTO,
+                onLike = onLike,
+                onDelete = onDelete
+            )
             Box(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).height(2.dp).border(1.dp, Color(0xFFDDDDDD)))
         }
 
@@ -40,7 +48,8 @@ fun FeedElementDetailed(
             FeedElement(
                 navigator,
                 comment,
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp)
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 0.dp),
+                onDelete = { onCommentDelete(comment) }
             )
         }
         item {

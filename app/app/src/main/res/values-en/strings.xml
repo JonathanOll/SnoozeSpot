@@ -54,4 +54,7 @@
     <string name="failed_to_create_spot">Failed to create spot</string>
     <string name="could_not_register">Could not register</string>
     <string name="refresh">Refresh</string>
+    <string name="delete">Delete</string>
+    <string name="failed_to_delete_post">Failed to delete post</string>
+    <string name="failed_to_delete_comment">Failed to delete comment</string>
 </resources>

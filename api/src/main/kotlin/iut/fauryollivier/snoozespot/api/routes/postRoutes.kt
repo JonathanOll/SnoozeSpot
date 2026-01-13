@@ -100,8 +100,8 @@ fun Route.postRoutes() {
             val postId = call.parameters["id"]?.toIntOrNull()
 
             if (postId == null) {
-                call.respond(HttpStatusCode.BadRequest, "Post not found")
-            }
+            call.respond(HttpStatusCode.BadRequest, "Post not found")
+        }
             val postResult = postService.getById(postId!!, userId)
             if (postResult.isFailure) {
                 call.respond(HttpStatusCode.BadRequest, "Post not found")
@@ -113,6 +113,42 @@ fun Route.postRoutes() {
             if (result.isFailure) {
                 call.respond(HttpStatusCode.BadRequest, "Could not comment post $postId")
                 return@post
+            }
+            call.respond(HttpStatusCode.OK, result.getOrThrow())
+        }
+
+        delete("{id}") {
+            val userId = call.currentUserId().getOrNull()
+            val postId = call.parameters["id"]?.toIntOrNull()
+
+            if (postId == null) {
+                call.respond(HttpStatusCode.BadRequest, "Post not found")
+            }
+            val postResult = postService.getById(postId!!, userId)
+            if (postResult.isFailure) {
+                call.respond(HttpStatusCode.BadRequest, "Post not found")
+            }
+
+            val result = postService.deletePost(postId, userId!!)
+            if (result.isFailure) {
+                call.respond(HttpStatusCode.BadRequest, "Could not delete post $postId")
+                return@delete
+            }
+            call.respond(HttpStatusCode.OK)
+        }
+
+        delete("comment/{commentId}") {
+            val userId = call.currentUserId().getOrNull()
+            val commentId = call.parameters["commentId"]?.toIntOrNull()
+
+            if (commentId == null) {
+                call.respond(HttpStatusCode.BadRequest, "Comment not found")
+            }
+
+            val result = postService.deletePostComment(commentId!!, userId!!)
+            if (result.isFailure) {
+                call.respond(HttpStatusCode.BadRequest, "Could not delete comment $commentId")
+                return@delete
             }
             call.respond(HttpStatusCode.OK, result.getOrThrow())
         }

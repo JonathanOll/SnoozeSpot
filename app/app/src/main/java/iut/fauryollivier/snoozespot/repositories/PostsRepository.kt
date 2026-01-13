@@ -75,6 +75,30 @@ object PostsRepository {
         }
     }
 
+    suspend fun deletePost(postId: Int): Response<Unit> {
+        return try {
+            val result = NetworkDataSource.api.postsIdDelete(postId)
+            if (result.isSuccessful)
+                Response.success(Unit)
+            else
+                Response.error(500, ResponseBody.EMPTY)
+        } catch(e: Exception) {
+            Response.error(500, ResponseBody.EMPTY)
+        }
+    }
+
+    suspend fun deletePostComment(commentId: Int): Response<Unit> {
+        return try {
+            val result = NetworkDataSource.api.postsCommentCommentIdDelete(commentId)
+            if (result.isSuccessful)
+                Response.success(Unit)
+            else
+                Response.error(500, ResponseBody.EMPTY)
+        } catch(e: Exception) {
+            Response.error(500, ResponseBody.EMPTY)
+        }
+    }
+
 
 
 }

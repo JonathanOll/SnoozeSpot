@@ -7,6 +7,7 @@ import iut.fauryollivier.snoozespot.api.entities.PostComment
 import iut.fauryollivier.snoozespot.api.entities.StoredFile
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.javatime.CurrentDateTime
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class PostRepository(private val userRepository: UserRepository, private val storedFileRepository: StoredFileRepository) : RepositoryBase() {
@@ -147,4 +148,18 @@ class PostRepository(private val userRepository: UserRepository, private val sto
         }
         return Result.success(Unit)
     }
+
+    fun deletePost(postId: Int): Result<Unit> {
+        val updated = transaction {
+            Tables.Posts.update({ Tables.Posts.id eq postId }) {
+                it[deletedAt] = CurrentDateTime
+            }
+        }
+
+        if (updated == 0) {
+            return Result.failure(Exception("Post not found"))
+        }
+        return Result.success(Unit)
+    }
+
 }
