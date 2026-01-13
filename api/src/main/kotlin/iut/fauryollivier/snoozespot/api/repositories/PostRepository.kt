@@ -22,8 +22,26 @@ class PostRepository(private val userRepository: UserRepository, private val sto
         loadRelations: Boolean,
         userId: Int?
     ): Post {
+        val id = this[Tables.Posts.id].value
+
         val pictures = if (true || loadRelations) storedFileRepository.getFilesByPostId(this[Tables.Posts.id].value) else emptyList<StoredFile>() //TODO: load pictures
-        val comments = if (loadRelations) emptyList<PostComment>() else emptyList<PostComment>()
+        val comments = if (loadRelations) {
+            Tables.PostComments
+                .select {
+                    Tables.PostComments.postId eq id
+                }
+                .selectVisible()
+                .map { row ->
+                    PostComment(
+                        id = row[Tables.PostComments.id].value,
+                        user = userRepository.getById(row[Tables.PostComments.userId]).getOrThrow(),
+                        content = row[Tables.PostComments.content],
+                        createdAt = row[Tables.PostComments.createdAt],
+                        deletedAt = row[Tables.PostComments.deletedAt]
+                    )
+                }
+        } else emptyList()
+
         val likeCount = getLikeCount(this[Tables.Posts.id].value).getOrThrow()
         val likedByUser = userId != null && isLikedBy(this[Tables.Posts.id].value, userId).getOrThrow()
 

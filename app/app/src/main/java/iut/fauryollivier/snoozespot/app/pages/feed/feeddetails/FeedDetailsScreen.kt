@@ -19,6 +19,7 @@ import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.destinations.NewPostScreenDestination
+import iut.fauryollivier.snoozespot.app.pages.feed.FeedViewModel
 import iut.fauryollivier.snoozespot.app.pages.feed.feeddetails.components.FeedElementDetailed
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
