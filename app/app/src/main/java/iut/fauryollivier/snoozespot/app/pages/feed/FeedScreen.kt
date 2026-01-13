@@ -1,6 +1,7 @@
 package iut.fauryollivier.snoozespot.app.pages.feed
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,6 +43,7 @@ import iut.fauryollivier.snoozespot.app.destinations.FeedDetailsScreenDestinatio
 import iut.fauryollivier.snoozespot.app.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
+import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 
@@ -62,6 +64,13 @@ fun FeedScreen(
     }
 
     val context: Context = LocalContext.current
+
+    LaunchedEffect(true) {
+        vm.events.collect { event ->
+            when (event) {
+                is UiEvent.ShowToast ->
+                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT).show() } }
+    }
 
     val state by vm.screenState.collectAsState()
     val listState = remember { LazyListState() }

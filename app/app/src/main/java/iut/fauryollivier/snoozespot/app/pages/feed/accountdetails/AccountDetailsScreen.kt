@@ -17,6 +17,7 @@ import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.app.components.HorizontalLine
 import iut.fauryollivier.snoozespot.app.pages.account.components.UserProfileCard
+import iut.fauryollivier.snoozespot.app.pages.feed.accountdetails.AccountDetailsViewModel
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
 import java.util.UUID
 

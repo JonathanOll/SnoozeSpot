@@ -1,5 +1,7 @@
 package iut.fauryollivier.snoozespot.app.pages.feed.feeddetails
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
@@ -9,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -23,6 +26,7 @@ import iut.fauryollivier.snoozespot.app.pages.feed.FeedViewModel
 import iut.fauryollivier.snoozespot.app.pages.feed.feeddetails.components.FeedElementDetailed
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
+import iut.fauryollivier.snoozespot.utils.UiEvent
 
 @Destination
 @Composable
@@ -36,6 +40,15 @@ fun FeedDetailsScreen(
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { BackTopBar(navigator) }
         scaffoldController.showBottomBar.value = false
+    }
+
+    val context: Context = LocalContext.current
+
+    LaunchedEffect(true) {
+        vm.events.collect { event ->
+            when (event) {
+                is UiEvent.ShowToast ->
+                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT).show() } }
     }
 
     resultRecipient.onNavResult {
