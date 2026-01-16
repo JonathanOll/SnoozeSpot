@@ -38,6 +38,10 @@ dependencies:
   cupertino_icons: ^1.0.8
   openapi_generator: ^6.1.0
   openapi_generator_annotations: ^6.1.0
+  dio: ^5.2.0
+
+  built_value: '>=8.4.0 <9.0.0'
+
 
   snoozespot_api:
     path: lib/api/snoozespot_api
