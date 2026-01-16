@@ -1,0 +1,817 @@
+openapi: "3.1.0"
+info:
+  title: "snoozespot_api API"
+  description: "snoozespot_api API"
+  version: "1.0.0"
+servers:
+  - url: "https://snoozespot_api"
+paths:
+  /auth/login:
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAuthRequest"
+        required: true
+      responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthResponseDTO"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /auth/signup:
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAuthRequest"
+        required: true
+      responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthResponseDTO"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /posts:
+    get:
+      description: ""
+      parameters:
+        - name: "page"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PostDTO"
+    post:
+      description: ""
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: ""
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Post creation failed"
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PostDTO"
+  /posts/{id}:
+    delete:
+      description: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: "Post not found"
+                Example#3:
+                  value: "Post not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+    get:
+      description: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Post not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PostDTO"
+  /posts/{id}/comment:
+    post:
+      description: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePostCommentRequest"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: "Post not found"
+                Example#3:
+                  value: "Post not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PostCommentDTO"
+  /posts/{id}/like:
+    post:
+      description: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: "Post not found"
+                Example#3:
+                  value: "Post not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "boolean"
+  /posts/comment/{commentId}:
+    delete:
+      description: ""
+      parameters:
+        - name: "commentId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: "Comment not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Unit"
+  /spots:
+    get:
+      description: ""
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/SpotDTO"
+    post:
+      description: ""
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: ""
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Post creation failed"
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SpotDTO"
+  /spots/{id}:
+    get:
+      description: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid spot ID"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Spot not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SpotDTO"
+  /spots/{id}/comment:
+    post:
+      description: ""
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSpotCommentRequest"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: "Invalid spot ID"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Spot not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SpotCommentDTO"
+  /spots/zone:
+    get:
+      description: ""
+      parameters:
+        - name: "topLeftLatitude"
+          in: "query"
+          required: false
+          schema:
+            type: "number"
+        - name: "topLeftLongitude"
+          in: "query"
+          required: false
+          schema:
+            type: "number"
+        - name: "bottomRightLatitude"
+          in: "query"
+          required: false
+          schema:
+            type: "number"
+        - name: "bottomRightLongitude"
+          in: "query"
+          required: false
+          schema:
+            type: "number"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Missing query parameters for the zone."
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/SpotDTO"
+  /users:
+    get:
+      description: ""
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/UserDTO"
+  /users/{uuid}:
+    get:
+      description: ""
+      parameters:
+        - name: "uuid"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid user ID"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "User not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDTO"
+  /users/me:
+    get:
+      description: ""
+      responses:
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "User not found"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDTO"
+  /users/profile-picture:
+    post:
+      description: ""
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+                Example#2:
+                  value: ""
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Could not update profile picture"
+                Example#2:
+                  value: "File upload failed"
+                Example#3:
+                  value: "No file uploaded"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Profile picture updated"
+components:
+  schemas:
+    UserAuthRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
+        email:
+          type: "string"
+          nullable: true
+      required:
+        - "username"
+        - "password"
+    StoredFileDTO:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          format: "uuid"
+        description:
+          type: "string"
+        path:
+          type: "string"
+        type:
+          type: "string"
+          enum:
+            - "UNKNOWN"
+            - "IMAGE"
+            - "VIDEO"
+            - "AUDIO"
+            - "DOCUMENT"
+            - "OTHER"
+        usage:
+          type: "string"
+          enum:
+            - "UNKNOW"
+            - "SPOT_ATTRIBUTES_ICON"
+            - "PROFILE_PICTURE"
+            - "SPOT_MEDIA"
+            - "POST_MEDIA"
+            - "COMMENT_MEDIA"
+            - "OTHER"
+        createdAt:
+          type: "string"
+          format: "date-time"
+          nullable: true
+      required:
+        - "uuid"
+        - "description"
+        - "path"
+        - "type"
+        - "usage"
+    SpotAttributeDTO:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        name:
+          type: "string"
+        icon:
+          nullable: true
+          $ref: "#/components/schemas/StoredFileDTO"
+      required:
+        - "id"
+        - "name"
+    SpotCommentDTO:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        user:
+          $ref: "#/components/schemas/UserDTO"
+        description:
+          type: "string"
+        rating:
+          type: "integer"
+          format: "int32"
+        createdAt:
+          type: "string"
+          format: "date-time"
+          nullable: true
+      required:
+        - "id"
+        - "user"
+        - "description"
+        - "rating"
+    SpotDTO:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        creator:
+          nullable: true
+          $ref: "#/components/schemas/UserDTO"
+        name:
+          type: "string"
+        description:
+          type: "string"
+        latitude:
+          type: "number"
+          format: "double"
+        longitude:
+          type: "number"
+          format: "double"
+        likeCount:
+          type: "integer"
+          format: "int32"
+        rating:
+          type: "number"
+          format: "float"
+          nullable: true
+        createdAt:
+          type: "string"
+          format: "date-time"
+          nullable: true
+        pictures:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/StoredFileDTO"
+        attributes:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SpotAttributeDTO"
+        comments:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SpotCommentDTO"
+      required:
+        - "id"
+        - "name"
+        - "description"
+        - "latitude"
+        - "longitude"
+        - "likeCount"
+        - "pictures"
+        - "attributes"
+        - "comments"
+    PostCommentDTO:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        user:
+          $ref: "#/components/schemas/UserDTO"
+        content:
+          type: "string"
+        createdAt:
+          type: "string"
+          format: "date-time"
+          nullable: true
+      required:
+        - "id"
+        - "user"
+        - "content"
+    PostDTO:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        user:
+          $ref: "#/components/schemas/UserDTO"
+        content:
+          type: "string"
+        likeCount:
+          type: "integer"
+          format: "int32"
+        createdAt:
+          type: "string"
+          format: "date-time"
+          nullable: true
+        pictures:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/StoredFileDTO"
+        comments:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PostCommentDTO"
+        likedByUser:
+          type: "boolean"
+      required:
+        - "id"
+        - "user"
+        - "content"
+        - "likeCount"
+        - "pictures"
+        - "comments"
+        - "likedByUser"
+    UserDTO:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          format: "uuid"
+        username:
+          type: "string"
+        email:
+          type: "string"
+          nullable: true
+        profilePicture:
+          nullable: true
+          $ref: "#/components/schemas/StoredFileDTO"
+        karma:
+          type: "integer"
+          format: "int32"
+        createdAt:
+          type: "string"
+          format: "date-time"
+        spots:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SpotDTO"
+        posts:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PostDTO"
+        following:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/UserDTO"
+        followers:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/UserDTO"
+      required:
+        - "uuid"
+        - "username"
+        - "karma"
+        - "createdAt"
+        - "spots"
+        - "posts"
+        - "following"
+        - "followers"
+    AuthResponseDTO:
+      type: "object"
+      properties:
+        accessToken:
+          type: "string"
+        expiresIn:
+          type: "integer"
+          format: "int64"
+        user:
+          $ref: "#/components/schemas/UserDTO"
+      required:
+        - "accessToken"
+        - "expiresIn"
+        - "user"
+    CreatePostCommentRequest:
+      type: "object"
+      properties:
+        content:
+          type: "string"
+      required:
+        - "content"
+    Unit:
+      type: "object"
+      properties: { }
+    CreateSpotCommentRequest:
+      type: "object"
+      properties:
+        content:
+          type: "string"
+        rating:
+          type: "integer"
+          format: "int32"
+      required:
+        - "content"
+        - "rating"
