@@ -20,7 +20,7 @@ class _FeedScreenState extends State<FeedScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final notifier = Provider.of<FeedScreenNotifier>(context, listen: false);
-      notifier.load();
+      notifier.loadPosts();
     });
   }
 

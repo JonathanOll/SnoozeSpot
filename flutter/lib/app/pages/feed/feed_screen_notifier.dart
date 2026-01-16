@@ -8,7 +8,7 @@ class FeedScreenNotifier with ChangeNotifier {
   List<PostDTO> get posts =>
       _posts.toList();
 
-  void load() async {
+  void loadPosts() async {
     var response = await postRepository.getPosts();
     _posts.addAll(response);
 
