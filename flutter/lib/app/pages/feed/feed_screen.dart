@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snoozespot/app/pages/account/account_screen.dart';
 import 'package:snoozespot/app/pages/account/login/login_screen.dart';
 import 'package:snoozespot/app/pages/feed/feed_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/components/feed_element.dart';
@@ -61,9 +62,9 @@ class _FeedScreenState extends State<FeedScreen> {
                   onPressed: () {
                     Navigator.of(
                       context,
-                    ).pushNamed(LoginScreen.routeName);
+                    ).pushNamed(AccountScreen.routeName);
                   },
-                  child: Text("login"),
+                  child: Text("account"),
                 ),
               ],
             ),
