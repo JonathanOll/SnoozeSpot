@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snoozespot/app/pages/account/login/login_screen.dart';
 import 'package:snoozespot/app/pages/feed/feed_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/components/feed_element.dart';
 import 'package:snoozespot/app/pages/feed/new_post/new_post_screen.dart';
@@ -55,6 +56,14 @@ class _FeedScreenState extends State<FeedScreen> {
                     ).pushNamed(SpotDetailsScreen.routeName);
                   },
                   child: Text("autre page"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(
+                      context,
+                    ).pushNamed(LoginScreen.routeName);
+                  },
+                  child: Text("login"),
                 ),
               ],
             ),
