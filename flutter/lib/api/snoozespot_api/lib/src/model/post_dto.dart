@@ -3,10 +3,10 @@
 //
 
 // ignore_for_file: unused_element
+import 'package:snoozespot_api/src/model/stored_file_dto.dart';
 import 'package:built_collection/built_collection.dart';
-import 'package:snoozespot/src/model/stored_file_dto.dart';
-import 'package:snoozespot/src/model/user_dto.dart';
-import 'package:snoozespot/src/model/post_comment_dto.dart';
+import 'package:snoozespot_api/src/model/post_comment_dto.dart';
+import 'package:snoozespot_api/src/model/user_dto.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 

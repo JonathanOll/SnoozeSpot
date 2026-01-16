@@ -12,16 +12,16 @@ class _$CreateSpotCommentRequest extends CreateSpotCommentRequest {
   @override
   final int rating;
 
-  factory _$CreateSpotCommentRequest(
-          [void Function(CreateSpotCommentRequestBuilder)? updates]) =>
-      (CreateSpotCommentRequestBuilder()..update(updates))._build();
+  factory _$CreateSpotCommentRequest([
+    void Function(CreateSpotCommentRequestBuilder)? updates,
+  ]) => (CreateSpotCommentRequestBuilder()..update(updates))._build();
 
   _$CreateSpotCommentRequest._({required this.content, required this.rating})
-      : super._();
+    : super._();
   @override
   CreateSpotCommentRequest rebuild(
-          void Function(CreateSpotCommentRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreateSpotCommentRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreateSpotCommentRequestBuilder toBuilder() =>
@@ -94,12 +94,19 @@ class CreateSpotCommentRequestBuilder
   CreateSpotCommentRequest build() => _build();
 
   _$CreateSpotCommentRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CreateSpotCommentRequest._(
           content: BuiltValueNullFieldError.checkNotNull(
-              content, r'CreateSpotCommentRequest', 'content'),
+            content,
+            r'CreateSpotCommentRequest',
+            'content',
+          ),
           rating: BuiltValueNullFieldError.checkNotNull(
-              rating, r'CreateSpotCommentRequest', 'rating'),
+            rating,
+            r'CreateSpotCommentRequest',
+            'rating',
+          ),
         );
     replace(_$result);
     return _$result;

@@ -1,8 +1,8 @@
-# snoozespot.model.UserAuthRequest
+# snoozespot_api.model.UserAuthRequest
 
 ## Load the model package
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 ```
 
 ## Properties

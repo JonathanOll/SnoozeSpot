@@ -1,8 +1,8 @@
-# snoozespot.model.SpotCommentDTO
+# snoozespot_api.model.SpotCommentDTO
 
 ## Load the model package
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 ```
 
 ## Properties

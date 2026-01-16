@@ -1,8 +1,8 @@
-# snoozespot.model.CreatePostCommentRequest
+# snoozespot_api.model.CreatePostCommentRequest
 
 ## Load the model package
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 ```
 
 ## Properties

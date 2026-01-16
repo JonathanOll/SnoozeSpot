@@ -10,16 +10,16 @@ import 'package:dio/dio.dart';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart';
-import 'package:snoozespot/src/api_util.dart';
-import 'package:snoozespot/src/model/auth_response_dto.dart';
-import 'package:snoozespot/src/model/create_post_comment_request.dart';
-import 'package:snoozespot/src/model/create_spot_comment_request.dart';
-import 'package:snoozespot/src/model/post_comment_dto.dart';
-import 'package:snoozespot/src/model/post_dto.dart';
-import 'package:snoozespot/src/model/spot_comment_dto.dart';
-import 'package:snoozespot/src/model/spot_dto.dart';
-import 'package:snoozespot/src/model/user_auth_request.dart';
-import 'package:snoozespot/src/model/user_dto.dart';
+import 'package:snoozespot_api/src/api_util.dart';
+import 'package:snoozespot_api/src/model/auth_response_dto.dart';
+import 'package:snoozespot_api/src/model/create_post_comment_request.dart';
+import 'package:snoozespot_api/src/model/create_spot_comment_request.dart';
+import 'package:snoozespot_api/src/model/post_comment_dto.dart';
+import 'package:snoozespot_api/src/model/post_dto.dart';
+import 'package:snoozespot_api/src/model/spot_comment_dto.dart';
+import 'package:snoozespot_api/src/model/spot_dto.dart';
+import 'package:snoozespot_api/src/model/user_auth_request.dart';
+import 'package:snoozespot_api/src/model/user_dto.dart';
 
 class DefaultApi {
   final Dio _dio;

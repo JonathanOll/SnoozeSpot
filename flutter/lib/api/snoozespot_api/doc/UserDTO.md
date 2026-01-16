@@ -1,8 +1,8 @@
-# snoozespot.model.UserDTO
+# snoozespot_api.model.UserDTO
 
 ## Load the model package
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 ```
 
 ## Properties

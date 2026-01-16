@@ -19,12 +19,12 @@ class _$PostCommentDTO extends PostCommentDTO {
   factory _$PostCommentDTO([void Function(PostCommentDTOBuilder)? updates]) =>
       (PostCommentDTOBuilder()..update(updates))._build();
 
-  _$PostCommentDTO._(
-      {required this.id,
-      required this.user,
-      required this.content,
-      this.createdAt})
-      : super._();
+  _$PostCommentDTO._({
+    required this.id,
+    required this.user,
+    required this.content,
+    this.createdAt,
+  }) : super._();
   @override
   PostCommentDTO rebuild(void Function(PostCommentDTOBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -116,13 +116,20 @@ class PostCommentDTOBuilder
   _$PostCommentDTO _build() {
     _$PostCommentDTO _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$PostCommentDTO._(
             id: BuiltValueNullFieldError.checkNotNull(
-                id, r'PostCommentDTO', 'id'),
+              id,
+              r'PostCommentDTO',
+              'id',
+            ),
             user: user.build(),
             content: BuiltValueNullFieldError.checkNotNull(
-                content, r'PostCommentDTO', 'content'),
+              content,
+              r'PostCommentDTO',
+              'content',
+            ),
             createdAt: createdAt,
           );
     } catch (_) {
@@ -132,7 +139,10 @@ class PostCommentDTOBuilder
         user.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'PostCommentDTO', _$failedField, e.toString());
+          r'PostCommentDTO',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

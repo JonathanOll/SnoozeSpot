@@ -1,8 +1,8 @@
-# snoozespot.model.StoredFileDTO
+# snoozespot_api.model.StoredFileDTO
 
 ## Load the model package
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 ```
 
 ## Properties
