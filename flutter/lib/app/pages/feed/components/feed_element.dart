@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snoozespot/app/components/user_profile_picture.dart';
 import 'package:snoozespot/app/pages/feed/post_details/post_details_screen.dart';
 import 'package:snoozespot/generated/assets.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
@@ -31,15 +32,7 @@ class FeedElement extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Rounded(
-                      child: Image(
-                        image: post.user.profilePicture?.path != null
-                            ? NetworkImage(post.user.profilePicture!.path)
-                            : AssetImage(Assets.imagesLobster),
-                        width: AppImageSize.xxlarge,
-                        height: AppImageSize.xxlarge,
-                      ),
-                    ),
+                    UserProfilePicture(user: post.user),
                     SizedBox(width: AppMargin.small),
                     Text(post.user.username, style: AppTheme.titleMedium),
                   ],

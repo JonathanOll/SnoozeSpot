@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:hive/hive.dart';
 import 'package:snoozespot/api/snoozespot_api/lib/snoozespot_api.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -15,9 +17,9 @@ class AuthStore {
     userBox = await Hive.openBox('user');
   }
 
-  UserDTO? getUser() => userBox.get("user");
+  UserDTO? getUser() => userBox.get("user") != null ? serializers.deserialize(userBox.get("user")) as UserDTO : null;
 
-  void setUser(UserDTO? user) => userBox.put("user", user);
+  void setUser(UserDTO? user) => userBox.put("user", user != null ? serializers.serialize(user) : null);
 
   String? getJWT() => tokenBox.get("jwt");
 

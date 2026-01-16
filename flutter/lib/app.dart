@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snoozespot/app/pages/account/account_screen.dart';
+import 'package:snoozespot/app/pages/account/account_screen_notifier.dart';
 import 'package:snoozespot/app/pages/account/login/login_screen.dart';
 import 'package:snoozespot/app/pages/account/login/login_screen_notifier.dart';
 import 'package:snoozespot/app/pages/account/signup/signup_screen.dart';
@@ -23,12 +25,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => PostDetailsScreenNotifier(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => LoginScreenNotifier(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => SignupScreenNotifier(),
-        ),
+        ChangeNotifierProvider(create: (context) => LoginScreenNotifier()),
+        ChangeNotifierProvider(create: (context) => SignupScreenNotifier()),
+        ChangeNotifierProvider(create: (context) => AccountScreenNotifier()),
       ],
       child: MaterialApp(
         title: 'SnoozeSpot',
@@ -40,6 +39,7 @@ class MyApp extends StatelessWidget {
           PostDetailsScreen.routeName: (context) => PostDetailsScreen(),
           LoginScreen.routeName: (context) => LoginScreen(),
           SignupScreen.routeName: (context) => SignupScreen(),
+          AccountScreen.routeName: (context) => AccountScreen(),
         },
         initialRoute: FeedScreen.routeName,
       ),
