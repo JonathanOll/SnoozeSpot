@@ -1,0 +1,15 @@
+import 'package:flutter/foundation.dart';
+import 'package:snoozespot/api/api_generator.dart';
+import 'package:snoozespot_api/snoozespot_api.dart';
+
+final postRepository = PostRepository();
+
+class PostRepository {
+
+  Future<List<PostDTO>> getPosts() async {
+    final response = await api.postsGet();
+
+    return (response.data ?? <PostDTO>[]).toList();
+  }
+
+}
