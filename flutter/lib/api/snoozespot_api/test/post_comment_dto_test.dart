@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:snoozespot/snoozespot.dart';
+import 'package:snoozespot_api/snoozespot_api.dart';
 
 // tests for PostCommentDTO
 void main() {

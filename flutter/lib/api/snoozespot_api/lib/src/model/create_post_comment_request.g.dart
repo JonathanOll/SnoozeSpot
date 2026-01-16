@@ -10,15 +10,15 @@ class _$CreatePostCommentRequest extends CreatePostCommentRequest {
   @override
   final String content;
 
-  factory _$CreatePostCommentRequest(
-          [void Function(CreatePostCommentRequestBuilder)? updates]) =>
-      (CreatePostCommentRequestBuilder()..update(updates))._build();
+  factory _$CreatePostCommentRequest([
+    void Function(CreatePostCommentRequestBuilder)? updates,
+  ]) => (CreatePostCommentRequestBuilder()..update(updates))._build();
 
   _$CreatePostCommentRequest._({required this.content}) : super._();
   @override
   CreatePostCommentRequest rebuild(
-          void Function(CreatePostCommentRequestBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+    void Function(CreatePostCommentRequestBuilder) updates,
+  ) => (toBuilder()..update(updates)).build();
 
   @override
   CreatePostCommentRequestBuilder toBuilder() =>
@@ -40,9 +40,9 @@ class _$CreatePostCommentRequest extends CreatePostCommentRequest {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'CreatePostCommentRequest')
-          ..add('content', content))
-        .toString();
+    return (newBuiltValueToStringHelper(
+      r'CreatePostCommentRequest',
+    )..add('content', content)).toString();
   }
 }
 
@@ -82,10 +82,14 @@ class CreatePostCommentRequestBuilder
   CreatePostCommentRequest build() => _build();
 
   _$CreatePostCommentRequest _build() {
-    final _$result = _$v ??
+    final _$result =
+        _$v ??
         _$CreatePostCommentRequest._(
           content: BuiltValueNullFieldError.checkNotNull(
-              content, r'CreatePostCommentRequest', 'content'),
+            content,
+            r'CreatePostCommentRequest',
+            'content',
+          ),
         );
     replace(_$result);
     return _$result;

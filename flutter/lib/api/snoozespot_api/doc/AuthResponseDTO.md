@@ -1,8 +1,8 @@
-# snoozespot.model.AuthResponseDTO
+# snoozespot_api.model.AuthResponseDTO
 
 ## Load the model package
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 ```
 
 ## Properties

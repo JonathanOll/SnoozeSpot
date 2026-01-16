@@ -5,7 +5,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:snoozespot/src/auth/auth.dart';
+import 'package:snoozespot_api/src/auth/auth.dart';
 
 class BasicAuthInfo {
   final String username;

@@ -1,9 +1,9 @@
 import 'package:test/test.dart';
-import 'package:snoozespot/snoozespot.dart';
+import 'package:snoozespot_api/snoozespot_api.dart';
 
 /// tests for DefaultApi
 void main() {
-  final instance = Snoozespot().getDefaultApi();
+  final instance = SnoozespotApi().getDefaultApi();
 
   group(DefaultApi, () {
     //

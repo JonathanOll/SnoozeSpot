@@ -4,20 +4,20 @@
 
 import 'package:dio/dio.dart';
 import 'package:built_value/serializer.dart';
-import 'package:snoozespot/src/serializers.dart';
-import 'package:snoozespot/src/auth/api_key_auth.dart';
-import 'package:snoozespot/src/auth/basic_auth.dart';
-import 'package:snoozespot/src/auth/bearer_auth.dart';
-import 'package:snoozespot/src/auth/oauth.dart';
-import 'package:snoozespot/src/api/default_api.dart';
+import 'package:snoozespot_api/src/serializers.dart';
+import 'package:snoozespot_api/src/auth/api_key_auth.dart';
+import 'package:snoozespot_api/src/auth/basic_auth.dart';
+import 'package:snoozespot_api/src/auth/bearer_auth.dart';
+import 'package:snoozespot_api/src/auth/oauth.dart';
+import 'package:snoozespot_api/src/api/default_api.dart';
 
-class Snoozespot {
+class SnoozespotApi {
   static const String basePath = r'https://snoozespot_api';
 
   final Dio dio;
   final Serializers serializers;
 
-  Snoozespot({
+  SnoozespotApi({
     Dio? dio,
     Serializers? serializers,
     String? basePathOverride,

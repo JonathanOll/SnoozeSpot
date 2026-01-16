@@ -3,7 +3,7 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:snoozespot/src/model/stored_file_dto.dart';
+import 'package:snoozespot_api/src/model/stored_file_dto.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 

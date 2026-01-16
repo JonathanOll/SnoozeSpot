@@ -1,8 +1,8 @@
-# snoozespot.api.DefaultApi
+# snoozespot_api.api.DefaultApi
 
 ## Load the API package
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 ```
 
 All URIs are relative to *https://snoozespot_api*
@@ -38,9 +38,9 @@ Method | HTTP request | Description
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 final UserAuthRequest userAuthRequest = ; // UserAuthRequest | 
 
 try {
@@ -81,9 +81,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 final UserAuthRequest userAuthRequest = ; // UserAuthRequest | 
 
 try {
@@ -124,9 +124,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 final int commentId = 56; // int | 
 
 try {
@@ -167,9 +167,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 final int page = 56; // int | 
 
 try {
@@ -210,9 +210,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 final int id = 56; // int | 
 final CreatePostCommentRequest createPostCommentRequest = ; // CreatePostCommentRequest | 
 
@@ -255,9 +255,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 final int id = 56; // int | 
 
 try {
@@ -298,9 +298,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 final int id = 56; // int | 
 
 try {
@@ -341,9 +341,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 final int id = 56; // int | 
 
 try {
@@ -384,9 +384,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 
 try {
     final response = api.postsPost();
@@ -423,9 +423,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 
 try {
     final response = api.spotsGet();
@@ -462,9 +462,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 final int id = 56; // int | 
 final CreateSpotCommentRequest createSpotCommentRequest = ; // CreateSpotCommentRequest | 
 
@@ -507,9 +507,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 final int id = 56; // int | 
 
 try {
@@ -550,9 +550,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 
 try {
     final response = api.spotsPost();
@@ -589,9 +589,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 final num topLeftLatitude = 8.14; // num | 
 final num topLeftLongitude = 8.14; // num | 
 final num bottomRightLatitude = 8.14; // num | 
@@ -638,9 +638,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 
 try {
     final response = api.usersGet();
@@ -677,9 +677,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 
 try {
     final response = api.usersMeGet();
@@ -716,9 +716,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 
 try {
     final response = api.usersProfilePicturePost();
@@ -755,9 +755,9 @@ No authorization required
 
 ### Example
 ```dart
-import 'package:snoozespot/api.dart';
+import 'package:snoozespot_api/api.dart';
 
-final api = Snoozespot().getDefaultApi();
+final api = SnoozespotApi().getDefaultApi();
 final String uuid = uuid_example; // String | 
 
 try {
