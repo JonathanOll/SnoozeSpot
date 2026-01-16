@@ -31,18 +31,18 @@ class _$UserDTO extends UserDTO {
   factory _$UserDTO([void Function(UserDTOBuilder)? updates]) =>
       (UserDTOBuilder()..update(updates))._build();
 
-  _$UserDTO._({
-    required this.uuid,
-    required this.username,
-    required this.karma,
-    required this.createdAt,
-    required this.spots,
-    required this.posts,
-    required this.following,
-    required this.followers,
-    this.email,
-    this.profilePicture,
-  }) : super._();
+  _$UserDTO._(
+      {required this.uuid,
+      required this.username,
+      required this.karma,
+      required this.createdAt,
+      required this.spots,
+      required this.posts,
+      required this.following,
+      required this.followers,
+      this.email,
+      this.profilePicture})
+      : super._();
   @override
   UserDTO rebuild(void Function(UserDTOBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -187,29 +187,16 @@ class UserDTOBuilder implements Builder<UserDTO, UserDTOBuilder> {
   _$UserDTO _build() {
     _$UserDTO _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$UserDTO._(
-            uuid: BuiltValueNullFieldError.checkNotNull(
-              uuid,
-              r'UserDTO',
-              'uuid',
-            ),
+            uuid:
+                BuiltValueNullFieldError.checkNotNull(uuid, r'UserDTO', 'uuid'),
             username: BuiltValueNullFieldError.checkNotNull(
-              username,
-              r'UserDTO',
-              'username',
-            ),
+                username, r'UserDTO', 'username'),
             karma: BuiltValueNullFieldError.checkNotNull(
-              karma,
-              r'UserDTO',
-              'karma',
-            ),
+                karma, r'UserDTO', 'karma'),
             createdAt: BuiltValueNullFieldError.checkNotNull(
-              createdAt,
-              r'UserDTO',
-              'createdAt',
-            ),
+                createdAt, r'UserDTO', 'createdAt'),
             spots: spots.build(),
             posts: posts.build(),
             following: following.build(),
@@ -233,10 +220,7 @@ class UserDTOBuilder implements Builder<UserDTO, UserDTOBuilder> {
         _profilePicture?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'UserDTO',
-          _$failedField,
-          e.toString(),
-        );
+            r'UserDTO', _$failedField, e.toString());
       }
       rethrow;
     }

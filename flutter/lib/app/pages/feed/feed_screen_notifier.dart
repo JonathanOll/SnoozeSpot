@@ -6,12 +6,21 @@ class FeedScreenNotifier with ChangeNotifier {
   final List<PostDTO> _posts = <PostDTO>[];
 
   List<PostDTO> get posts =>
-      _posts.toList(); // O(N), makes a new copy each time.
+      _posts.toList();
 
   void load() async {
     var response = await postRepository.getPosts();
     _posts.addAll(response);
 
     notifyListeners();
+  }
+
+  void createPost(String content) async {
+    var response = await postRepository.createPost(content);
+
+    if (response != null) {
+      _posts.insert(0, response);
+      notifyListeners();
+    }
   }
 }

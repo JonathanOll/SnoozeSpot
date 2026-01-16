@@ -708,6 +708,8 @@ class DefaultApi {
   ///
   ///
   /// Parameters:
+  /// * [content] - Contenu textuel du post
+  /// * [file] - Fichier optionnel associé au post
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -718,6 +720,8 @@ class DefaultApi {
   /// Returns a [Future] containing a [Response] with a [PostDTO] as data
   /// Throws [DioException] if API call or serialization fails
   Future<Response<PostDTO>> postsPost({
+    required String content,
+    MultipartFile? file,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -735,11 +739,33 @@ class DefaultApi {
         'secure': <Map<String, String>>[],
         ...?extra,
       },
+      contentType: 'multipart/form-data',
       validateStatus: validateStatus,
     );
 
+    dynamic _bodyData;
+
+    try {
+      _bodyData = FormData.fromMap(<String, dynamic>{
+        r'content':
+            encodeFormParameter(_serializers, content, const FullType(String)),
+        if (file != null) r'file': file,
+      });
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
     final _response = await _dio.request<Object>(
       _path,
+      data: _bodyData,
       options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,

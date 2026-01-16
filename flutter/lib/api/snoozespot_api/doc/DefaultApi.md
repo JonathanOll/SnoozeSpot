@@ -376,7 +376,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **postsPost**
-> PostDTO postsPost()
+> PostDTO postsPost(content, file)
 
 
 
@@ -387,9 +387,11 @@ No authorization required
 import 'package:snoozespot_api/api.dart';
 
 final api = SnoozespotApi().getDefaultApi();
+final String content = content_example; // String | Contenu textuel du post
+final MultipartFile file = BINARY_DATA_HERE; // MultipartFile | Fichier optionnel associé au post
 
 try {
-    final response = api.postsPost();
+    final response = api.postsPost(content, file);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling DefaultApi->postsPost: $e\n');
@@ -397,7 +399,11 @@ try {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **content** | **String**| Contenu textuel du post | 
+ **file** | **MultipartFile**| Fichier optionnel associé au post | [optional] 
 
 ### Return type
 
@@ -409,7 +415,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: multipart/form-data
  - **Accept**: text/plain, */*
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

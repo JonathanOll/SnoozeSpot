@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/app/pages/feed/feed_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/components/feed_element.dart';
+import 'package:snoozespot/app/pages/feed/new_post/new_post_screen.dart';
 import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -28,6 +29,15 @@ class _FeedScreenState extends State<FeedScreen> {
     final notifier = context.watch<FeedScreenNotifier>();
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final result = await Navigator.of(context).pushNamed(NewPostScreen.routeName);
+          if (result != null && result is String && result.isNotEmpty) {
+            notifier.createPost(result);
+          }
+        },
+        child: Icon(Icons.add),
+      ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,

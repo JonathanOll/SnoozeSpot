@@ -17,11 +17,9 @@ class _$AuthResponseDTO extends AuthResponseDTO {
   factory _$AuthResponseDTO([void Function(AuthResponseDTOBuilder)? updates]) =>
       (AuthResponseDTOBuilder()..update(updates))._build();
 
-  _$AuthResponseDTO._({
-    required this.accessToken,
-    required this.expiresIn,
-    required this.user,
-  }) : super._();
+  _$AuthResponseDTO._(
+      {required this.accessToken, required this.expiresIn, required this.user})
+      : super._();
   @override
   AuthResponseDTO rebuild(void Function(AuthResponseDTOBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -105,19 +103,12 @@ class AuthResponseDTOBuilder
   _$AuthResponseDTO _build() {
     _$AuthResponseDTO _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$AuthResponseDTO._(
             accessToken: BuiltValueNullFieldError.checkNotNull(
-              accessToken,
-              r'AuthResponseDTO',
-              'accessToken',
-            ),
+                accessToken, r'AuthResponseDTO', 'accessToken'),
             expiresIn: BuiltValueNullFieldError.checkNotNull(
-              expiresIn,
-              r'AuthResponseDTO',
-              'expiresIn',
-            ),
+                expiresIn, r'AuthResponseDTO', 'expiresIn'),
             user: user.build(),
           );
     } catch (_) {
@@ -127,10 +118,7 @@ class AuthResponseDTOBuilder
         user.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'AuthResponseDTO',
-          _$failedField,
-          e.toString(),
-        );
+            r'AuthResponseDTO', _$failedField, e.toString());
       }
       rethrow;
     }

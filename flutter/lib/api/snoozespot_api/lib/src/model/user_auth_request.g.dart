@@ -17,11 +17,9 @@ class _$UserAuthRequest extends UserAuthRequest {
   factory _$UserAuthRequest([void Function(UserAuthRequestBuilder)? updates]) =>
       (UserAuthRequestBuilder()..update(updates))._build();
 
-  _$UserAuthRequest._({
-    required this.username,
-    required this.password,
-    this.email,
-  }) : super._();
+  _$UserAuthRequest._(
+      {required this.username, required this.password, this.email})
+      : super._();
   @override
   UserAuthRequest rebuild(void Function(UserAuthRequestBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -103,19 +101,12 @@ class UserAuthRequestBuilder
   UserAuthRequest build() => _build();
 
   _$UserAuthRequest _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$UserAuthRequest._(
           username: BuiltValueNullFieldError.checkNotNull(
-            username,
-            r'UserAuthRequest',
-            'username',
-          ),
+              username, r'UserAuthRequest', 'username'),
           password: BuiltValueNullFieldError.checkNotNull(
-            password,
-            r'UserAuthRequest',
-            'password',
-          ),
+              password, r'UserAuthRequest', 'password'),
           email: email,
         );
     replace(_$result);

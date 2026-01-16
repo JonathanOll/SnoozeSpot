@@ -40,13 +40,13 @@ StoredFileDTOTypeEnum _$storedFileDTOTypeEnumValueOf(String name) {
 
 final BuiltSet<StoredFileDTOTypeEnum> _$storedFileDTOTypeEnumValues =
     BuiltSet<StoredFileDTOTypeEnum>(const <StoredFileDTOTypeEnum>[
-      _$storedFileDTOTypeEnum_UNKNOWN,
-      _$storedFileDTOTypeEnum_IMAGE,
-      _$storedFileDTOTypeEnum_VIDEO,
-      _$storedFileDTOTypeEnum_AUDIO,
-      _$storedFileDTOTypeEnum_DOCUMENT,
-      _$storedFileDTOTypeEnum_OTHER,
-    ]);
+  _$storedFileDTOTypeEnum_UNKNOWN,
+  _$storedFileDTOTypeEnum_IMAGE,
+  _$storedFileDTOTypeEnum_VIDEO,
+  _$storedFileDTOTypeEnum_AUDIO,
+  _$storedFileDTOTypeEnum_DOCUMENT,
+  _$storedFileDTOTypeEnum_OTHER,
+]);
 
 const StoredFileDTOUsageEnum _$storedFileDTOUsageEnum_UNKNOW =
     const StoredFileDTOUsageEnum._('UNKNOW');
@@ -86,14 +86,14 @@ StoredFileDTOUsageEnum _$storedFileDTOUsageEnumValueOf(String name) {
 
 final BuiltSet<StoredFileDTOUsageEnum> _$storedFileDTOUsageEnumValues =
     BuiltSet<StoredFileDTOUsageEnum>(const <StoredFileDTOUsageEnum>[
-      _$storedFileDTOUsageEnum_UNKNOW,
-      _$storedFileDTOUsageEnum_SPOT_ATTRIBUTES_ICON,
-      _$storedFileDTOUsageEnum_PROFILE_PICTURE,
-      _$storedFileDTOUsageEnum_SPOT_MEDIA,
-      _$storedFileDTOUsageEnum_POST_MEDIA,
-      _$storedFileDTOUsageEnum_COMMENT_MEDIA,
-      _$storedFileDTOUsageEnum_OTHER,
-    ]);
+  _$storedFileDTOUsageEnum_UNKNOW,
+  _$storedFileDTOUsageEnum_SPOT_ATTRIBUTES_ICON,
+  _$storedFileDTOUsageEnum_PROFILE_PICTURE,
+  _$storedFileDTOUsageEnum_SPOT_MEDIA,
+  _$storedFileDTOUsageEnum_POST_MEDIA,
+  _$storedFileDTOUsageEnum_COMMENT_MEDIA,
+  _$storedFileDTOUsageEnum_OTHER,
+]);
 
 Serializer<StoredFileDTOTypeEnum> _$storedFileDTOTypeEnumSerializer =
     _$StoredFileDTOTypeEnumSerializer();
@@ -125,20 +125,15 @@ class _$StoredFileDTOTypeEnumSerializer
   final String wireName = 'StoredFileDTOTypeEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    StoredFileDTOTypeEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, StoredFileDTOTypeEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
-  StoredFileDTOTypeEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => StoredFileDTOTypeEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+  StoredFileDTOTypeEnum deserialize(Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      StoredFileDTOTypeEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$StoredFileDTOUsageEnumSerializer
@@ -168,20 +163,15 @@ class _$StoredFileDTOUsageEnumSerializer
   final String wireName = 'StoredFileDTOUsageEnum';
 
   @override
-  Object serialize(
-    Serializers serializers,
-    StoredFileDTOUsageEnum object, {
-    FullType specifiedType = FullType.unspecified,
-  }) => _toWire[object.name] ?? object.name;
+  Object serialize(Serializers serializers, StoredFileDTOUsageEnum object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      _toWire[object.name] ?? object.name;
 
   @override
-  StoredFileDTOUsageEnum deserialize(
-    Serializers serializers,
-    Object serialized, {
-    FullType specifiedType = FullType.unspecified,
-  }) => StoredFileDTOUsageEnum.valueOf(
-    _fromWire[serialized] ?? (serialized is String ? serialized : ''),
-  );
+  StoredFileDTOUsageEnum deserialize(Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      StoredFileDTOUsageEnum.valueOf(
+          _fromWire[serialized] ?? (serialized is String ? serialized : ''));
 }
 
 class _$StoredFileDTO extends StoredFileDTO {
@@ -201,14 +191,14 @@ class _$StoredFileDTO extends StoredFileDTO {
   factory _$StoredFileDTO([void Function(StoredFileDTOBuilder)? updates]) =>
       (StoredFileDTOBuilder()..update(updates))._build();
 
-  _$StoredFileDTO._({
-    required this.uuid,
-    required this.description,
-    required this.path,
-    required this.type,
-    required this.usage,
-    this.createdAt,
-  }) : super._();
+  _$StoredFileDTO._(
+      {required this.uuid,
+      required this.description,
+      required this.path,
+      required this.type,
+      required this.usage,
+      this.createdAt})
+      : super._();
   @override
   StoredFileDTO rebuild(void Function(StoredFileDTOBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -314,34 +304,18 @@ class StoredFileDTOBuilder
   StoredFileDTO build() => _build();
 
   _$StoredFileDTO _build() {
-    final _$result =
-        _$v ??
+    final _$result = _$v ??
         _$StoredFileDTO._(
           uuid: BuiltValueNullFieldError.checkNotNull(
-            uuid,
-            r'StoredFileDTO',
-            'uuid',
-          ),
+              uuid, r'StoredFileDTO', 'uuid'),
           description: BuiltValueNullFieldError.checkNotNull(
-            description,
-            r'StoredFileDTO',
-            'description',
-          ),
+              description, r'StoredFileDTO', 'description'),
           path: BuiltValueNullFieldError.checkNotNull(
-            path,
-            r'StoredFileDTO',
-            'path',
-          ),
+              path, r'StoredFileDTO', 'path'),
           type: BuiltValueNullFieldError.checkNotNull(
-            type,
-            r'StoredFileDTO',
-            'type',
-          ),
+              type, r'StoredFileDTO', 'type'),
           usage: BuiltValueNullFieldError.checkNotNull(
-            usage,
-            r'StoredFileDTO',
-            'usage',
-          ),
+              usage, r'StoredFileDTO', 'usage'),
           createdAt: createdAt,
         );
     replace(_$result);

@@ -27,16 +27,16 @@ class _$PostDTO extends PostDTO {
   factory _$PostDTO([void Function(PostDTOBuilder)? updates]) =>
       (PostDTOBuilder()..update(updates))._build();
 
-  _$PostDTO._({
-    required this.id,
-    required this.user,
-    required this.content,
-    required this.likeCount,
-    required this.pictures,
-    required this.comments,
-    required this.likedByUser,
-    this.createdAt,
-  }) : super._();
+  _$PostDTO._(
+      {required this.id,
+      required this.user,
+      required this.content,
+      required this.likeCount,
+      required this.pictures,
+      required this.comments,
+      required this.likedByUser,
+      this.createdAt})
+      : super._();
   @override
   PostDTO rebuild(void Function(PostDTOBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -163,28 +163,18 @@ class PostDTOBuilder implements Builder<PostDTO, PostDTOBuilder> {
   _$PostDTO _build() {
     _$PostDTO _$result;
     try {
-      _$result =
-          _$v ??
+      _$result = _$v ??
           _$PostDTO._(
             id: BuiltValueNullFieldError.checkNotNull(id, r'PostDTO', 'id'),
             user: user.build(),
             content: BuiltValueNullFieldError.checkNotNull(
-              content,
-              r'PostDTO',
-              'content',
-            ),
+                content, r'PostDTO', 'content'),
             likeCount: BuiltValueNullFieldError.checkNotNull(
-              likeCount,
-              r'PostDTO',
-              'likeCount',
-            ),
+                likeCount, r'PostDTO', 'likeCount'),
             pictures: pictures.build(),
             comments: comments.build(),
             likedByUser: BuiltValueNullFieldError.checkNotNull(
-              likedByUser,
-              r'PostDTO',
-              'likedByUser',
-            ),
+                likedByUser, r'PostDTO', 'likedByUser'),
             createdAt: createdAt,
           );
     } catch (_) {
@@ -199,10 +189,7 @@ class PostDTOBuilder implements Builder<PostDTO, PostDTOBuilder> {
         comments.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-          r'PostDTO',
-          _$failedField,
-          e.toString(),
-        );
+            r'PostDTO', _$failedField, e.toString());
       }
       rethrow;
     }
