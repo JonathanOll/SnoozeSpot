@@ -1,32 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snoozespot/app/pages/account/login/login_screen.dart';
 import 'package:snoozespot/app/pages/account/login/login_screen_notifier.dart';
-import 'package:snoozespot/app/pages/account/signup/signup_screen.dart';
+import 'package:snoozespot/app/pages/account/signup/signup_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/post_details/post_details_screen.dart';
 import 'package:snoozespot/resources/app_dimens.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
-  static const routeName = "/account/login";
+  static const routeName = "/account/signup";
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<LoginScreenNotifier>();
+    final notifier = context.watch<SignupScreenNotifier>();
 
+    final TextEditingController emailController = TextEditingController();
     final TextEditingController usernameController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          if (await notifier.login(usernameController.text, passwordController.text)) {
-            Navigator.of(context).pushReplacementNamed(PostDetailsScreen.routeName);
+          if (await notifier.signup(
+            usernameController.text,
+            passwordController.text,
+            emailController.text,
+          )) {
+            Navigator.of(
+              context,
+            ).pushReplacementNamed(PostDetailsScreen.routeName);
           }
         },
         child: Icon(Icons.login),
@@ -38,6 +46,21 @@ class _LoginScreenState extends State<LoginScreen> {
           height: double.infinity,
           child: Column(
             children: [
+              TextField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black, width: 2),
+                  ),
+                  hintText: 'Email',
+                ),
+              ),
               TextField(
                 controller: usernameController,
                 decoration: InputDecoration(
@@ -72,9 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   Navigator.of(
                     context,
-                  ).pushReplacementNamed(SignupScreen.routeName);
+                  ).pushReplacementNamed(LoginScreen.routeName);
                 },
-                child: Text("Signup instead"),
+                child: Text("Login instead"),
               ),
             ],
           ),
