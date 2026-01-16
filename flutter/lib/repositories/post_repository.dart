@@ -12,4 +12,10 @@ class PostRepository {
     return (response.data ?? <PostDTO>[]).toList();
   }
 
+  Future<PostDTO?> createPost(String content) async {
+    final response = await api.postsPost(content: content);
+
+    return response.data;
+  }
+
 }

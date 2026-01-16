@@ -89,13 +89,29 @@ paths:
                   $ref: "#/components/schemas/PostDTO"
     post:
       description: ""
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: "Contenu textuel du post"
+                file:
+                  type: string
+                  format: binary
+                  description: "Fichier optionnel associé au post"
+              required:
+                - content
       responses:
         "500":
           description: "Internal Server Error"
           content:
             text/plain:
               schema:
-                type: "string"
+                type: string
               examples:
                 Example#1:
                   value: ""
@@ -106,7 +122,7 @@ paths:
           content:
             '*/*':
               schema:
-                type: "string"
+                type: string
               examples:
                 Example#1:
                   value: "Post creation failed"
@@ -116,6 +132,7 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/PostDTO"
+
   /posts/{id}:
     delete:
       description: ""
