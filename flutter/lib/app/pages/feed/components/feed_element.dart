@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snoozespot/app/components/user_profile_picture.dart';
+import 'package:snoozespot/app/pages/feed/account_details/account_details_screen.dart';
+import 'package:snoozespot/app/pages/feed/account_details/account_details_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/post_details/post_details_screen.dart';
 import 'package:snoozespot/generated/assets.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
@@ -30,12 +32,15 @@ class FeedElement extends StatelessWidget {
               // profil
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    UserProfilePicture(user: post.user),
-                    SizedBox(width: AppMargin.small),
-                    Text(post.user.username, style: AppTheme.titleMedium),
-                  ],
+                GestureDetector(
+                  onTap: () { Navigator.of(context).pushNamed(AccountDetailsScreen.routeName, arguments: post.user.uuid); },
+                  child: Row(
+                    children: [
+                      UserProfilePicture(user: post.user),
+                      SizedBox(width: AppMargin.small),
+                      Text(post.user.username, style: AppTheme.titleMedium),
+                    ],
+                  ),
                 ),
                 Icon(Icons.more_vert),
               ],

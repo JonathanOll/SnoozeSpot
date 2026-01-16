@@ -6,6 +6,8 @@ import 'package:snoozespot/app/pages/account/login/login_screen.dart';
 import 'package:snoozespot/app/pages/account/login/login_screen_notifier.dart';
 import 'package:snoozespot/app/pages/account/signup/signup_screen.dart';
 import 'package:snoozespot/app/pages/account/signup/signup_screen_notifier.dart';
+import 'package:snoozespot/app/pages/feed/account_details/account_details_screen.dart';
+import 'package:snoozespot/app/pages/feed/account_details/account_details_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/feed_screen.dart';
 import 'package:snoozespot/app/pages/feed/feed_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/new_post/new_post_screen.dart';
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => LoginScreenNotifier()),
         ChangeNotifierProvider(create: (context) => SignupScreenNotifier()),
         ChangeNotifierProvider(create: (context) => AccountScreenNotifier()),
+        ChangeNotifierProvider(create: (context) => AccountDetailsScreenNotifier()),
       ],
       child: MaterialApp(
         title: 'SnoozeSpot',
@@ -40,6 +43,7 @@ class MyApp extends StatelessWidget {
           LoginScreen.routeName: (context) => LoginScreen(),
           SignupScreen.routeName: (context) => SignupScreen(),
           AccountScreen.routeName: (context) => AccountScreen(),
+          AccountDetailsScreen.routeName: (context) => AccountDetailsScreen(),
         },
         initialRoute: FeedScreen.routeName,
       ),

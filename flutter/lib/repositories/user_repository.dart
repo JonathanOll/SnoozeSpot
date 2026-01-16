@@ -5,6 +5,13 @@ import 'package:snoozespot_api/snoozespot_api.dart';
 final userRepository = UserRepository();
 
 class UserRepository {
+
+  Future<UserDTO?> getUser(String uuid) async {
+    final response = await api.usersUuidGet(uuid: uuid);
+
+    return response.data;
+  }
+
   Future<AuthResponseDTO?> login(String username, String password) async {
     final response = await api.authLoginPost(
       userAuthRequest: UserAuthRequest(
