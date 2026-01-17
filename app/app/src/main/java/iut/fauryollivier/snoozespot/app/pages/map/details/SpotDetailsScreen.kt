@@ -6,12 +6,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
@@ -21,7 +23,11 @@ import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.carousel.CarouselDefaults
+import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
+import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -61,7 +68,8 @@ import iut.fauryollivier.snoozespot.app.pages.destinations.NewPostScreenDestinat
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.app.pages.map.details.components.SpotComment
 
-@SuppressLint("UnrememberedMutableState")
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnrememberedMutableState", "ConfigurationScreenWidthHeight")
 @Destination
 @Composable
 fun SpotDetailsScreen(
@@ -110,14 +118,28 @@ fun SpotDetailsScreen(
         ) {
             if (spot != null) {
                 if (!spot!!.pictures.isEmpty()) {
-                    ExpandableImageWithDownload(
-                        imageUri = NetworkDataSource.BASE_URL + spot!!.pictures[0].path,
-                        contentDescription = null,
+
+                    val state = rememberCarouselState { spot!!.pictures.count() }
+
+                    HorizontalMultiBrowseCarousel(
+                        state = state,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(250.dp),
-                        contentScale = ContentScale.Crop,
-                    )
+                            .wrapContentHeight(),
+                        itemSpacing = 0.dp,
+                        preferredItemWidth = LocalConfiguration.current.screenWidthDp.dp,
+                        flingBehavior = CarouselDefaults.singleAdvanceFlingBehavior(state),
+                    ) { i ->
+                        ExpandableImageWithDownload(
+                            imageUri = NetworkDataSource.BASE_URL + spot!!.pictures[i].path,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(250.dp),
+                            contentScale = ContentScale.Crop,
+                        )
+                    }
+
                 } else
                     Image(
                         painter = painterResource(R.drawable.lobster),
