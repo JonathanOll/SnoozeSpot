@@ -1,13 +1,17 @@
 package iut.fauryollivier.snoozespot.repositories
 
 import android.content.Context
+import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.CreatePostCommentRequest
 import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
+import iut.fauryollivier.snoozespot.room.DatabaseBuilder
+import iut.fauryollivier.snoozespot.utils.Toaster
 import iut.fauryollivier.snoozespot.utils.buildFileParts
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
+import org.openapitools.client.models.room.PostDTORoomModel
 import retrofit2.Response
 
 object PostsRepository {
@@ -25,15 +29,25 @@ object PostsRepository {
     }
 
     suspend fun getPosts(page: Int = 0): Response<List<PostDTO>> {
-        return try {
+        val db = DatabaseBuilder.getInstance()
+        try {
             val posts = NetworkDataSource.api.postsGet(page)
-            if (posts.isSuccessful)
-                Response.success(posts.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
+
+            if (posts.isSuccessful) {
+                val body = posts.body() ?: emptyList()
+                db.savePosts(body)
+                return Response.success(body)
+            }
+
+        } catch (_: Exception) {}
+
+        if (page == 0) {
+            val local = db.PostDao().getAll().map { it.toApiModel() }
+            Toaster.instance.toast(R.string.offline_data)
+            return Response.success(local)
         }
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun createPost(
