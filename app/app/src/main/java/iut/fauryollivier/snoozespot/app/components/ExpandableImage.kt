@@ -71,14 +71,15 @@ fun ExpandableImage(
     contentDescription: String? = null,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Crop,
-    content: @Composable () -> Unit = {}
+    defaultClickable: Boolean = true,
+    content: @Composable () -> Unit = {},
 ) {
     val expended = remember { mutableStateOf(false) }
 
     AsyncImage(
         model = imageUri,
         contentDescription = contentDescription,
-        modifier = modifier.clickable { expended.value = true },
+        modifier =  if (!defaultClickable) modifier else modifier.clickable { expended.value = true },
         placeholder = painterResource(id = R.drawable.ic_launcher_background),
         error = painterResource(id = R.drawable.lobster),
         contentScale = contentScale

@@ -60,4 +60,5 @@
     <string name="logged_out">Logged out</string>
     <string name="offline_data">You’re offline. Showing locally stored data. Connect to refresh with new content</string>
     <string name="profile_picture_updated">Profile picture updated</string>
+    <string name="posts">Posts</string>
 </resources>
