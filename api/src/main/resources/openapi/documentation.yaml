@@ -144,7 +144,10 @@ paths:
           content:
             '*/*':
               schema:
-                type: "object"
+                type: "string"
+              examples:
+                Example#1:
+                  value: "deleted"
     get:
       description: ""
       parameters:
@@ -260,7 +263,10 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Unit"
+                type: "string"
+              examples:
+                Example#1:
+                  value: "deleted"
   /spots:
     get:
       description: ""

@@ -134,7 +134,7 @@ fun Route.postRoutes() {
                 call.respond(HttpStatusCode.BadRequest, "Could not delete post $postId")
                 return@delete
             }
-            call.respond(HttpStatusCode.OK)
+            call.respond(HttpStatusCode.OK, "deleted")
         }
 
         delete("comment/{commentId}") {
@@ -150,7 +150,7 @@ fun Route.postRoutes() {
                 call.respond(HttpStatusCode.BadRequest, "Could not delete comment $commentId")
                 return@delete
             }
-            call.respond(HttpStatusCode.OK, result.getOrThrow())
+            call.respond(HttpStatusCode.OK, "deleted")
         }
     }
 }

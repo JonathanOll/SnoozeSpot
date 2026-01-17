@@ -5,10 +5,11 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 object NetworkDataSource {
-    public const val BASE_URL = "https://localhost:8080/"
+    const val BASE_URL = "https://localhost:8080/"
 
     private lateinit var apiInstance: SnoozeSpotApi
 
@@ -28,6 +29,7 @@ object NetworkDataSource {
         apiInstance = Retrofit.Builder()
             .client(client)
             .baseUrl(BASE_URL)
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(SnoozeSpotApi::class.java)

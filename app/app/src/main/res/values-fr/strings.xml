@@ -59,4 +59,5 @@
     <string name="failed_to_delete_comment">Impossible de supprimer le commentaire</string>
     <string name="logged_out">Déconnecté</string>
     <string name="offline_data">Vous êtes hors ligne, affichage des données locales. Reconnectez vous pour voir les nouveautés</string>
+    <string name="profile_picture_updated">Photo de profil mise à jour</string>
 </resources>

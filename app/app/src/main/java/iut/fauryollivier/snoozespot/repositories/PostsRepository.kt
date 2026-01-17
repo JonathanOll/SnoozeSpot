@@ -1,6 +1,7 @@
 package iut.fauryollivier.snoozespot.repositories
 
 import android.content.Context
+import android.util.Log
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.CreatePostCommentRequest
@@ -17,15 +18,13 @@ import retrofit2.Response
 object PostsRepository {
 
     suspend fun getPost(i: Int): Response<PostDTO> {
-        return try {
+        try {
             val post = NetworkDataSource.api.postsIdGet(i)
             if (post.isSuccessful)
-                Response.success(post.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(post.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun getPosts(page: Int = 0): Response<List<PostDTO>> {
@@ -55,67 +54,56 @@ object PostsRepository {
         content: String,
         files: List<String>
     ): Response<PostDTO> {
-        return try {
+        try {
             val post = NetworkDataSource.api.createPost(
                 content.toRequestBody(),
                 buildFileParts(context, files)
             )
             if (post.isSuccessful)
-                Response.success(post.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(post.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun likePost(postId: Int): Response<Boolean> {
-        return try {
+        try {
             val result = NetworkDataSource.api.postsIdLikePost(postId)
             if (result.isSuccessful)
-                Response.success(result.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(result.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun createPostComment(postId: Int, content: String): Response<PostCommentDTO> {
-        return try {
-            val result =
-                NetworkDataSource.api.postsIdCommentPost(postId, CreatePostCommentRequest(content))
+        try {
+            val result = NetworkDataSource.api.postsIdCommentPost(postId, CreatePostCommentRequest(content))
             if (result.isSuccessful)
-                Response.success(result.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(result.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun deletePost(postId: Int): Response<Unit> {
-        return try {
+        try {
             val result = NetworkDataSource.api.postsIdDelete(postId)
             if (result.isSuccessful)
-                Response.success(Unit)
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch(e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(Unit)
+        } catch(_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun deletePostComment(commentId: Int): Response<Unit> {
-        return try {
+        try {
             val result = NetworkDataSource.api.postsCommentCommentIdDelete(commentId)
             if (result.isSuccessful)
-                Response.success(Unit)
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch(e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(Unit)
+        } catch(_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
 }

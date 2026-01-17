@@ -24,12 +24,21 @@ class UserService(private val userRepository: UserRepository) {
 
     fun getById(id: Int): Result<UserDTO> {
         val result = userRepository.getById(id, true)
-        if (result.isFailure) return Result.failure(result.exceptionOrNull()!!)
+        if (result.isFailure)
+            return Result.failure(result.exceptionOrNull()!!)
 
         return Result.success(result.getOrThrow().toDTO())
     }
 
-    fun changeProfilePicture(userId: Int, fileId: Int): Result<Unit> {
-        return userRepository.changeProfilePicture(userId, fileId)
+    fun changeProfilePicture(userId: Int, fileId: Int): Result<UserDTO> {
+        val result = userRepository.changeProfilePicture(userId, fileId)
+        if (result.isFailure)
+            return Result.failure(result.exceptionOrNull()!!)
+
+        val user = userRepository.getById(userId, true)
+        if (result.isFailure)
+            return Result.failure(result.exceptionOrNull()!!)
+
+        return Result.success(user.getOrThrow().toDTO());
     }
 }
