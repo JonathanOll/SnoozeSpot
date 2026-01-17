@@ -10,19 +10,14 @@ import iut.fauryollivier.snoozespot.app.pages.destinations.FeedDetailsScreenDest
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
-import iut.fauryollivier.snoozespot.utils.UiEvent
-import kotlinx.coroutines.flow.MutableSharedFlow
+import iut.fauryollivier.snoozespot.utils.Toaster
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FeedViewModel : ViewModel() {
-
-    private val _events = MutableSharedFlow<UiEvent>()
-    val events = _events.asSharedFlow()
 
     data class ScreenState(
         val posts: List<PostDTO> = emptyList(),
@@ -81,7 +76,7 @@ class FeedViewModel : ViewModel() {
                 } else {
                     errorState()
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 errorState()
             }
         }
@@ -107,7 +102,7 @@ class FeedViewModel : ViewModel() {
                 } else {
                     errorState()
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 errorState()
             }
         }
@@ -120,10 +115,10 @@ class FeedViewModel : ViewModel() {
                 if (response.isSuccessful && response.body() != null) {
                     navigator.navigate(FeedDetailsScreenDestination(response.body()?.id!!))
                 } else {
-                    _events.emit(UiEvent.ShowToast(R.string.failed_to_create_post))
+                    Toaster.instance.toast(R.string.failed_to_create_post)
                 }
-            } catch (e: Exception) {
-                _events.emit(UiEvent.ShowToast(R.string.failed_to_create_post))
+            } catch (_: Exception) {
+                Toaster.instance.toast(R.string.failed_to_create_post)
             }
         }
     }
@@ -146,7 +141,7 @@ class FeedViewModel : ViewModel() {
                     )
                 }
             } else {
-                _events.emit(UiEvent.ShowToast(R.string.failed_to_like_post))
+                Toaster.instance.toast(R.string.failed_to_like_post)
             }
         }
     }
@@ -163,7 +158,7 @@ class FeedViewModel : ViewModel() {
                     )
                 }
             } else {
-                _events.emit(UiEvent.ShowToast(R.string.failed_to_delete_post))
+                Toaster.instance.toast(R.string.failed_to_delete_post)
             }
         }
     }

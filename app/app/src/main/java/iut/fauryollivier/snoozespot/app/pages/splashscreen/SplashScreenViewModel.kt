@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.repositories.UsersRepository
+import iut.fauryollivier.snoozespot.utils.Toaster
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,9 +17,6 @@ import kotlinx.coroutines.launch
 
 class SplashScreenViewModel : ViewModel() {
 
-    private val _events = MutableSharedFlow<UiEvent>()
-    val events = _events.asSharedFlow()
-
     private val _loaded = MutableStateFlow<Boolean>(false)
     val loaded: StateFlow<Boolean> = _loaded.asStateFlow()
 
@@ -29,7 +27,7 @@ class SplashScreenViewModel : ViewModel() {
                 localStorage.saveUser(result.body()!!)
             } else {
                 if(localStorage.getUser.first() != null) {
-                    _events.emit(UiEvent.ShowToast(R.string.logged_out))
+                    Toaster.instance.toast(R.string.logged_out)
                 }
 
                 localStorage.saveAuthToken(null)

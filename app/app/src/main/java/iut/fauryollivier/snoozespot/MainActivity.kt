@@ -19,10 +19,12 @@ import com.ramcosta.composedestinations.navigation.dependency
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.BottomBar
+import iut.fauryollivier.snoozespot.app.components.ToasterComponent
 import iut.fauryollivier.snoozespot.app.components.TopBar
 import iut.fauryollivier.snoozespot.app.pages.NavGraphs
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.room.DatabaseBuilder
+import iut.fauryollivier.snoozespot.utils.Toaster
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +49,8 @@ class MainActivity : ComponentActivity() {
                             BottomBar(navController)
                     }
                 ) { innerPadding ->
+
+                    ToasterComponent()
 
                     DestinationsNavHost(
                         navGraph = NavGraphs.root,

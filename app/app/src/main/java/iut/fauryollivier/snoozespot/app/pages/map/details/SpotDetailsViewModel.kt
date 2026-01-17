@@ -7,6 +7,7 @@ import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.repositories.SpotsRepository
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
+import iut.fauryollivier.snoozespot.utils.Toaster
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,9 +17,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SpotDetailsViewModel : ViewModel() {
-
-    private val _events = MutableSharedFlow<UiEvent>()
-    val events = _events.asSharedFlow()
 
     private val spotState: MutableStateFlow<SpotDTO?> = MutableStateFlow(null)
     val spot: StateFlow<SpotDTO?> = spotState.asStateFlow()
@@ -47,7 +45,7 @@ class SpotDetailsViewModel : ViewModel() {
             val result =
                 SpotsRepository.createSpotComment(spotState.value!!.id, data.content, data.rating)
             if (!result.isSuccessful) {
-                _events.emit(UiEvent.ShowToast(R.string.failed_to_comment))
+                Toaster.instance.toast(R.string.failed_to_comment)
             }
         }
     }

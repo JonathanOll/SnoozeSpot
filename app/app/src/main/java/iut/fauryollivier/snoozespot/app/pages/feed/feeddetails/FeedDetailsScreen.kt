@@ -44,18 +44,6 @@ fun FeedDetailsScreen(
         scaffoldController.showBottomBar.value = false
     }
 
-    val context: Context = LocalContext.current
-
-    LaunchedEffect(true) {
-        vm.events.collect { event ->
-            when (event) {
-                is UiEvent.ShowToast ->
-                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT)
-                        .show()
-            }
-        }
-    }
-
     val postDTO: PostDTO? by vm.state.collectAsState()
     val errorMessage: ErrorMessage? by vm.errorMessage.collectAsState()
 

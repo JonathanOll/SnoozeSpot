@@ -37,20 +37,10 @@ fun RegisterScreen(
 ) {
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { }
-        scaffoldController.showBottomBar.value = true
+        scaffoldController.showBottomBar.value = false
     }
 
     val context = LocalContext.current
-
-    LaunchedEffect(true) {
-        vm.events.collect { event ->
-            when (event) {
-                is UiEvent.ShowToast ->
-                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT)
-                        .show()
-            }
-        }
-    }
 
     val email by vm.email.collectAsState()
     val username by vm.username.collectAsState()

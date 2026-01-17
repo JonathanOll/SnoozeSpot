@@ -1,11 +1,12 @@
 package iut.fauryollivier.snoozespot.app.pages.account.login
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.OutlinedTextField
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
@@ -25,7 +26,6 @@ import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.pages.destinations.RegisterScreenDestination
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
-import iut.fauryollivier.snoozespot.utils.UiEvent
 
 @Destination
 @Composable
@@ -37,20 +37,10 @@ fun LoginScreen(
 ) {
     LaunchedEffect(true) {
         scaffoldController.topBar.value = { }
-        scaffoldController.showBottomBar.value = true
+        scaffoldController.showBottomBar.value = false
     }
 
     val context = LocalContext.current
-
-    LaunchedEffect(true) {
-        vm.events.collect { event ->
-            when (event) {
-                is UiEvent.ShowToast ->
-                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT)
-                        .show()
-            }
-        }
-    }
 
     val username by vm.username.collectAsState()
     val password by vm.password.collectAsState()
@@ -74,7 +64,7 @@ fun LoginScreen(
         )
 
         Button(
-            onClick = { vm.login(LocalStorage(context), { navigator.navigateUp() }) }
+            onClick = { vm.login(LocalStorage(context)) { navigator.navigateUp() } }
         ) {
             Text(stringResource(R.string.login), color = Color.White)
         }
