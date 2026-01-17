@@ -7,6 +7,7 @@ import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
 import iut.fauryollivier.snoozespot.repositories.PostsRepository
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
+import iut.fauryollivier.snoozespot.utils.Toaster
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,9 +18,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FeedDetailsViewModel : ViewModel() {
-
-    private val _events = MutableSharedFlow<UiEvent>()
-    val events = _events.asSharedFlow()
 
     private val _state: MutableStateFlow<PostDTO?> = MutableStateFlow(null)
     val state: StateFlow<PostDTO?> = _state.asStateFlow()
@@ -51,7 +49,7 @@ class FeedDetailsViewModel : ViewModel() {
                     )
                 }
             } else {
-                _events.emit(UiEvent.ShowToast(R.string.failed_to_like_post))
+                Toaster.instance.toast(R.string.failed_to_like_post)
             }
         }
     }
@@ -62,7 +60,7 @@ class FeedDetailsViewModel : ViewModel() {
         viewModelScope.launch {
             val result = PostsRepository.createPostComment(_state.value!!.id, data.content)
             if (!result.isSuccessful) {
-                _events.emit(UiEvent.ShowToast(R.string.failed_to_comment_post))
+                Toaster.instance.toast(R.string.failed_to_comment_post)
             }
         }
     }
@@ -73,7 +71,7 @@ class FeedDetailsViewModel : ViewModel() {
             if (result.isSuccessful) {
                 navigateUp()
             } else {
-                _events.emit(UiEvent.ShowToast(R.string.failed_to_delete_post))
+                Toaster.instance.toast(R.string.failed_to_delete_post)
             }
         }
     }
@@ -88,7 +86,7 @@ class FeedDetailsViewModel : ViewModel() {
                     )
                 }
             } else {
-                _events.emit(UiEvent.ShowToast(R.string.failed_to_delete_comment))
+                Toaster.instance.toast(R.string.failed_to_delete_comment)
             }
         }
     }

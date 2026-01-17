@@ -65,16 +65,6 @@ fun FeedScreen(
 
     val context: Context = LocalContext.current
 
-    LaunchedEffect(true) {
-        vm.events.collect { event ->
-            when (event) {
-                is UiEvent.ShowToast ->
-                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT)
-                        .show()
-            }
-        }
-    }
-
     val state by vm.state.collectAsState()
     val listState = remember { LazyListState() }
 

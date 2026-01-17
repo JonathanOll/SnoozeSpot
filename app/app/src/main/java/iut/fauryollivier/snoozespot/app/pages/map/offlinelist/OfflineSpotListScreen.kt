@@ -39,18 +39,6 @@ fun OfflineSpotListScreen(
         scaffoldController.showBottomBar.value = false
     }
 
-    val context: Context = LocalContext.current
-
-    LaunchedEffect(true) {
-        vm.events.collect { event ->
-            when (event) {
-                is UiEvent.ShowToast ->
-                    Toast.makeText(context, context.getString(event.stringId), Toast.LENGTH_SHORT)
-                        .show()
-            }
-        }
-    }
-
     LaunchedEffect(true) {
         vm.fetchData()
     }

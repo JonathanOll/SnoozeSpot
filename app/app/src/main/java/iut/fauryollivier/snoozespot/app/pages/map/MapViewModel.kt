@@ -10,19 +10,14 @@ import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import iut.fauryollivier.snoozespot.app.pages.map.newspot.NewSpotResult
 import iut.fauryollivier.snoozespot.repositories.SpotsRepository
-import iut.fauryollivier.snoozespot.utils.UiEvent
-import kotlinx.coroutines.flow.MutableSharedFlow
+import iut.fauryollivier.snoozespot.utils.Toaster
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MapViewModel : ViewModel() {
-
-    private val _events = MutableSharedFlow<UiEvent>()
-    val events = _events.asSharedFlow()
 
     data class ScreenState(
         val spots: List<SpotDTO> = emptyList()
@@ -45,7 +40,7 @@ class MapViewModel : ViewModel() {
                     it.copy(spots = result.body()!!)
                 }
             } else if (!result.isSuccessful) {
-                _events.emit(UiEvent.ShowToast(R.string.failed_to_fetch_data))
+                Toaster.instance.toast(R.string.failed_to_fetch_data)
             }
         }
     }
@@ -62,7 +57,7 @@ class MapViewModel : ViewModel() {
             )
 
             if (!result.isSuccessful)
-                _events.emit(UiEvent.ShowToast(R.string.failed_to_create_spot))
+                Toaster.instance.toast(R.string.failed_to_create_spot)
         }
     }
 

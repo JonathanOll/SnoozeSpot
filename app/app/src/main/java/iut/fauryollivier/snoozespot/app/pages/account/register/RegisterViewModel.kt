@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.repositories.UsersRepository
+import iut.fauryollivier.snoozespot.utils.Toaster
 import iut.fauryollivier.snoozespot.utils.UiEvent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,9 +15,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegisterViewModel : ViewModel() {
-
-    private val _events = MutableSharedFlow<UiEvent>()
-    val events = _events.asSharedFlow()
 
     private val _email = MutableStateFlow("")
     var email = _email.asStateFlow()
@@ -48,7 +46,7 @@ class RegisterViewModel : ViewModel() {
                 localStorage.saveUser(data.user)
                 navigateUp()
             } else {
-                _events.emit(UiEvent.ShowToast(R.string.could_not_register))
+                Toaster.instance.toast(R.string.could_not_register)
             }
         }
     }
