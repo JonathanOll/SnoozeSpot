@@ -17,8 +17,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
+import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.SpotCommentDTO
 import iut.fauryollivier.snoozespot.app.components.StarRating
 import iut.fauryollivier.snoozespot.app.pages.destinations.AccountDetailsScreenDestination
@@ -39,13 +41,23 @@ fun SpotComment(
                     )
                 }
             ) {
-                Image(
-                    painterResource(R.drawable.lobster),
-                    stringResource(R.string.profile_picture),
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clip(CircleShape)
-                )
+                if (comment.user.profilePicture != null)
+                    AsyncImage(
+                        NetworkDataSource.BASE_URL + comment.user.profilePicture.path,
+                        stringResource(R.string.profile_picture),
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(CircleShape),
+                        error = painterResource(R.drawable.default_profile_picture)
+                    )
+                else
+                    Image(
+                        painterResource(R.drawable.could_not_load),
+                        stringResource(R.string.profile_picture),
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(CircleShape)
+                    )
 
                 Spacer(modifier = Modifier.width(8.dp))
 

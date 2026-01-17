@@ -142,7 +142,7 @@ fun SpotDetailsScreen(
 
                 } else
                     Image(
-                        painter = painterResource(R.drawable.lobster),
+                        painter = painterResource(R.drawable.could_not_load),
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxWidth()

@@ -81,7 +81,7 @@ fun ExpandableImage(
         contentDescription = contentDescription,
         modifier =  if (!defaultClickable) modifier else modifier.clickable { expended.value = true },
         placeholder = painterResource(id = R.drawable.ic_launcher_background),
-        error = painterResource(id = R.drawable.lobster),
+        error = painterResource(id = R.drawable.could_not_load),
         contentScale = contentScale
     )
 

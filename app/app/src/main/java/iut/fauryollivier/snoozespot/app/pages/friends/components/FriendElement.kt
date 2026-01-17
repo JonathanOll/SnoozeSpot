@@ -20,7 +20,7 @@ fun FriendElement(userModel: UserDTO) {
     Row {
         Row {
             Image(
-                painterResource(R.drawable.lobster),
+                painterResource(R.drawable.default_profile_picture),
                 contentDescription = stringResource(R.string.user_profile_picture)
             )
             Text(userModel.username)
