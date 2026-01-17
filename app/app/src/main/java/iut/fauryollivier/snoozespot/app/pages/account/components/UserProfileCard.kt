@@ -35,11 +35,12 @@ import coil3.compose.AsyncImage
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.UserDTO
+import iut.fauryollivier.snoozespot.app.components.ExpandableImage
 
 @Composable
 fun UserProfileCard(
     user: UserDTO,
-    onClickOnProfilePic: () -> Unit = { }
+    onClickOnProfilePic: (() -> Unit)? = null
 ) {
     Column(
         modifier = Modifier
@@ -49,14 +50,15 @@ fun UserProfileCard(
     ) {
         // Avatar
         if (user.profilePicture != null)
-            AsyncImage(
-                model = NetworkDataSource.BASE_URL + user.profilePicture.path,
+            ExpandableImage(
+                imageUri = NetworkDataSource.BASE_URL + user.profilePicture.path,
                 contentDescription = "Avatar de ${user.username}",
                 modifier = Modifier
                     .size(100.dp)
                     .clip(CircleShape)
                     .border(2.dp, Color.Gray, CircleShape)
-                    .clickable { onClickOnProfilePic() }
+                    .clickable { if (onClickOnProfilePic != null) onClickOnProfilePic() },
+                defaultClickable = onClickOnProfilePic == null
             )
         else
             Image(
@@ -66,7 +68,7 @@ fun UserProfileCard(
                     .size(100.dp)
                     .clip(CircleShape)
                     .border(2.dp, Color.Gray, CircleShape)
-                    .clickable { onClickOnProfilePic() }
+                    .clickable { if (onClickOnProfilePic != null) onClickOnProfilePic() }
             )
 
         Spacer(modifier = Modifier.height(8.dp))

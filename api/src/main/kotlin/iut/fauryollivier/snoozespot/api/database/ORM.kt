@@ -3,6 +3,7 @@ package iut.fauryollivier.snoozespot.api.database
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
+import iut.fauryollivier.snoozespot.api.auth.Password
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.insert
@@ -27,7 +28,7 @@ fun insertDefault() {
             it[id] = 1
             it[username] = "Template"
             it[email] = "template@gmail.com"
-            it[password] = "password"
+            it[password] = Password.hash("password")
             it[this.roleId] = roleId.value
         }
 

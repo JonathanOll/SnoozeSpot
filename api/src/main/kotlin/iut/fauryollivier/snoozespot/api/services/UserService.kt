@@ -1,10 +1,11 @@
 package iut.fauryollivier.snoozespot.api.services
 
 import iut.fauryollivier.snoozespot.api.dtos.UserDTO
+import iut.fauryollivier.snoozespot.api.repositories.PostRepository
 import iut.fauryollivier.snoozespot.api.repositories.UserRepository
 import java.util.*
 
-class UserService(private val userRepository: UserRepository) {
+class UserService(private val userRepository: UserRepository, private val postRepository: PostRepository) {
 
     fun getAll(): Result<List<UserDTO>> {
         val result = userRepository.getAll()
@@ -19,7 +20,15 @@ class UserService(private val userRepository: UserRepository) {
         val result = userRepository.getById(id.getOrThrow(), true)
         if (result.isFailure) return Result.failure(result.exceptionOrNull()!!)
 
-        return Result.success(result.getOrThrow().toDTO())
+        var user = result.getOrThrow()
+
+        val posts = postRepository.getUserPosts(id.getOrThrow())
+        if (posts.isSuccess)
+            user = user.copy(
+                posts = posts.getOrThrow()
+            )
+
+        return Result.success(user.toDTO())
     }
 
     fun getById(id: Int): Result<UserDTO> {

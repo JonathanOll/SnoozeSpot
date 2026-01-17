@@ -28,7 +28,7 @@ val appModule = module {
     single { AuthService(get(), get()) }
 
     single { UserRepository() }
-    single { UserService(get()) }
+    single { UserService(get(), get()) }
 
     single { PostService(get(), get()) }
     single { PostCommentRepository(get()) }
