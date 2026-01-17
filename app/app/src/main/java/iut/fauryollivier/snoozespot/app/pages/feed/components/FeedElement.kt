@@ -82,11 +82,12 @@ fun FeedElement(
                         stringResource(R.string.profile_picture),
                         modifier = Modifier
                             .size(50.dp)
-                            .clip(CircleShape)
+                            .clip(CircleShape),
+                        error = painterResource(R.drawable.default_profile_picture)
                     )
                 else
                     Image(
-                        painterResource(R.drawable.lobster),
+                        painterResource(R.drawable.could_not_load),
                         stringResource(R.string.profile_picture),
                         modifier = Modifier
                             .size(50.dp)

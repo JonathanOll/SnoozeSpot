@@ -62,7 +62,7 @@ fun UserProfileCard(
             )
         else
             Image(
-                painter = painterResource(R.drawable.lobster),
+                painter = painterResource(R.drawable.default_profile_picture),
                 contentDescription = "Avatar de ${user.username}",
                 modifier = Modifier
                     .size(100.dp)
