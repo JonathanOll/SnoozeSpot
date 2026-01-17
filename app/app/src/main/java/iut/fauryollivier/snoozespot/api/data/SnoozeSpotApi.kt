@@ -3,6 +3,7 @@ package iut.fauryollivier.snoozespot.api.data
 import iut.fauryollivier.snoozespot.api.generated.api.DefaultApi
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
+import iut.fauryollivier.snoozespot.api.generated.model.UserDTO
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -33,5 +34,5 @@ interface SnoozeSpotApi : DefaultApi {
     @POST("users/profile-picture")
     suspend fun changeProfilePic(
         @Part file: MultipartBody.Part
-    ): Response<PostDTO>
+    ): Response<UserDTO>
 }

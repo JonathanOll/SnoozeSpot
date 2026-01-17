@@ -1,5 +1,6 @@
 package iut.fauryollivier.snoozespot.app.pages.feed.feeddetails
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import iut.fauryollivier.snoozespot.R

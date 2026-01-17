@@ -76,7 +76,7 @@ fun Route.userRoutes() {
                 return@post
             }
 
-            call.respond(HttpStatusCode.OK, "Profile picture updated")
+            call.respond(HttpStatusCode.OK, result.getOrThrow())
         }
     }
 

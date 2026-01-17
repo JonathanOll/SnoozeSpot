@@ -13,41 +13,35 @@ import java.util.UUID
 object UsersRepository {
 
     suspend fun getUser(i: UUID): Response<UserDTO> {
-        return try {
+        try {
             val user = NetworkDataSource.api.usersUuidGet(i.toString())
             if (user.isSuccessful)
-                Response.success(user.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(user.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
-    suspend fun changeProfilePic(context: Context, uri: String): Response<Unit> {
-        return try {
+    suspend fun changeProfilePic(context: Context, uri: String): Response<UserDTO> {
+        try {
             val result = NetworkDataSource.api.changeProfilePic(
                 file = buildFilePart(context, uri)
             )
             if (result.isSuccessful)
-                Response.success(Unit)
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(result.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun login(username: String, password: String): Response<AuthResponseDTO> {
-        return try {
+         try {
             val result = NetworkDataSource.api.authLoginPost(UserAuthRequest(username, password))
             if (result.isSuccessful)
-                Response.success(result.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(result.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun register(
@@ -55,28 +49,24 @@ object UsersRepository {
         username: String,
         password: String
     ): Response<AuthResponseDTO> {
-        return try {
+        try {
             val result =
                 NetworkDataSource.api.authSignupPost(UserAuthRequest(username, password, email))
             if (result.isSuccessful)
-                Response.success(result.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(result.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun getMe(): Response<UserDTO> {
-        return try {
+        try {
             val result = NetworkDataSource.api.usersMeGet()
             if (result.isSuccessful)
-                Response.success(result.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch(e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(result.body())
+        } catch(_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
 }

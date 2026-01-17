@@ -17,15 +17,13 @@ import java.math.BigDecimal
 object SpotsRepository {
 
     suspend fun getSpot(i: Int): Response<SpotDTO> {
-        return try {
+        try {
             val spot = NetworkDataSource.api.spotsIdGet(i)
             if (spot.isSuccessful)
-                Response.success(spot.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(spot.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun createSpot(
@@ -36,23 +34,21 @@ object SpotsRepository {
         longitude: Double,
         files: List<String>
     ): Response<SpotDTO> {
-        return try {
+        try {
             val result = NetworkDataSource.api.createSpot(
                 name.toRequestBody(), description.toRequestBody(),
                 latitude.toString().toRequestBody(), longitude.toString().toRequestBody(),
                 files = buildFileParts(context, files)
             )
             if (result.isSuccessful)
-                Response.success(result.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(result.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun getSpotsZone(topLeft: LatLng, bottomRight: LatLng): Response<List<SpotDTO>> {
-        return try {
+        try {
             val spots = NetworkDataSource.api.spotsZoneGet(
                 BigDecimal(topLeft.latitude),
                 BigDecimal(topLeft.longitude),
@@ -60,12 +56,10 @@ object SpotsRepository {
                 BigDecimal(bottomRight.longitude)
             )
             if (spots.isSuccessful)
-                Response.success(spots.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(spots.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun createSpotComment(
@@ -73,18 +67,16 @@ object SpotsRepository {
         content: String,
         rating: Int
     ): Response<SpotCommentDTO> {
-        return try {
+        try {
             val result = NetworkDataSource.api.spotsIdCommentPost(
                 spotId,
                 CreateSpotCommentRequest(content, rating)
             )
             if (result.isSuccessful)
-                Response.success(result.body())
-            else
-                Response.error(500, ResponseBody.EMPTY)
-        } catch (e: Exception) {
-            Response.error(500, ResponseBody.EMPTY)
-        }
+                return Response.success(result.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
     }
 
     suspend fun saveOffline(spot: SpotDTO) {
@@ -116,7 +108,7 @@ object SpotsRepository {
         return try {
             Response.success(
                 DatabaseBuilder.getInstance().SpotDao().getAll().map { it.toApiModel() })
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             Response.error(500, ResponseBody.EMPTY)
         }
     }

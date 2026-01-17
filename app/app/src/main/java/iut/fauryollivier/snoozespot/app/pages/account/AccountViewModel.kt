@@ -26,8 +26,12 @@ class AccountViewModel : ViewModel() {
     fun changeProfilePic(context: Context, uri: Uri) {
         viewModelScope.launch {
             val result = UsersRepository.changeProfilePic(context, uri.toString())
-            if (!result.isSuccessful)
+            if (result.isSuccessful) {
+                Toaster.instance.toast(R.string.profile_picture_updated)
+                LocalStorage(context).saveUser(result.body()!!)
+            } else {
                 Toaster.instance.toast(R.string.failed_to_change_profile_pic)
+            }
         }
     }
 
