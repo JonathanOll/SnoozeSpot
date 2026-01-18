@@ -3,6 +3,7 @@ package iut.fauryollivier.snoozespot.repositories
 import android.content.Context
 import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.AuthResponseDTO
+import iut.fauryollivier.snoozespot.api.generated.model.GoogleAuthRequest
 import iut.fauryollivier.snoozespot.api.generated.model.UserAuthRequest
 import iut.fauryollivier.snoozespot.api.generated.model.UserDTO
 import iut.fauryollivier.snoozespot.utils.buildFilePart
@@ -35,8 +36,18 @@ object UsersRepository {
     }
 
     suspend fun login(username: String, password: String): Response<AuthResponseDTO> {
-         try {
+        try {
             val result = NetworkDataSource.api.authLoginPost(UserAuthRequest(username, password))
+            if (result.isSuccessful)
+                return Response.success(result.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
+    }
+
+    suspend fun loginGoogle(token: String): Response<AuthResponseDTO> {
+        try {
+            val result = NetworkDataSource.api.authGooglePost(GoogleAuthRequest(token))
             if (result.isSuccessful)
                 return Response.success(result.body())
         } catch (_: Exception) {}

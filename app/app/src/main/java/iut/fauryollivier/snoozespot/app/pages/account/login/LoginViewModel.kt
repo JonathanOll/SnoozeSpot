@@ -1,7 +1,11 @@
 package iut.fauryollivier.snoozespot.app.pages.account.login
 
+import android.util.Log
+import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.api.ApiException
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.repositories.UsersRepository
@@ -39,6 +43,28 @@ class LoginViewModel : ViewModel() {
                 localStorage.saveUser(data.user)
                 navigateUp()
             } else {
+                Toaster.instance.toast(R.string.could_not_login)
+            }
+        }
+    }
+
+    fun googleLogin(localStorage: LocalStorage, result: ActivityResult, navigateUp: () -> Unit) {
+        viewModelScope.launch {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                if (account.idToken != null) {
+                    val result = UsersRepository.loginGoogle(account.idToken!!)
+
+                    if (result.isSuccessful) {
+                        val data = result.body()!!
+                        localStorage.saveAuthToken(data.accessToken)
+                        localStorage.saveUser(data.user)
+                        navigateUp()
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d("jonatan", e.stackTraceToString())
                 Toaster.instance.toast(R.string.could_not_login)
             }
         }

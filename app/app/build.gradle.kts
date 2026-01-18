@@ -44,14 +44,12 @@ android {
     productFlavors {
         create("development") {
             dimension = "env"
-            applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
             buildConfigField("String", "clefDev", "\"API-KEY-DEV\"")
         }
 
         create("beta") {
             dimension = "env"
-            applicationIdSuffix = ".beta"
             versionNameSuffix = "-beta"
             buildConfigField("String", "clefBeta", "\"API-KEY-DEV\"")
         }
@@ -151,6 +149,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.datastore.preferences.rxjava2)
     implementation(libs.androidx.datastore.preferences.rxjava3)
+
+    implementation(libs.play.services.auth)
 }
 
 configurations.all {
