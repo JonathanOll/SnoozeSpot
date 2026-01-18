@@ -45,6 +45,7 @@ import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.PostCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.components.ExpandableImageWithDownload
+import iut.fauryollivier.snoozespot.app.components.UserProfilePicture
 import iut.fauryollivier.snoozespot.app.pages.destinations.AccountDetailsScreenDestination
 
 
@@ -76,23 +77,12 @@ fun FeedElement(
                 },
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (postDTO.user.profilePicture != null)
-                    AsyncImage(
-                        NetworkDataSource.BASE_URL + postDTO.user.profilePicture.path,
-                        stringResource(R.string.profile_picture),
-                        modifier = Modifier
-                            .size(50.dp)
-                            .clip(CircleShape),
-                        error = painterResource(R.drawable.default_profile_picture)
-                    )
-                else
-                    Image(
-                        painterResource(R.drawable.could_not_load),
-                        stringResource(R.string.profile_picture),
-                        modifier = Modifier
-                            .size(50.dp)
-                            .clip(CircleShape)
-                    )
+                UserProfilePicture(
+                    postDTO.user,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(CircleShape),
+                )
 
                 Spacer(modifier = Modifier.width(8.dp))
 

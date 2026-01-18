@@ -546,6 +546,76 @@ paths:
               examples:
                 Example#1:
                   value: "Profile picture updated"
+  /users/{uuid}/follow:
+    post:
+      description: The authenticated user starts following the target user.
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: ID of the user to follow
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully followed the user
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "You now follow user 12"
+        '400':
+          description: Invalid request or follow action failed
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "You cannot follow yourself"
+        '401':
+          description: Unauthorized
+  /users/{uuid}/unfollow:
+    delete:
+      description: The authenticated user stops following the target user.
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: ID of the user to unfollow
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully unfollowed the user
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "You no longer follow user 12"
+        '400':
+          description: Invalid request or unfollow action failed
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "You cannot unfollow yourself"
+        '401':
+          description: Unauthorized
+  /users/following:
+    get:
+      description: Returns the list of users that the auth user is following.
+      responses:
+        '200':
+          description: List of followed users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDTO'
+        '400':
+          description: Invalid user ID
+        '404':
+          description: User not found
 components:
   schemas:
     UserAuthRequest:
@@ -758,6 +828,8 @@ components:
         karma:
           type: "integer"
           format: "int32"
+        followedByUser:
+          type: "boolean"
         createdAt:
           type: "string"
           format: "date-time"
