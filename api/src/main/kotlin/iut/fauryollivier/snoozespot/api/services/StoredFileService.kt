@@ -29,4 +29,25 @@ class StoredFileService(private val storedFileRepository: StoredFileRepository) 
     fun changeFileDescription(fileUUID: UUID, newDescription: String): Result<Unit> {
         return storedFileRepository.changeFileDescription(fileUUID, newDescription)
     }
+
+    fun saveFileFrom(
+        url: String,
+        description: String,
+        type: StoredFileType,
+        usage: StoredFileUsage
+    ): Result<StoredFile> {
+
+        val idResult = storedFileRepository.saveFileFrom(url, description, type, usage)
+        if (idResult.isFailure) {
+            return Result.failure(Exception("Could not download and save file"))
+        }
+
+        val fileResult = storedFileRepository.getFileById(idResult.getOrThrow())
+        if (fileResult.isFailure) {
+            return Result.failure(Exception("File saved but could not be retrieved"))
+        }
+
+        return Result.success(fileResult.getOrThrow())
+    }
+
 }

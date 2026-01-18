@@ -222,4 +222,18 @@ class UserRepository : RepositoryBase() {
         return Result.success(isFollowing)
     }
 
+    fun getByEmail(email: String): Result<User> {
+        val id = transaction {
+            Tables.Users
+                .select { Tables.Users.email eq email }
+                .selectActive()
+                .map { it[Tables.Users.id] }
+                .firstOrNull()
+        }
+
+        if (id == null) return Result.failure(Exception("User not found"))
+        return getById(id.value)
+    }
+
+
 }

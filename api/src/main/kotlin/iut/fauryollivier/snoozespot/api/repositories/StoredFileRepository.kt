@@ -12,6 +12,8 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.io.File
+import java.net.HttpURLConnection
+import java.net.URL
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.LocalDateTime
@@ -127,6 +129,70 @@ class StoredFileRepository(private val uploadDir: String) : RepositoryBase() {
 
         return files
     }
+
+    fun saveFileFrom(
+        fileUrl: String,
+        description: String,
+        type: StoredFileType,
+        usage: StoredFileUsage
+    ): Result<Int> {
+        return try {
+            val url = URL(fileUrl)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "GET"
+            connection.connect()
+
+            if (connection.responseCode !in 200..299) {
+                return Result.failure(Exception("Failed to download file: HTTP ${connection.responseCode}"))
+            }
+
+            val contentType = connection.contentType ?: "application/octet-stream"
+            val guessedExtension = when {
+                contentType.contains("jpeg") -> "jpg"
+                contentType.contains("png") -> "png"
+                contentType.contains("gif") -> "gif"
+                contentType.contains("pdf") -> "pdf"
+                else -> "bin"
+            }
+
+            val uuid = UUID.randomUUID()
+            val uniqueFileName = "$uuid.$guessedExtension"
+
+            val filePath = Path(
+                uploadDir,
+                StoredFileUsage.getPathForUsage(usage),
+                StoredFileType.getPathForType(type)
+            )
+            Files.createDirectories(filePath)
+
+            val file = File(filePath.toFile(), uniqueFileName)
+
+            connection.inputStream.use { input ->
+                file.outputStream().buffered().use { output ->
+                    input.copyTo(output)
+                }
+            }
+
+            val storedFileId = transaction {
+                Tables.Files.insertAndGetId {
+                    it[Tables.Files.uuid] = uuid
+                    it[Tables.Files.description] = description
+                    it[path] = file.path
+                    it[Tables.Files.type] = type.value
+                    it[Tables.Files.usage] = usage.value
+                    it[canBeUsed] = 1
+                    it[createdAt] = LocalDateTime.now()
+                    it[deletedAt] = null
+                }
+            }
+
+            Result.success(storedFileId.value)
+
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
 
 }

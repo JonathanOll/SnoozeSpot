@@ -4,6 +4,7 @@ package iut.fauryollivier.snoozespot.api.services
 import iut.fauryollivier.snoozespot.api.auth.JWTService
 import iut.fauryollivier.snoozespot.api.auth.Password
 import iut.fauryollivier.snoozespot.api.auth.model.UserAuthRequest
+import iut.fauryollivier.snoozespot.api.dtos.UserDTO
 import iut.fauryollivier.snoozespot.api.repositories.UserRepository
 import iut.fauryollivier.snoozespot.api.routes.AuthResponseDTO
 
@@ -34,5 +35,10 @@ class AuthService(private val userRepository: UserRepository, private val jwtSer
         if (userResult.isFailure) return Result.failure(Exception("Invalid credentials"))
         val token = jwtService.generateToken(userResult.getOrThrow().uuid)
         return Result.success(AuthResponseDTO(token, jwtService.expirationSeconds, userResult.getOrThrow().toDTO()))
+    }
+
+    fun generate(user: UserDTO): Result<AuthResponseDTO> {
+        val token = jwtService.generateToken(user.uuid)
+        return Result.success(AuthResponseDTO(token, jwtService.expirationSeconds, user))
     }
 }

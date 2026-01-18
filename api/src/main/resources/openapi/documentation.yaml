@@ -62,6 +62,39 @@ paths:
             '*/*':
               schema:
                 type: "object"
+  /auth/google:
+    post:
+      description: "Vérifie le token Google, crée un utilisateur si nécessaire et retourne un JWT."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GoogleAuthRequest"
+      responses:
+        "200":
+          description: "Authenticated successfully, returns JWT token"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponseDTO"
+        "401":
+          description: "Unauthorized – token Google invalide"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+                example:
+                  message: "Token Google invalide"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+                example:
+                  message: "Erreur lors de l'auth Google"
+
   /posts:
     get:
       description: ""
@@ -893,3 +926,11 @@ components:
       required:
         - "content"
         - "rating"
+    GoogleAuthRequest:
+      type: "object"
+      properties:
+        idToken:
+          type: "string"
+          description: "Token ID fourni par Google pour l'utilisateur"
+      required:
+        - "idToken"
