@@ -69,4 +69,35 @@ object UsersRepository {
         return Response.error(500, ResponseBody.EMPTY)
     }
 
+    suspend fun followUser(userId: UUID): Response<Unit> {
+        try {
+            val result = NetworkDataSource.api.usersUuidFollowPost(userId.toString())
+            if (result.isSuccessful)
+                return Response.success(Unit)
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
+    }
+
+    suspend fun unfollowUser(userId: UUID): Response<Unit> {
+        try {
+            val result = NetworkDataSource.api.usersUuidUnfollowDelete(userId.toString())
+            if (result.isSuccessful)
+                return Response.success(Unit)
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
+    }
+
+
+    suspend fun getFriends(): Response<List<UserDTO>> {
+        try {
+            val result = NetworkDataSource.api.usersFollowingGet()
+            if (result.isSuccessful)
+                return Response.success(result.body())
+        } catch (_: Exception) {}
+
+        return Response.error(500, ResponseBody.EMPTY)
+    }
+
 }

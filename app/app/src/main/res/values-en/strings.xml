@@ -61,4 +61,8 @@
     <string name="offline_data">You’re offline. Showing locally stored data. Connect to refresh with new content</string>
     <string name="profile_picture_updated">Profile picture updated</string>
     <string name="posts">Posts</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="could_not_follow">Could not follow</string>
+    <string name="could_not_unfollow">Could not unfollow</string>
+    <string name="no_friends_yet">No friends yet</string>
 </resources>

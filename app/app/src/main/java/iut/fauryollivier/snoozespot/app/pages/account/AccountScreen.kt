@@ -86,12 +86,13 @@ fun AccountScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 UserProfileCard(
-                    user!!
-                ) {
-                    launcher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                }
+                    user!!,
+                    onClickOnProfilePic = {
+                        launcher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
+                )
                 HorizontalLine()
                 Button(onClick = { vm.logout(LocalStorage(context)) }) {
                     Text(stringResource(R.string.logout), color = Color.White)

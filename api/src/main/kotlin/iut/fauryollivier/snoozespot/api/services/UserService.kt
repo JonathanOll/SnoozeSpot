@@ -13,11 +13,11 @@ class UserService(private val userRepository: UserRepository, private val postRe
         return Result.success(result.getOrThrow().map { it.toDTO() })
     }
 
-    fun getByUuid(uuid: UUID): Result<UserDTO> {
+    fun getByUuid(uuid: UUID, authUser: Int?): Result<UserDTO> {
         val id = userRepository.getUserIdByUUID(uuid)
         if (id.isFailure) return Result.failure(Exception("unknown UUID $uuid"))
 
-        val result = userRepository.getById(id.getOrThrow(), true)
+        val result = userRepository.getById(id.getOrThrow(), authUser, true)
         if (result.isFailure) return Result.failure(result.exceptionOrNull()!!)
 
         var user = result.getOrThrow()
@@ -31,8 +31,16 @@ class UserService(private val userRepository: UserRepository, private val postRe
         return Result.success(user.toDTO())
     }
 
+    fun getUserIdByUUID(uuid: UUID): Result<Int> {
+        val result = userRepository.getUserIdByUUID(uuid)
+        if (result.isFailure)
+            return Result.failure(result.exceptionOrNull()!!)
+
+        return Result.success(result.getOrThrow())
+    }
+
     fun getById(id: Int): Result<UserDTO> {
-        val result = userRepository.getById(id, true)
+        val result = userRepository.getById(id, loadRelations = true)
         if (result.isFailure)
             return Result.failure(result.exceptionOrNull()!!)
 
@@ -44,10 +52,42 @@ class UserService(private val userRepository: UserRepository, private val postRe
         if (result.isFailure)
             return Result.failure(result.exceptionOrNull()!!)
 
-        val user = userRepository.getById(userId, true)
+        val user = userRepository.getById(userId, loadRelations = true)
         if (result.isFailure)
             return Result.failure(result.exceptionOrNull()!!)
 
         return Result.success(user.getOrThrow().toDTO());
     }
+
+    fun followUser(followerId: Int, followedId: Int): Result<Unit> {
+        if (followerId == followedId)
+            return Result.failure(Exception("You cannot follow yourself"))
+
+        val result = userRepository.follow(followerId, followedId)
+        if (result.isFailure)
+            return Result.failure(result.exceptionOrNull()!!)
+
+        return Result.success(Unit)
+    }
+
+    fun unfollowUser(followerId: Int, followedId: Int): Result<Unit> {
+        if (followerId == followedId)
+            return Result.failure(Exception("You cannot unfollow yourself"))
+
+        val result = userRepository.unfollow(followerId, followedId)
+        if (result.isFailure)
+            return Result.failure(result.exceptionOrNull()!!)
+
+        return Result.success(Unit)
+    }
+
+    fun getFollowing(userId: Int): Result<List<UserDTO>> {
+        val result = userRepository.getFollowing(userId)
+        if (result.isFailure)
+            return Result.failure(result.exceptionOrNull()!!)
+
+        return Result.success(result.getOrThrow().map { it.toDTO() })
+    }
+
+
 }

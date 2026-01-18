@@ -18,7 +18,8 @@ data class UserDTO(
     val spots: List<SpotDTO> = emptyList(),
     val posts: List<PostDTO> = emptyList(),
     val following: List<UserDTO> = emptyList(),
-    val followers: List<UserDTO> = emptyList()
+    val followers: List<UserDTO> = emptyList(),
+    val followedByUser: Boolean
 
 ) : DTOBase() {
 
@@ -30,6 +31,7 @@ data class UserDTO(
         profilePicture = profilePicture?.toEntity(),
         karma = karma,
         createdAt = createdAt,
+        followedByUser = followedByUser
     )
 
 }

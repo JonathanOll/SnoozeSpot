@@ -19,6 +19,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
@@ -26,21 +27,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
 import iut.fauryollivier.snoozespot.R
-import iut.fauryollivier.snoozespot.api.data.NetworkDataSource
 import iut.fauryollivier.snoozespot.api.generated.model.UserDTO
-import iut.fauryollivier.snoozespot.app.components.ExpandableImage
+import iut.fauryollivier.snoozespot.app.components.UserProfilePicture
 
 @Composable
 fun UserProfileCard(
     user: UserDTO,
-    onClickOnProfilePic: (() -> Unit)? = null
+    onClickOnProfilePic: (() -> Unit)? = null,
+    onUserFollow: (() -> Unit)? = null,
+    onUserUnfollow: (() -> Unit)? = null,
 ) {
     Column(
         modifier = Modifier
@@ -48,28 +48,16 @@ fun UserProfileCard(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Avatar
-        if (user.profilePicture != null)
-            ExpandableImage(
-                imageUri = NetworkDataSource.BASE_URL + user.profilePicture.path,
-                contentDescription = "Avatar de ${user.username}",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-                    .border(2.dp, Color.Gray, CircleShape)
-                    .clickable { if (onClickOnProfilePic != null) onClickOnProfilePic() },
-                defaultClickable = onClickOnProfilePic == null
-            )
-        else
-            Image(
-                painter = painterResource(R.drawable.default_profile_picture),
-                contentDescription = "Avatar de ${user.username}",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-                    .border(2.dp, Color.Gray, CircleShape)
-                    .clickable { if (onClickOnProfilePic != null) onClickOnProfilePic() }
-            )
+        UserProfilePicture(
+            user,
+            modifier = Modifier
+                .size(100.dp)
+                .clip(CircleShape)
+                .border(2.dp, Color.Gray, CircleShape)
+                .clickable { if (onClickOnProfilePic != null) onClickOnProfilePic() },
+            expandable = true,
+            onClickOnProfilePic = onClickOnProfilePic
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -86,18 +74,36 @@ fun UserProfileCard(
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Button(onClick = { /* Action suivre */ }) {
-                Icon(
-                    Icons.Default.PersonAdd,
-                    contentDescription = null,
-                    tint = Color.White
-                )
-                Spacer(modifier = Modifier.size(5.dp))
-                Text(
-                    stringResource(R.string.follow),
-                    color = Color.White
-                )
+            if(onUserUnfollow != null && onUserFollow != null) {
+                if (user.followedByUser == true) {
+                    Button(onClick = { onUserUnfollow() }) {
+                        Icon(
+                            Icons.Default.PersonRemove,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                        Spacer(modifier = Modifier.size(5.dp))
+                        Text(
+                            stringResource(R.string.unfollow),
+                            color = Color.White
+                        )
+                    }
+                } else {
+                    Button(onClick = { onUserFollow()}) {
+                        Icon(
+                            Icons.Default.PersonAdd,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                        Spacer(modifier = Modifier.size(5.dp))
+                        Text(
+                            stringResource(R.string.follow),
+                            color = Color.White
+                        )
+                    }
+                }
             }
+
             Button(onClick = { /* Action partager */ }) {
                 Icon(
                     Icons.Default.Share,

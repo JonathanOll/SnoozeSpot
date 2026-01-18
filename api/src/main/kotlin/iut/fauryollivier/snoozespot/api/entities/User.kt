@@ -18,7 +18,8 @@ data class User(
     val spots: List<Spot> = emptyList(),
     val posts: List<Post> = emptyList(),
     val following: List<User> = emptyList(),
-    val followers: List<User> = emptyList()
+    val followers: List<User> = emptyList(),
+    val followedByUser: Boolean
 
 ) : EntityBase() {
 
@@ -32,7 +33,8 @@ data class User(
         spots = spots.map { it.toDTO() },
         posts = posts.map { it.toDTO() },
         following = following.map { it.toDTO() },
-        followers = followers.map { it.toDTO() }
+        followers = followers.map { it.toDTO() },
+        followedByUser = followedByUser
     )
 
 }

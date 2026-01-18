@@ -69,7 +69,11 @@ fun AccountDetailsScreen(
         account?.let {
             LazyColumn {
                 item {
-                    UserProfileCard(account!!)
+                    UserProfileCard(
+                        account!!,
+                        onUserFollow = { vm.followUser(userId) },
+                        onUserUnfollow = { vm.unfollowUser(userId) }
+                    )
                 }
                 item {
                     HorizontalLine()
