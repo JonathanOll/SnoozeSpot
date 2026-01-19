@@ -60,37 +60,38 @@ fun FriendsScreen(
         LaunchedEffect(true) {
             vm.fetchFriends()
         }
-    }
 
+        friends?.let {
+            if (friends!!.isNotEmpty()) {
+                LazyColumn (
+                    modifier = modifier.fillMaxWidth()
+                ) {
 
-    friends?.let {
-        if (friends!!.isNotEmpty()) {
-            LazyColumn (
-                modifier = modifier.fillMaxWidth()
-            ) {
-
-                items(friends!!) {
-                    FriendElement(
-                        it,
-                            modifier = Modifier.clickable {
-                                navigator.navigate(
-                                    AccountDetailsScreenDestination(
-                                        it.uuid
+                    items(friends!!) {
+                        FriendElement(
+                            it,
+                                modifier = Modifier.clickable {
+                                    navigator.navigate(
+                                        AccountDetailsScreenDestination(
+                                            it.uuid
+                                        )
                                     )
-                                )
-                            }
-                        )
-                }
+                                },
+                            onUnfollow = { vm.unfollow(it) }
+                            )
+                    }
 
-            }
-        } else {
-            Column (
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(stringResource(R.string.no_friends_yet))
+                }
+            } else {
+                Column (
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(stringResource(R.string.no_friends_yet))
+                }
             }
         }
     }
+
 }
