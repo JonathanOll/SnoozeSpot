@@ -27,7 +27,7 @@
     <string name="logout">Logout</string>
     <string name="register_instead">No account? Register instead</string>
     <string name="register">Register</string>
-    <string name="loginInstead">Already got an account? Login instead</string>
+    <string name="login_instead">Already got an account? Login instead</string>
     <string name="email">Email address</string>
     <string name="follow">Follow</string>
     <string name="share">Share</string>
@@ -65,4 +65,6 @@
     <string name="could_not_follow">Could not follow</string>
     <string name="could_not_unfollow">Could not unfollow</string>
     <string name="no_friends_yet">No friends yet</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="login_to_add_friends">Login to add friends</string>
 </resources>

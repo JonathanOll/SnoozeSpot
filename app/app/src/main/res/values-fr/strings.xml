@@ -26,8 +26,8 @@
     <string name="could_not_login">Connexion impossible</string>
     <string name="logout">Déconnexion</string>
     <string name="register_instead">Pas de compte ? Inscrivez vous</string>
-    <string name="register">S\'inscrire</string>
-    <string name="loginInstead">Déjà un compte ? Connectez vous</string>
+    <string name="register">Inscription</string>
+    <string name="login_instead">Déjà un compte ? Connectez vous</string>
     <string name="email">Adresse mail</string>
     <string name="follow">Suivre</string>
     <string name="share">Partager</string>
@@ -65,4 +65,6 @@
     <string name="could_not_follow">Impossible de suivre l\'utilisateur</string>
     <string name="could_not_unfollow">Impossible d\'unfollow l\'utilisateur</string>
     <string name="no_friends_yet">Aucun ami :(</string>
+    <string name="continue_with_google">Continuer avec Google</string>
+    <string name="login_to_add_friends">Connectez vous pour ajouter des amis</string>
 </resources>

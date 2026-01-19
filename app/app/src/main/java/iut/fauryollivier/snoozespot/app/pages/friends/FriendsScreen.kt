@@ -24,6 +24,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.ScaffoldController
+import iut.fauryollivier.snoozespot.app.components.AnonymousOnly
 import iut.fauryollivier.snoozespot.app.components.AuthOnly
 import iut.fauryollivier.snoozespot.app.components.DefaultTopBar
 import iut.fauryollivier.snoozespot.app.pages.destinations.AccountDetailsScreenDestination
@@ -44,6 +45,16 @@ fun FriendsScreen(
     }
 
     val friends by vm.friends.collectAsState()
+
+    AnonymousOnly {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(stringResource(R.string.login_to_add_friends))
+        }
+    }
 
     AuthOnly {
         LaunchedEffect(true) {
