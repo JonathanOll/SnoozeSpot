@@ -39,6 +39,7 @@ import com.ramcosta.composedestinations.result.NavResult
 import com.ramcosta.composedestinations.result.ResultRecipient
 import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.ScaffoldController
+import iut.fauryollivier.snoozespot.app.components.AuthOnly
 import iut.fauryollivier.snoozespot.app.components.FeedTopBar
 import iut.fauryollivier.snoozespot.app.components.Loader
 import iut.fauryollivier.snoozespot.app.pages.destinations.FeedDetailsScreenDestination
@@ -122,15 +123,17 @@ fun FeedScreen(
         }
 
 
-        FloatingActionButton(
-            onClick = { navigator.navigate(NewPostScreenDestination(showMediaPicker = true)) },
-            backgroundColor = primaryContainerLight,
-            contentColor = primaryLight,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 16.dp, bottom = 16.dp)
-        ) {
-            Icon(Icons.Filled.Add, stringResource(R.string.new_post))
+        AuthOnly {
+            FloatingActionButton(
+                onClick = { navigator.navigate(NewPostScreenDestination(showMediaPicker = true)) },
+                backgroundColor = primaryContainerLight,
+                contentColor = primaryLight,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 16.dp, bottom = 16.dp)
+            ) {
+                Icon(Icons.Filled.Add, stringResource(R.string.new_post))
+            }
         }
 
     }

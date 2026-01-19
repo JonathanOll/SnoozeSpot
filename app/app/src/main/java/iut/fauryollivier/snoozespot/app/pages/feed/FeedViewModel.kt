@@ -74,7 +74,10 @@ class FeedViewModel : ViewModel() {
                 if (response.isSuccessful && response.body() != null) {
                     successState(response.body()!!, nextPage)
                 } else {
-                    Toaster.instance.toast(R.string.failed_to_fetch_data)
+                    if(nextPage == 0)
+                        errorState(ErrorMessage.LOADING_ERROR)
+                     else
+                        Toaster.instance.toast(R.string.failed_to_fetch_data)
                 }
             } catch (_: Exception) {
                 errorState()

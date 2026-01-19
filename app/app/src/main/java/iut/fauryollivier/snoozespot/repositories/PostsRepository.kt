@@ -40,7 +40,7 @@ object PostsRepository {
 
         } catch (_: Exception) {}
 
-        if (page == 0) {
+        if (page == 0 && db.PostDao().count() != 0) {
             val local = db.PostDao().getAll().map { it.toApiModel() }
             Toaster.instance.toast(R.string.offline_data)
             return Response.success(local)
