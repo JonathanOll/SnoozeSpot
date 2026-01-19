@@ -32,4 +32,17 @@ class FriendsViewModel : ViewModel() {
         }
     }
 
+    fun unfollow(user: UserDTO) {
+        viewModelScope.launch {
+            val result = UsersRepository.unfollowUser(user.uuid)
+            if (result.isSuccessful) {
+                _friends.value = _friends.value!!.filter {
+                    it.uuid != user.uuid
+                }
+            } else {
+                Toaster.instance.toast(R.string.could_not_unfollow)
+            }
+        }
+    }
+
 }
