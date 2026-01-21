@@ -17,13 +17,27 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
+  final _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final notifier = Provider.of<FeedScreenNotifier>(context, listen: false);
       notifier.loadPosts();
     });
+
+    _scrollController.addListener(_loadMoreItems);
+  }
+
+  _loadMoreItems() async {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 500) {
+      final notifier = Provider.of<FeedScreenNotifier>(context, listen: false);
+
+      notifier.loadPosts();
+    }
   }
 
   @override
@@ -33,7 +47,9 @@ class _FeedScreenState extends State<FeedScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final result = await Navigator.of(context).pushNamed(NewPostScreen.routeName);
+          final result = await Navigator.of(
+            context,
+          ).pushNamed(NewPostScreen.routeName);
           if (result != null && result is String && result.isNotEmpty) {
             notifier.createPost(result);
           }
@@ -41,34 +57,30 @@ class _FeedScreenState extends State<FeedScreen> {
         child: Icon(Icons.add),
       ),
       body: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                ...notifier.posts.map((post) => FeedElement(post: post)),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(
-                      context,
-                    ).pushNamed(SpotDetailsScreen.routeName);
-                  },
-                  child: Text("autre page"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(
-                      context,
-                    ).pushNamed(AccountScreen.routeName);
-                  },
-                  child: Text("account"),
-                ),
-              ],
-            ),
-          ),
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: notifier.posts.length + 2,
+          itemBuilder: (context, index) {
+            if (index < notifier.posts.length) {
+              return FeedElement(post: notifier.posts[index]);
+            }
+
+            if (index == notifier.posts.length) {
+              return ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(SpotDetailsScreen.routeName);
+                },
+                child: Text("autre page"),
+              );
+            }
+
+            return ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AccountScreen.routeName);
+              },
+              child: Text("account"),
+            );
+          },
         ),
       ),
     );

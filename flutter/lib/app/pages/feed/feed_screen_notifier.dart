@@ -4,14 +4,13 @@ import 'package:snoozespot_api/snoozespot_api.dart';
 
 class FeedScreenNotifier with ChangeNotifier {
   final List<PostDTO> _posts = <PostDTO>[];
+  List<PostDTO> get posts => _posts.toList();
 
-  List<PostDTO> get posts =>
-      _posts.toList();
+  int page = 0;
 
   void loadPosts() async {
-    var response = await postRepository.getPosts();
+    var response = await postRepository.getPosts(page: page++);
     _posts.addAll(response);
-
     notifyListeners();
   }
 
