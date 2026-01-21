@@ -16,6 +16,8 @@ import 'package:snoozespot/app/pages/feed/post_details/post_details_screen_notif
 import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen.dart';
 import 'package:snoozespot/resources/app_theme.dart';
 
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -46,6 +48,7 @@ class MyApp extends StatelessWidget {
           AccountDetailsScreen.routeName: (context) => AccountDetailsScreen(),
         },
         initialRoute: FeedScreen.routeName,
+        navigatorObservers: [routeObserver],
       ),
     );
   }

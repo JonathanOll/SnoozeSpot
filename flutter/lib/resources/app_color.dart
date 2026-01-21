@@ -4,6 +4,9 @@ class AppColor {
   // Colors
   static const Color primary = darkBlue;
   static const Color surface = lightGrey;
+
+  static const Color secondary = Color.fromARGB(255, 224, 224, 255);
+
   static Color cardShadowColor = Colors.black.withOpacity(0.5);
   static Color white80 = Colors.white.withOpacity(0.8);
   static Color white50 = Colors.white.withOpacity(0.5);

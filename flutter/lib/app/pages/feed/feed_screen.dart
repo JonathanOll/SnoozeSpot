@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snoozespot/app/components/bottom_bar.dart';
 import 'package:snoozespot/app/pages/account/account_screen.dart';
 import 'package:snoozespot/app/pages/feed/feed_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/components/feed_element.dart';
@@ -44,6 +45,7 @@ class _FeedScreenState extends State<FeedScreen> {
     final notifier = context.watch<FeedScreenNotifier>();
 
     return Scaffold(
+      bottomNavigationBar: SnoozeSpotBottomBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final result = await Navigator.of(
