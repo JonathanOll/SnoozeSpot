@@ -37,11 +37,25 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
       body: SafeArea(
         child: notifier.account == null
             ? Center(child: Text("loading..."))
-            : Column(
-              children: [
-                AccountElement(user: notifier.account!),
-              ],
-            ),
+            : RefreshIndicator(
+                onRefresh: () async {
+                  final uuid =
+                      ModalRoute.of(context)!.settings.arguments as String;
+                  notifier.loadAccount(uuid);
+                },
+                child: ListView.builder(
+                  itemCount: notifier.account!.posts.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return AccountElement(user: notifier.account!);
+                    }
+
+                    final post = notifier.account!.posts[index - 1];
+
+                    return FeedElement(post: post, onLike: () { notifier.likePost(post.id); });
+                  },
+                ),
+              ),
       ),
     );
   }

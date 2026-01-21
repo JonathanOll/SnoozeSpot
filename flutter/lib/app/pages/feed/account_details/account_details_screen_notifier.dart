@@ -14,4 +14,27 @@ class AccountDetailsScreenNotifier with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void likePost(int id) async {
+    if(_account == null) {
+      return;
+    }
+    final response = await postRepository.likePost(id);
+
+    if (response != null) {
+      final index = _account!.posts.indexWhere((el) => el.id == id);
+
+      if (index != -1) {
+        final updated = _account!.rebuild((b) {
+          b.posts[index] = b.posts[index].rebuild((b) {
+            b.likedByUser = response;
+            b.likeCount = (b.likeCount ?? 0) + (response ? 1: -1);
+          });
+        });
+
+        _account = updated;
+        notifyListeners();
+      }
+    }
+  }
 }
