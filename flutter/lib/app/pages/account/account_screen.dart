@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snoozespot/app/components/bottom_bar.dart';
 import 'package:snoozespot/app/pages/account/account_screen_notifier.dart';
 import 'package:snoozespot/app/pages/account/components/account_element.dart';
 import 'package:snoozespot/app/pages/account/login/login_screen.dart';
@@ -34,6 +35,7 @@ class _AccountScreenState extends State<AccountScreen> {
     final notifier = context.watch<AccountScreenNotifier>();
 
     return Scaffold(
+      bottomNavigationBar: SnoozeSpotBottomBar(),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
