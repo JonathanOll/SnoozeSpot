@@ -59,7 +59,9 @@ class _FeedScreenState extends State<FeedScreen> {
       ),
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh: () async { notifier.refresh(); },
+          onRefresh: () async {
+            notifier.refresh();
+          },
           child: ListView.builder(
             controller: _scrollController,
             itemCount: notifier.posts.length + 2,
@@ -72,16 +74,18 @@ class _FeedScreenState extends State<FeedScreen> {
                   },
                 );
               }
-          
+
               if (index == notifier.posts.length) {
                 return ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(SpotDetailsScreen.routeName);
+                    Navigator.of(
+                      context,
+                    ).pushNamed(SpotDetailsScreen.routeName);
                   },
                   child: Text("autre page"),
                 );
               }
-          
+
               return ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pushNamed(AccountScreen.routeName);

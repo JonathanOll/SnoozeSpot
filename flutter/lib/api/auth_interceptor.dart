@@ -4,7 +4,6 @@ import 'package:snoozespot/storage/auth_store.dart';
 class AuthInterceptor extends InterceptorsWrapper{
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    print(authStore.getJWT());
     if (authStore.getJWT() != null) {
       options.headers["Authorization"] = "Bearer ${authStore.getJWT()}";
     }

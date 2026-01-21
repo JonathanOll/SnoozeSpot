@@ -4,6 +4,7 @@ import 'package:snoozespot_api/snoozespot_api.dart';
 
 class FeedScreenNotifier with ChangeNotifier {
   final List<PostDTO> _posts = <PostDTO>[];
+
   List<PostDTO> get posts => _posts.toList();
 
   int page = 0;
@@ -32,7 +33,7 @@ class FeedScreenNotifier with ChangeNotifier {
       if (index != -1) {
         final updated = _posts[index].rebuild((b) {
           b.likedByUser = response;
-          b.likeCount = (b.likeCount ?? 0) + (response ? 1: -1);
+          b.likeCount = (b.likeCount ?? 0) + (response ? 1 : -1);
         });
 
         _posts[index] = updated;
@@ -46,6 +47,4 @@ class FeedScreenNotifier with ChangeNotifier {
     page = 0;
     loadPosts();
   }
-
-
 }
