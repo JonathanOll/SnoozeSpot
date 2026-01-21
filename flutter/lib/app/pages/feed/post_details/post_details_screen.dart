@@ -37,25 +37,34 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
         child: notifier.post == null
             ? Center(child: Text("loading..."))
             : SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  FeedElement(post: notifier.post!),
-                  ...notifier.post!.comments.map(
-                      (comment) => FeedComment(comment: comment)
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      final result = await Navigator.of(context).pushNamed(NewPostScreen.routeName);
-                      if (result != null && result is String && result.isNotEmpty) {
-                        notifier.createComment(result);
-                      }
-                    },
-                    child: Text("Add comment"),
-                  ),
-                ],
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    FeedElement(
+                      post: notifier.post!,
+                      onLike: () {
+                        notifier.likePost();
+                      },
+                    ),
+                    ...notifier.post!.comments.map(
+                      (comment) => FeedComment(comment: comment),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final result = await Navigator.of(
+                          context,
+                        ).pushNamed(NewPostScreen.routeName);
+                        if (result != null &&
+                            result is String &&
+                            result.isNotEmpty) {
+                          notifier.createComment(result);
+                        }
+                      },
+                      child: Text("Add comment"),
+                    ),
+                  ],
+                ),
               ),
-            ),
       ),
     );
   }

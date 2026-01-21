@@ -23,6 +23,12 @@ class PostRepository {
     return response.data;
   }
 
+  Future<bool?> likePost(int id) async {
+    final response = await api.postsIdLikePost(id: id);
+
+    return response.data;
+  }
+
   Future<PostCommentDTO?> createPostComment(int postId, String content) async {
     final response = await api.postsIdCommentPost(
       id: postId,
