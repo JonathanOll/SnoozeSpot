@@ -5,8 +5,8 @@ import 'package:snoozespot_api/snoozespot_api.dart';
 final postRepository = PostRepository();
 
 class PostRepository {
-  Future<List<PostDTO>> getPosts() async {
-    final response = await api.postsGet();
+  Future<List<PostDTO>> getPosts({int page = 0}) async {
+    final response = await api.postsGet(page: page);
 
     return (response.data ?? <PostDTO>[]).toList();
   }
