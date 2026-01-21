@@ -5,7 +5,6 @@ import 'package:snoozespot_api/snoozespot_api.dart';
 final postRepository = PostRepository();
 
 class PostRepository {
-
   Future<List<PostDTO>> getPosts() async {
     final response = await api.postsGet();
 
@@ -24,4 +23,14 @@ class PostRepository {
     return response.data;
   }
 
+  Future<PostCommentDTO?> createPostComment(int postId, String content) async {
+    final response = await api.postsIdCommentPost(
+      id: postId,
+      createPostCommentRequest: CreatePostCommentRequest((b) {
+        b.content = content;
+      }),
+    );
+
+    return response.data;
+  }
 }

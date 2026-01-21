@@ -13,4 +13,17 @@ class PostDetailsScreenNotifier with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void createComment(String content) async {
+    if(_post == null) {
+      return;
+    }
+
+    var response = await postRepository.createPostComment(_post!.id, content);
+    _post = _post!.rebuild((b) {
+      b.comments.add(response!);
+    });
+
+    notifyListeners();
+  }
 }

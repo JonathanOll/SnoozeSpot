@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/app/pages/feed/components/feed_comment.dart';
 import 'package:snoozespot/app/pages/feed/components/feed_element.dart';
+import 'package:snoozespot/app/pages/feed/new_post/new_post_screen.dart';
 import 'package:snoozespot/app/pages/feed/post_details/post_details_screen_notifier.dart';
 
 class PostDetailsScreen extends StatefulWidget {
@@ -35,13 +36,25 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
       body: SafeArea(
         child: notifier.post == null
             ? Center(child: Text("loading..."))
-            : Column(
-              children: [
-                FeedElement(post: notifier.post!),
-                ...notifier.post!.comments.map(
-                    (comment) => FeedComment(comment: comment)
-                )
-              ],
+            : SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  FeedElement(post: notifier.post!),
+                  ...notifier.post!.comments.map(
+                      (comment) => FeedComment(comment: comment)
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final result = await Navigator.of(context).pushNamed(NewPostScreen.routeName);
+                      if (result != null && result is String && result.isNotEmpty) {
+                        notifier.createComment(result);
+                      }
+                    },
+                    child: Text("Add comment"),
+                  ),
+                ],
+              ),
             ),
       ),
     );
