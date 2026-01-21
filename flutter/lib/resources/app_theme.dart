@@ -13,12 +13,12 @@ class AppTheme {
 
   static const titleMedium = TextStyle(
     fontSize: 16,
-    fontWeight: FontWeight.w500
+    fontWeight: FontWeight.w500,
   );
 
   static const titleMediumBold = TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w700
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
   );
 
   static const titleLargeBold = TextStyle(
@@ -51,15 +51,9 @@ class AppTheme {
     fontWeight: FontWeight.w500,
   );
 
-  static const bodyLarge = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-  );
+  static const bodyLarge = TextStyle(fontSize: 16, fontWeight: FontWeight.w400);
 
-  static const bodyBold = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w900,
-  );
+  static const bodyBold = TextStyle(fontSize: 14, fontWeight: FontWeight.w900);
 
   static const bodyMediumBold = TextStyle(
     fontSize: 14,
@@ -76,39 +70,30 @@ class AppTheme {
     fontWeight: FontWeight.w700,
   );
 
-  static const bodySmall = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-  );
+  static const bodySmall = TextStyle(fontSize: 12, fontWeight: FontWeight.w500);
 
-  static const bodyTiny = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w400,
-  );
+  static const bodyTiny = TextStyle(fontSize: 12, fontWeight: FontWeight.w400);
 
   static const labelSmall = TextStyle(
     fontSize: 10,
     fontWeight: FontWeight.w500,
   );
 
-  static const scoreBig = TextStyle(
-    fontSize: 70,
-    fontWeight: FontWeight.w900,
-  );
+  static const scoreBig = TextStyle(fontSize: 70, fontWeight: FontWeight.w900);
 
   static const headlineTiny = TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w700
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
   );
 
   static const headlineSmall = TextStyle(
-      fontSize: 24,
-      fontWeight: FontWeight.w700
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
   );
 
   static const headlineLarge = TextStyle(
     fontSize: 32,
-    fontWeight: FontWeight.w700
+    fontWeight: FontWeight.w700,
   );
 
   static const displaySmall = TextStyle(
@@ -131,9 +116,9 @@ class AppTheme {
     fontWeight: FontWeight.w700,
   );
 
-//endregion
+  //endregion
 
-//region ThemeData
+  //region ThemeData
   static final themeData = ThemeData(
     useMaterial3: true,
     scaffoldBackgroundColor: AppColor.surface,
@@ -166,10 +151,13 @@ class AppTheme {
     ),
     tabBarTheme: TabBarThemeData(
       indicator: BoxDecoration(
-          border: Border.all(color: AppColor.white, width:5, style: BorderStyle.none),
-          borderRadius: BorderRadius.circular(40),
-          color: AppColor.purple
-
+        border: Border.all(
+          color: AppColor.white,
+          width: 5,
+          style: BorderStyle.none,
+        ),
+        borderRadius: BorderRadius.circular(40),
+        color: AppColor.purple,
       ),
       labelStyle: AppTheme.bodyLargeMedium,
       labelColor: Colors.white,
@@ -190,12 +178,15 @@ class AppTheme {
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        foregroundColor: Colors.white,
+        foregroundColor: AppColor.darkBlue,
+        side: BorderSide(color: Colors.grey),
       ),
     ),
+
     cardTheme: CardThemeData(
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(AppRadius.small))),
+        borderRadius: BorderRadius.all(Radius.circular(AppRadius.small)),
+      ),
       surfaceTintColor: Colors.transparent,
       color: AppColor.grey30,
       elevation: 8,
@@ -203,7 +194,8 @@ class AppTheme {
       clipBehavior: Clip.hardEdge,
     ),
     textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(foregroundColor: AppColor.darkBlue)),
+      style: TextButton.styleFrom(foregroundColor: AppColor.darkBlue),
+    ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       selectedItemColor: AppColor.darkBlue,
       unselectedItemColor: AppColor.darkBlue,
@@ -214,14 +206,17 @@ class AppTheme {
     ),
     listTileTheme: const ListTileThemeData(dense: true),
     radioTheme: const RadioThemeData(
-        visualDensity: VisualDensity(
-            horizontal: VisualDensity.minimumDensity,
-            vertical: VisualDensity.minimumDensity),
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
+      visualDensity: VisualDensity(
+        horizontal: VisualDensity.minimumDensity,
+        vertical: VisualDensity.minimumDensity,
+      ),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    ),
     checkboxTheme: CheckboxThemeData(
       visualDensity: const VisualDensity(
-          horizontal: VisualDensity.minimumDensity,
-          vertical: VisualDensity.minimumDensity),
+        horizontal: VisualDensity.minimumDensity,
+        vertical: VisualDensity.minimumDensity,
+      ),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       side: WidgetStateBorderSide.resolveWith(
         (states) => states.contains(WidgetState.selected)
@@ -230,10 +225,11 @@ class AppTheme {
       ),
     ),
     switchTheme: SwitchThemeData(
-      trackColor: WidgetStateProperty.resolveWith((states) =>
-          states.contains(WidgetState.selected)
-              ? AppColor.electricGreen
-              : AppColor.grey),
+      trackColor: WidgetStateProperty.resolveWith(
+        (states) => states.contains(WidgetState.selected)
+            ? AppColor.electricGreen
+            : AppColor.grey,
+      ),
       trackOutlineColor: WidgetStateProperty.resolveWith(
         (states) => states.contains(WidgetState.selected)
             ? AppColor.electricGreen
@@ -241,5 +237,5 @@ class AppTheme {
       ),
     ),
   );
-//endregion
+  //endregion
 }

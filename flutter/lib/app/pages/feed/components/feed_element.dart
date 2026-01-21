@@ -12,8 +12,9 @@ import 'package:snoozespot/resources/app_theme.dart';
 
 class FeedElement extends StatelessWidget {
   final PostDTO post;
+  final VoidCallback onLike;
 
-  const FeedElement({super.key, required this.post});
+  const FeedElement({super.key, required this.post, required this.onLike});
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,7 @@ class FeedElement extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 OutlinedButton(
-                  onPressed: null,
+                  onPressed: () {},
                   child: Row(
                     children: [
                       Icon(Icons.comment_outlined),
@@ -90,7 +91,7 @@ class FeedElement extends StatelessWidget {
                 ),
                 OutlinedButton(
                   style: AppTheme.themeData.outlinedButtonTheme.style,
-                  onPressed: null,
+                  onPressed: onLike,
                   child: Row(
                     children: [
                       Text(post.likeCount.toString()),

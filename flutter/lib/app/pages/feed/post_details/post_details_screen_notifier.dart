@@ -26,4 +26,24 @@ class PostDetailsScreenNotifier with ChangeNotifier {
 
     notifyListeners();
   }
+
+
+
+  void likePost() async {
+    if(_post == null) {
+      return;
+    }
+
+    final response = await postRepository.likePost(_post!.id);
+
+    if (response != null) {
+      final updated = _post!.rebuild((b) {
+        b.likedByUser = response;
+        b.likeCount = (b.likeCount ?? 0) + (response ? 1: -1);
+      });
+
+      _post = updated;
+      notifyListeners();
+    }
+  }
 }

@@ -22,4 +22,30 @@ class FeedScreenNotifier with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void likePost(int id) async {
+    final response = await postRepository.likePost(id);
+
+    if (response != null) {
+      final index = _posts.indexWhere((el) => el.id == id);
+
+      if (index != -1) {
+        final updated = _posts[index].rebuild((b) {
+          b.likedByUser = response;
+          b.likeCount = (b.likeCount ?? 0) + (response ? 1: -1);
+        });
+
+        _posts[index] = updated;
+        notifyListeners();
+      }
+    }
+  }
+
+  void refresh() async {
+    _posts.clear();
+    page = 0;
+    loadPosts();
+  }
+
+
 }

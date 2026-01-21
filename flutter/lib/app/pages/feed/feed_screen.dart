@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/app/pages/account/account_screen.dart';
-import 'package:snoozespot/app/pages/account/login/login_screen.dart';
 import 'package:snoozespot/app/pages/feed/feed_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/components/feed_element.dart';
 import 'package:snoozespot/app/pages/feed/new_post/new_post_screen.dart';
@@ -57,30 +56,38 @@ class _FeedScreenState extends State<FeedScreen> {
         child: Icon(Icons.add),
       ),
       body: SafeArea(
-        child: ListView.builder(
-          controller: _scrollController,
-          itemCount: notifier.posts.length + 2,
-          itemBuilder: (context, index) {
-            if (index < notifier.posts.length) {
-              return FeedElement(post: notifier.posts[index]);
-            }
-
-            if (index == notifier.posts.length) {
+        child: RefreshIndicator(
+          onRefresh: () async { notifier.refresh(); },
+          child: ListView.builder(
+            controller: _scrollController,
+            itemCount: notifier.posts.length + 2,
+            itemBuilder: (context, index) {
+              if (index < notifier.posts.length) {
+                return FeedElement(
+                  post: notifier.posts[index],
+                  onLike: () {
+                    notifier.likePost(notifier.posts[index].id);
+                  },
+                );
+              }
+          
+              if (index == notifier.posts.length) {
+                return ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(SpotDetailsScreen.routeName);
+                  },
+                  child: Text("autre page"),
+                );
+              }
+          
               return ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(SpotDetailsScreen.routeName);
+                  Navigator.of(context).pushNamed(AccountScreen.routeName);
                 },
-                child: Text("autre page"),
+                child: Text("account"),
               );
-            }
-
-            return ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(AccountScreen.routeName);
-              },
-              child: Text("account"),
-            );
-          },
+            },
+          ),
         ),
       ),
     );
