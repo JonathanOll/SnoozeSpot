@@ -72,9 +72,6 @@ class _FeedScreenState extends State<FeedScreen> {
               if (index < notifier.posts.length) {
                 return FeedElement(
                   post: notifier.posts[index],
-                  onLike: () {
-                    notifier.likePost(notifier.posts[index].id);
-                  },
                 );
               }
 

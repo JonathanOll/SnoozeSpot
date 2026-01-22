@@ -47,29 +47,6 @@ class FeedScreenNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  void likePost(int id) async {
-    final result = await postRepository.likePost(id);
-
-    if(result case Success<bool>(data: final isLiked)){
-      final index = _posts.indexWhere((el) => el.id == id);
-
-      if (index != -1) {
-        final updated = _posts[index].rebuild((b) {
-          b.likedByUser = isLiked;
-          b.likeCount = (b.likeCount ?? 0) + (isLiked ? 1 : -1);
-        });
-
-        _posts[index] = updated;
-      }
-
-    } else {
-      // TODO: Handle this case.
-      throw Exception(result.toString());
-    }
-
-    notifyListeners();
-  }
-
   void refresh() async {
     _posts.clear();
     page = 0;

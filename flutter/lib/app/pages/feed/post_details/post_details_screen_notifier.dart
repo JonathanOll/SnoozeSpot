@@ -39,26 +39,4 @@ class PostDetailsScreenNotifier with ChangeNotifier {
 
     notifyListeners();
   }
-
-  void likePost() async {
-    if(_post == null) {
-      return;
-    }
-
-    final result = await postRepository.likePost(_post!.id);
-
-    if(result case Success<bool>(data: final isLiked)){
-      final updated = _post!.rebuild((b) {
-        b.likedByUser = isLiked;
-        b.likeCount = (b.likeCount ?? 0) + (isLiked ? 1: -1);
-      });
-
-      _post = updated;
-    } else {
-      // TODO: Handle this case.
-      throw Exception(result.toString());
-    }
-
-    notifyListeners();
-  }
 }
