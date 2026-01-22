@@ -297,6 +297,29 @@ paths:
                 items:
                   $ref: "#/components/schemas/SpotDTO"
     post:
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                latitude:
+                  type: "number"
+                  format: "double"
+                longitude:
+                  type: "number"
+                  format: "double"
+                file:
+                  type: string
+                  format: binary
+                  description: "Fichier optionnel associé au post"
+              required:
+                - content
       description: ""
       responses:
         "500":

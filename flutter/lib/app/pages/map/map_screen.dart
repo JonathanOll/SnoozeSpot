@@ -5,7 +5,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/app/components/bottom_bar.dart';
 import 'package:snoozespot/app/pages/map/map_screen_notifier.dart';
-import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen.dart';
+import 'package:snoozespot/app/pages/map/new_spot/new_spot_screen.dart';
+import 'package:snoozespot/app/pages/map/spot_details/spot_details_screen.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -39,6 +40,11 @@ class _MapScreenState extends State<MapScreen> {
     final notifier = context.watch<MapScreenNotifier>();
 
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(onPressed: () { Navigator.of(context).pushNamed(NewSpotScreen.routeName); }, icon: const Icon(Icons.add))
+        ],
+      ),
       bottomNavigationBar: SnoozeSpotBottomBar(),
       body: SafeArea(
         child: SizedBox(
@@ -60,8 +66,11 @@ class _MapScreenState extends State<MapScreen> {
                 (spot) => Marker(
                   position: LatLng(spot.latitude, spot.longitude),
                   markerId: MarkerId(spot.id.toString()),
-                  onTap: () {
-                    Navigator.of(context).pushNamed(SpotDetailsScreen.routeName, arguments: spot.id);
+                  onTap: () async {
+                    var result = await Navigator.of(context).pushNamed(SpotDetailsScreen.routeName, arguments: spot.id);
+                    if(result != null && result is NewSpotResult) {
+                      
+                    }
                   }
                 ),
               ),

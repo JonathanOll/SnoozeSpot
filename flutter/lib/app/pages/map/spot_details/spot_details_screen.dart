@@ -3,10 +3,10 @@ import 'package:flutter_rating/flutter_rating.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/app/components/division.dart';
 import 'package:snoozespot/app/pages/map/new_spot_comment/new_spot_comment_screen.dart';
-import 'package:snoozespot/app/pages/map/spotdetails/components/spot_comment.dart';
-import 'package:snoozespot/app/pages/map/spotdetails/components/spot_map.dart';
-import 'package:snoozespot/app/pages/map/spotdetails/components/spot_pictures.dart';
-import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen_notifier.dart';
+import 'package:snoozespot/app/pages/map/spot_details/components/spot_comment.dart';
+import 'package:snoozespot/app/pages/map/spot_details/components/spot_map.dart';
+import 'package:snoozespot/app/pages/map/spot_details/components/spot_pictures.dart';
+import 'package:snoozespot/app/pages/map/spot_details/spot_details_screen_notifier.dart';
 import 'package:snoozespot/resources/app_theme.dart';
 
 class SpotDetailsScreen extends StatefulWidget {
