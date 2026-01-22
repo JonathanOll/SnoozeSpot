@@ -16,7 +16,7 @@ class AccountDetailsScreenNotifier with ChangeNotifier {
       _account = account;
     } else {
       // TODO: Handle this case.
-      throw UnimplementedError();
+      throw Exception(result.toString());
     }
 
     notifyListeners();
@@ -45,7 +45,7 @@ class AccountDetailsScreenNotifier with ChangeNotifier {
 
     } else {
       // TODO: Handle this case.
-      throw UnimplementedError();
+      throw Exception(result.toString());
     }
 
     notifyListeners();
