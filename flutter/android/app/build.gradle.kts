@@ -5,6 +5,16 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+import java.util.Properties
+import java.io.FileInputStream
+
+val secretsProperties = Properties()
+val secretsPropertiesFile = rootProject.file("secrets.properties")
+if (secretsPropertiesFile.exists()) {
+    secretsProperties.load(FileInputStream(secretsPropertiesFile))
+}
+
+
 android {
     namespace = "iut.fauryollivier.snoozespot.flutter.snoozespot"
     compileSdk = flutter.compileSdkVersion
@@ -28,6 +38,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders.put(
+            "MAPS_API_KEY",
+            secretsProperties.getProperty("MAPS_API_KEY", "")
+        )
     }
 
     buildTypes {
