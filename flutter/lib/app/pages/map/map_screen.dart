@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/app/components/bottom_bar.dart';
 import 'package:snoozespot/app/pages/map/map_screen_notifier.dart';
+import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -59,6 +60,9 @@ class _MapScreenState extends State<MapScreen> {
                 (spot) => Marker(
                   position: LatLng(spot.latitude, spot.longitude),
                   markerId: MarkerId(spot.id.toString()),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(SpotDetailsScreen.routeName, arguments: spot.id);
+                  }
                 ),
               ),
             },
