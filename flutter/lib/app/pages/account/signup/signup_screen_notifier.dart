@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:snoozespot/api/snoozespot_api/lib/snoozespot_api.dart';
-import 'package:snoozespot/repositories/result.dart';
+import 'package:snoozespot/utils/result.dart';
 import 'package:snoozespot/repositories/user_repository.dart';
 import 'package:snoozespot/storage/auth_store.dart';
 
