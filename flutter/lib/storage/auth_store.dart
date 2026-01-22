@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:hive/hive.dart';
-import 'package:snoozespot/api/snoozespot_api/lib/snoozespot_api.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:snoozespot/api/snoozespot_api/lib/snoozespot_api.dart';
 
 final authStore = AuthStore();
 

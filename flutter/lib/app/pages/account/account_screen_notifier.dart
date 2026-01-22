@@ -1,9 +1,9 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:snoozespot/repositories/post_repository.dart';
-import 'package:snoozespot/utils/result.dart';
 import 'package:snoozespot/storage/auth_store.dart';
+import 'package:snoozespot/utils/result.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
-import 'package:built_collection/built_collection.dart';
 
 class AccountScreenNotifier with ChangeNotifier {
   final List<PostDTO> _posts = <PostDTO>[];

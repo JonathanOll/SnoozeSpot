@@ -4,8 +4,6 @@ import 'package:snoozespot/app/components/bottom_bar.dart';
 import 'package:snoozespot/app/pages/account/account_screen_notifier.dart';
 import 'package:snoozespot/app/pages/account/components/account_element.dart';
 import 'package:snoozespot/app/pages/account/login/login_screen.dart';
-import 'package:snoozespot/app/pages/feed/new_post/new_post_screen.dart';
-import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen.dart';
 import 'package:snoozespot/storage/auth_store.dart';
 
 class AccountScreen extends StatefulWidget {

@@ -1,10 +1,10 @@
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/app/components/bottom_bar.dart';
 import 'package:snoozespot/app/pages/account/account_screen.dart';
-import 'package:snoozespot/app/pages/feed/feed_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/components/feed_element.dart';
+import 'package:snoozespot/app/pages/feed/feed_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/new_post/new_post_screen.dart';
 import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen.dart';
 

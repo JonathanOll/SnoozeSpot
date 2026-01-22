@@ -4,12 +4,10 @@
 
 import 'dart:async';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
-
-import 'package:built_collection/built_collection.dart';
-import 'package:built_value/json_object.dart';
 import 'package:snoozespot_api/src/api_util.dart';
 import 'package:snoozespot_api/src/model/auth_response_dto.dart';
 import 'package:snoozespot_api/src/model/create_post_comment_request.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/app/pages/account/login/login_screen.dart';
-import 'package:snoozespot/app/pages/account/login/login_screen_notifier.dart';
 import 'package:snoozespot/app/pages/account/signup/signup_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/post_details/post_details_screen.dart';
 import 'package:snoozespot/resources/app_dimens.dart';

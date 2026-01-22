@@ -1,8 +1,8 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:snoozespot/api/api_generator.dart';
 import 'package:snoozespot/utils/result.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
-import 'package:built_collection/built_collection.dart';
 
 final spotRepository = SpotRepository();
 

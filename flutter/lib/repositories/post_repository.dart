@@ -1,7 +1,7 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:snoozespot/api/api_generator.dart';
 import 'package:snoozespot/utils/result.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
-import 'package:built_collection/built_collection.dart';
 
 final postRepository = PostRepository();
 

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:snoozespot/app/components/user_profile_picture.dart';
 import 'package:snoozespot/app/pages/feed/account_details/account_details_screen.dart';
-import 'package:snoozespot/app/pages/feed/account_details/account_details_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/post_details/post_details_screen.dart';
-import 'package:snoozespot/generated/assets.dart';
-import 'package:snoozespot_api/snoozespot_api.dart';
-import 'package:snoozespot/app/components/rounded.dart';
 import 'package:snoozespot/resources/app_color.dart';
 import 'package:snoozespot/resources/app_dimens.dart';
 import 'package:snoozespot/resources/app_theme.dart';
+import 'package:snoozespot_api/snoozespot_api.dart';
 
 class FeedElement extends StatelessWidget {
   final PostDTO post;

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/app/pages/account/components/account_element.dart';
 import 'package:snoozespot/app/pages/feed/account_details/account_details_screen_notifier.dart';
-import 'package:snoozespot/app/pages/feed/components/feed_comment.dart';
 import 'package:snoozespot/app/pages/feed/components/feed_element.dart';
-import 'package:snoozespot/app/pages/feed/post_details/post_details_screen_notifier.dart';
 
 class AccountDetailsScreen extends StatefulWidget {
   const AccountDetailsScreen({super.key});

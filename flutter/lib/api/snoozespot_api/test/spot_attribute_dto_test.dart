@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
+import 'package:test/test.dart';
 
 // tests for SpotAttributeDTO
 void main() {
