@@ -19,4 +19,11 @@ class SpotRepository {
 
     return (response.data ?? <SpotDTO>[]).toList();
   }
+
+  Future<SpotDTO?> getSpot({required int id}) async {
+    final response = await api.spotsIdGet(id: id);
+
+    return response.data;
+  }
+
 }
