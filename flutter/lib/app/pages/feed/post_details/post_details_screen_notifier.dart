@@ -15,7 +15,7 @@ class PostDetailsScreenNotifier with ChangeNotifier {
       _post = post;
     } else {
       // TODO: Handle this case.
-      throw UnimplementedError();
+      throw Exception(result.toString());
     }
 
     notifyListeners();
@@ -34,7 +34,7 @@ class PostDetailsScreenNotifier with ChangeNotifier {
       });
     } else {
       // TODO: Handle this case.
-      throw UnimplementedError();
+      throw Exception(result.toString());
     }
 
     notifyListeners();

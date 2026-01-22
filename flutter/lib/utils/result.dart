@@ -40,13 +40,28 @@ sealed class Result<T> {
 class Success<T> extends Result<T> {
   final T data;
   Success(this.data);
+
+  @override
+  String toString() {
+    return "Success with data : ${data.toString()}";
+  }
 }
 
 class EmptySuccess<T> extends Result<T> {
   EmptySuccess();
+
+  @override
+  String toString() {
+    return "Empty success";
+  }
 }
 
 class Failure<T> extends Result<T> {
   final Exception exception;
   Failure(this.exception);
+
+  @override
+  String toString() {
+    return "Failure with exception : ${exception.toString()}";
+  }
 }
