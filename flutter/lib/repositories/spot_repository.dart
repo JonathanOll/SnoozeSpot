@@ -27,4 +27,13 @@ class SpotRepository {
     return await Result.guardAsync(call);
   }
 
+  Future<Result<SpotCommentDTO>> createSpotComment({required int spotId, required String content, required double rating}) async {
+    call() => api.spotsIdCommentPost(id: spotId, createSpotCommentRequest: CreateSpotCommentRequest((b) {
+      b..rating = rating.toInt()
+        ..content = content;
+    },));
+
+    return await Result.guardAsync(call);
+  }
+
 }

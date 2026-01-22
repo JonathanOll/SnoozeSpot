@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/app/components/division.dart';
+import 'package:snoozespot/app/pages/map/new_spot_comment/new_spot_comment_screen.dart';
 import 'package:snoozespot/app/pages/map/spotdetails/components/spot_comment.dart';
 import 'package:snoozespot/app/pages/map/spotdetails/components/spot_map.dart';
 import 'package:snoozespot/app/pages/map/spotdetails/components/spot_pictures.dart';
@@ -99,7 +100,12 @@ class _SpotDetailsScreenState extends State<SpotDetailsScreen> {
                           ...notifier.spot!.comments.map(
                                   (comment) => SpotComment(comment: comment)
                           ),
-                          ElevatedButton(onPressed: () {}, child: Text("Ajouter un commentaire"))
+                          ElevatedButton(onPressed: () async {
+                            var result = await Navigator.of(context).pushNamed(NewSpotCommentScreen.routeName);
+                            if (result != null && result is NewSpotCommentResult) {
+                              notifier.addComment(id, result.content, result.rating);
+                            }
+                          }, child: Text("Ajouter un commentaire"))
                         ],
                       ),
                     )
