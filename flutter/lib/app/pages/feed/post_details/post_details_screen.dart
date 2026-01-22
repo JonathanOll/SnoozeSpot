@@ -44,9 +44,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                   children: [
                     FeedElement(
                       post: notifier.post!,
-                      onLike: () {
-                        notifier.likePost();
-                      },
                     ),
                     ...notifier.post!.comments.map(
                       (comment) => FeedComment(comment: comment),

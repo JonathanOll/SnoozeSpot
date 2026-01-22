@@ -52,9 +52,6 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
 
                     return FeedElement(
                       post: post,
-                      onLike: () {
-                        notifier.likePost(post.id);
-                      },
                     );
                   },
                 ),

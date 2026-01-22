@@ -21,33 +21,4 @@ class AccountDetailsScreenNotifier with ChangeNotifier {
 
     notifyListeners();
   }
-
-  void likePost(int id) async {
-    if (_account == null) {
-      return;
-    }
-
-    final result = await postRepository.likePost(id);
-
-    if(result case Success<bool>(data: final isLiked)){
-      final index = _account!.posts.indexWhere((el) => el.id == id);
-
-      if (index != -1) {
-        final updated = _account!.rebuild((b) {
-          b.posts[index] = b.posts[index].rebuild((b) {
-            b.likedByUser = isLiked;
-            b.likeCount = (b.likeCount ?? 0) + (isLiked ? 1 : -1);
-          });
-        });
-
-        _account = updated;
-      }
-
-    } else {
-      // TODO: Handle this case.
-      throw UnimplementedError();
-    }
-
-    notifyListeners();
-  }
 }
