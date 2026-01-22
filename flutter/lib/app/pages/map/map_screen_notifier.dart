@@ -1,8 +1,8 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:snoozespot/repositories/post_repository.dart';
 import 'package:snoozespot/repositories/spot_repository.dart';
-import 'package:snoozespot/storage/auth_store.dart';
+import 'package:snoozespot/utils/result.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
 
 class MapScreenNotifier with ChangeNotifier {
@@ -25,8 +25,13 @@ class MapScreenNotifier with ChangeNotifier {
       bottomright: bottomright,
     );
 
-    _spots.clear();
-    _spots.addAll(response);
-    notifyListeners();
+    if(response case Success<BuiltList<SpotDTO>>(data: final spotsResponse)){
+      _spots.clear();
+      _spots.addAll(spotsResponse);
+      notifyListeners();
+    } else {
+      // TODO: Handle this case.
+      throw UnimplementedError();
+    }
   }
 }

@@ -1,11 +1,6 @@
-import 'package:dio/src/response.dart';
-import 'package:flutter/foundation.dart';
 import 'package:snoozespot/api/api_generator.dart';
-import 'package:snoozespot/repositories/result.dart';
+import 'package:snoozespot/utils/result.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
-import 'package:built_value/json_object.dart';
-import 'package:built_value/serializer.dart';
-import 'package:dio/dio.dart';
 import 'package:built_collection/built_collection.dart';
 
 final postRepository = PostRepository();
