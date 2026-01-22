@@ -20,4 +20,24 @@ class SpotDetailsScreenNotifier with ChangeNotifier {
     }
   }
 
+  void addComment(int id, String content, double rating) async {
+    if(_spot == null) return;
+    var response = await spotRepository.createSpotComment(spotId: id, content: content, rating: rating);
+
+    if(response case Success<SpotCommentDTO>(data: final spotCommentResponse)){
+      _spot = _spot!.rebuild((p0) {
+        p0.comments.add(spotCommentResponse);
+        if(p0.rating == null) {
+          p0.rating = spotCommentResponse.rating.toDouble();
+        } else {
+          p0.rating = (p0.rating! * (p0.comments.length - 1) + spotCommentResponse.rating) / p0.comments.length;
+        }
+      });
+      notifyListeners();
+    } else {
+      // TODO: Handle this case.
+      throw UnimplementedError();
+    }
+  }
+
 }

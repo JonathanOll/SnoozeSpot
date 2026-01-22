@@ -15,6 +15,7 @@ import 'package:snoozespot/app/pages/feed/post_details/post_details_screen.dart'
 import 'package:snoozespot/app/pages/feed/post_details/post_details_screen_notifier.dart';
 import 'package:snoozespot/app/pages/map/map_screen.dart';
 import 'package:snoozespot/app/pages/map/map_screen_notifier.dart';
+import 'package:snoozespot/app/pages/map/new_spot_comment/new_spot_comment_screen.dart';
 import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen.dart';
 import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen_notifier.dart';
 import 'package:snoozespot/resources/app_theme.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
           AccountScreen.routeName: (context) => AccountScreen(),
           AccountDetailsScreen.routeName: (context) => AccountDetailsScreen(),
           MapScreen.routeName: (context) => MapScreen(),
+          NewSpotCommentScreen.routeName: (context) => NewSpotCommentScreen(),
         },
         initialRoute: FeedScreen.routeName,
         navigatorObservers: [routeObserver],
