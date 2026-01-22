@@ -15,11 +15,13 @@ class PostDetailsScreen extends StatefulWidget {
 }
 
 class _PostDetailsScreenState extends State<PostDetailsScreen> {
+  late final int id;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final id = ModalRoute.of(context)!.settings.arguments as int;
+      id = ModalRoute.of(context)!.settings.arguments as int;
       final notifier = Provider.of<PostDetailsScreenNotifier>(
         context,
         listen: false,

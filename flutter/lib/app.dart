@@ -16,6 +16,7 @@ import 'package:snoozespot/app/pages/feed/post_details/post_details_screen_notif
 import 'package:snoozespot/app/pages/map/map_screen.dart';
 import 'package:snoozespot/app/pages/map/map_screen_notifier.dart';
 import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen.dart';
+import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen_notifier.dart';
 import 'package:snoozespot/resources/app_theme.dart';
 
 final RouteObserver<ModalRoute<void>> routeObserver =
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
           create: (context) => AccountDetailsScreenNotifier(),
         ),
         ChangeNotifierProvider(create: (context) => MapScreenNotifier()),
+        ChangeNotifierProvider(create: (context) => SpotDetailsScreenNotifier()),
       ],
       child: MaterialApp(
         title: 'SnoozeSpot',
