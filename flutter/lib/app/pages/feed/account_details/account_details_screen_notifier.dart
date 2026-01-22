@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:snoozespot/repositories/post_repository.dart';
+import 'package:snoozespot/repositories/result.dart';
 import 'package:snoozespot/repositories/user_repository.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
 
@@ -9,8 +10,14 @@ class AccountDetailsScreenNotifier with ChangeNotifier {
   UserDTO? get account => _account;
 
   void loadAccount(String id) async {
-    var response = await userRepository.getUser(id);
-    _account = response;
+    var result = await userRepository.getUser(id);
+
+    if(result case Success<UserDTO>(data: final account)){
+      _account = account;
+    } else {
+      // TODO: Handle this case.
+      throw UnimplementedError();
+    }
 
     notifyListeners();
   }
@@ -19,22 +26,28 @@ class AccountDetailsScreenNotifier with ChangeNotifier {
     if (_account == null) {
       return;
     }
-    final response = await postRepository.likePost(id);
 
-    if (response != null) {
+    final result = await postRepository.likePost(id);
+
+    if(result case Success<bool>(data: final isLiked)){
       final index = _account!.posts.indexWhere((el) => el.id == id);
 
       if (index != -1) {
         final updated = _account!.rebuild((b) {
           b.posts[index] = b.posts[index].rebuild((b) {
-            b.likedByUser = response;
-            b.likeCount = (b.likeCount ?? 0) + (response ? 1 : -1);
+            b.likedByUser = isLiked;
+            b.likeCount = (b.likeCount ?? 0) + (isLiked ? 1 : -1);
           });
         });
 
         _account = updated;
-        notifyListeners();
       }
+
+    } else {
+      // TODO: Handle this case.
+      throw UnimplementedError();
     }
+
+    notifyListeners();
   }
 }

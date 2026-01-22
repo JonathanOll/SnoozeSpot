@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:snoozespot/repositories/post_repository.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
+import 'package:snoozespot/repositories/result.dart';
 
 class PostDetailsScreenNotifier with ChangeNotifier {
   PostDTO? _post;
@@ -8,8 +9,14 @@ class PostDetailsScreenNotifier with ChangeNotifier {
   PostDTO? get post => _post;
 
   void loadPost(int id) async {
-    var response = await postRepository.getPost(id);
-    _post = response;
+    var result = await postRepository.getPost(id);
+
+    if(result case Success<PostDTO>(data: final post)){
+      _post = post;
+    } else {
+      // TODO: Handle this case.
+      throw UnimplementedError();
+    }
 
     notifyListeners();
   }
@@ -19,31 +26,39 @@ class PostDetailsScreenNotifier with ChangeNotifier {
       return;
     }
 
-    var response = await postRepository.createPostComment(_post!.id, content);
-    _post = _post!.rebuild((b) {
-      b.comments.add(response!);
-    });
+    var result = await postRepository.createPostComment(_post!.id, content);
+
+    if(result case Success<PostCommentDTO>(data: final comment)){
+      _post = _post!.rebuild((b) {
+        b.comments.add(comment);
+      });
+    } else {
+      // TODO: Handle this case.
+      throw UnimplementedError();
+    }
 
     notifyListeners();
   }
-
-
 
   void likePost() async {
     if(_post == null) {
       return;
     }
 
-    final response = await postRepository.likePost(_post!.id);
+    final result = await postRepository.likePost(_post!.id);
 
-    if (response != null) {
+    if(result case Success<bool>(data: final isLiked)){
       final updated = _post!.rebuild((b) {
-        b.likedByUser = response;
-        b.likeCount = (b.likeCount ?? 0) + (response ? 1: -1);
+        b.likedByUser = isLiked;
+        b.likeCount = (b.likeCount ?? 0) + (isLiked ? 1: -1);
       });
 
       _post = updated;
-      notifyListeners();
+    } else {
+      // TODO: Handle this case.
+      throw UnimplementedError();
     }
+
+    notifyListeners();
   }
 }
