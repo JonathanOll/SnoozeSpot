@@ -9,18 +9,29 @@ class FeedScreenNotifier with ChangeNotifier {
   List<PostDTO> get posts => _posts.toList();
 
   int page = 0;
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   void loadPosts() async {
-    var result = await postRepository.getPosts(page: page++);
+    if (_isLoading) return;
 
-    if(result case Success<BuiltList<PostDTO>>(data: final posts)){
-      _posts.addAll(posts);
-    } else {
-      // TODO: Handle this case.
-      throw UnimplementedError();
-    }
-
+    _isLoading = true;
     notifyListeners();
+
+    try {
+      var result = await postRepository.getPosts(page: page++);
+
+      if(result case Success<BuiltList<PostDTO>>(data: final posts)){
+        _posts.addAll(posts);
+      } else {
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      }
+
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   void createPost(String content) async {

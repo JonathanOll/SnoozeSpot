@@ -1,3 +1,4 @@
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/app/components/bottom_bar.dart';
@@ -32,11 +33,13 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 
   _loadMoreItems() async {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 500) {
+    final shouldLoadMore  = _scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 500;
+    if (shouldLoadMore) {
       final notifier = Provider.of<FeedScreenNotifier>(context, listen: false);
-
-      notifier.loadPosts();
+      if (!notifier.isLoading) {
+        notifier.loadPosts();
+      }
     }
   }
 
@@ -64,7 +67,7 @@ class _FeedScreenState extends State<FeedScreen> {
           },
           child: ListView.builder(
             controller: _scrollController,
-            itemCount: notifier.posts.length + 2,
+            itemCount: notifier.posts.length + 3,
             itemBuilder: (context, index) {
               if (index < notifier.posts.length) {
                 return FeedElement(
@@ -75,7 +78,16 @@ class _FeedScreenState extends State<FeedScreen> {
                 );
               }
 
-              if (index == notifier.posts.length) {
+              if( index == notifier.posts.length  && notifier.isLoading ){
+                return Center(
+                  child: LoadingAnimationWidget.staggeredDotsWave(
+                    color: Colors.black,
+                    size: 100,
+                  ),
+                );
+              }
+
+              if (index == notifier.posts.length + 1) {
                 return ElevatedButton(
                   onPressed: () {
                     Navigator.of(
