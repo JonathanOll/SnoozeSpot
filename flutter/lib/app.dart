@@ -13,10 +13,13 @@ import 'package:snoozespot/app/pages/feed/feed_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/new_post/new_post_screen.dart';
 import 'package:snoozespot/app/pages/feed/post_details/post_details_screen.dart';
 import 'package:snoozespot/app/pages/feed/post_details/post_details_screen_notifier.dart';
+import 'package:snoozespot/app/pages/map/map_screen.dart';
+import 'package:snoozespot/app/pages/map/map_screen_notifier.dart';
 import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen.dart';
 import 'package:snoozespot/resources/app_theme.dart';
 
-final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+final RouteObserver<ModalRoute<void>> routeObserver =
+    RouteObserver<ModalRoute<void>>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -32,7 +35,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => LoginScreenNotifier()),
         ChangeNotifierProvider(create: (context) => SignupScreenNotifier()),
         ChangeNotifierProvider(create: (context) => AccountScreenNotifier()),
-        ChangeNotifierProvider(create: (context) => AccountDetailsScreenNotifier()),
+        ChangeNotifierProvider(
+          create: (context) => AccountDetailsScreenNotifier(),
+        ),
+        ChangeNotifierProvider(create: (context) => MapScreenNotifier()),
       ],
       child: MaterialApp(
         title: 'SnoozeSpot',
@@ -46,6 +52,7 @@ class MyApp extends StatelessWidget {
           SignupScreen.routeName: (context) => SignupScreen(),
           AccountScreen.routeName: (context) => AccountScreen(),
           AccountDetailsScreen.routeName: (context) => AccountDetailsScreen(),
+          MapScreen.routeName: (context) => MapScreen(),
         },
         initialRoute: FeedScreen.routeName,
         navigatorObservers: [routeObserver],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snoozespot/app.dart';
 import 'package:snoozespot/app/pages/account/account_screen.dart';
 import 'package:snoozespot/app/pages/feed/feed_screen.dart';
+import 'package:snoozespot/app/pages/map/map_screen.dart';
 import 'package:snoozespot/resources/app_color.dart';
 
 class SnoozeSpotBottomBar extends StatelessWidget {
@@ -34,7 +35,7 @@ class _SnoozeSpotBottomBarStateState extends State<SnoozeSpotBottomBarState> wit
 
   static const List<BottomBarElement> _widgetOptions = <BottomBarElement>[
     BottomBarElement(icon: Icons.mode_comment, route: FeedScreen.routeName),
-    BottomBarElement(icon: Icons.pin_drop, route: FeedScreen.routeName),
+    BottomBarElement(icon: Icons.pin_drop, route: MapScreen.routeName),
     BottomBarElement(icon: Icons.people, route: FeedScreen.routeName),
     BottomBarElement(icon: Icons.account_circle_outlined, route: AccountScreen.routeName),
   ];

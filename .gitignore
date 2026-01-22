@@ -80,3 +80,5 @@ app/app/src/main/res/raw/auto_signed_api_certificate.cer
 api/src/main/resources/static/files
 app/app/src/main/res/raw/auto_signed_api_certificate.cer
 app/app/src/main/res/raw/auto_signed_api_certificate.cer
+flutter/android/secret.properties
+flutter/secret.properties
