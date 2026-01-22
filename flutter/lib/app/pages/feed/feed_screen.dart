@@ -32,11 +32,13 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 
   _loadMoreItems() async {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 500) {
+    final shouldLoadMore  = _scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 500;
+    if (shouldLoadMore) {
       final notifier = Provider.of<FeedScreenNotifier>(context, listen: false);
-
-      notifier.loadPosts();
+      if (!notifier.isLoading) {
+        notifier.loadPosts();
+      }
     }
   }
 
