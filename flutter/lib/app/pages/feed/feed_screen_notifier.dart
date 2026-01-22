@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:snoozespot/repositories/post_repository.dart';
+import 'package:snoozespot/repositories/result.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
+import 'package:built_collection/built_collection.dart';
 
 class FeedScreenNotifier with ChangeNotifier {
   final List<PostDTO> _posts = <PostDTO>[];
@@ -10,36 +12,52 @@ class FeedScreenNotifier with ChangeNotifier {
   int page = 0;
 
   void loadPosts() async {
-    var response = await postRepository.getPosts(page: page++);
-    _posts.addAll(response);
+    var result = await postRepository.getPosts(page: page++);
+
+    if(result case Success<BuiltList<PostDTO>>(data: final posts)){
+      _posts.addAll(posts);
+    } else {
+      // TODO: Handle this case.
+      throw UnimplementedError();
+    }
+
     notifyListeners();
   }
 
   void createPost(String content) async {
-    var response = await postRepository.createPost(content);
+    var result = await postRepository.createPost(content);
 
-    if (response != null) {
-      _posts.insert(0, response);
-      notifyListeners();
+    if(result case Success<PostDTO>(data: final post)){
+      _posts.insert(0, post);
+    } else {
+      // TODO: Handle this case.
+      throw UnimplementedError();
     }
+
+    notifyListeners();
   }
 
   void likePost(int id) async {
-    final response = await postRepository.likePost(id);
+    final result = await postRepository.likePost(id);
 
-    if (response != null) {
+    if(result case Success<bool>(data: final isLiked)){
       final index = _posts.indexWhere((el) => el.id == id);
 
       if (index != -1) {
         final updated = _posts[index].rebuild((b) {
-          b.likedByUser = response;
-          b.likeCount = (b.likeCount ?? 0) + (response ? 1 : -1);
+          b.likedByUser = isLiked;
+          b.likeCount = (b.likeCount ?? 0) + (isLiked ? 1 : -1);
         });
 
         _posts[index] = updated;
-        notifyListeners();
       }
+
+    } else {
+      // TODO: Handle this case.
+      throw UnimplementedError();
     }
+
+    notifyListeners();
   }
 
   void refresh() async {
