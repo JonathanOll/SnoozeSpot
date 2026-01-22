@@ -35,8 +35,11 @@ class _FeedElementState extends State<FeedElement> {
         builder: (context, child) {
           return GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(
-                  PostDetailsScreen.routeName, arguments: _controller.post.id);
+              if(ModalRoute.of(context)!.settings.name != PostDetailsScreen.routeName) {
+                Navigator.of(context).pushNamed(
+                    PostDetailsScreen.routeName,
+                    arguments: _controller.post.id);
+              }
             },
             child: Container(
               decoration: BoxDecoration(
@@ -106,7 +109,12 @@ class _FeedElementState extends State<FeedElement> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if(ModalRoute.of(context)!.settings.name != PostDetailsScreen.routeName) {
+                            Navigator.of(context).pushNamed(
+                              PostDetailsScreen.routeName, arguments: _controller.post.id);
+                          }
+                        },
                         child: Row(
                           children: [
                             Icon(Icons.comment_outlined),
