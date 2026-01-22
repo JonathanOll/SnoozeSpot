@@ -24,7 +24,7 @@ class FeedElementController extends ChangeNotifier  {
 
     } else {
       // TODO: Handle this case.
-      throw UnimplementedError();
+      throw Exception(result.toString());
     }
 
     notifyListeners();
