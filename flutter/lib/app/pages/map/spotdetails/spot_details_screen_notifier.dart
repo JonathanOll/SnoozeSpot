@@ -9,14 +9,14 @@ class SpotDetailsScreenNotifier with ChangeNotifier {
   SpotDTO? get spot => _spot;
 
   void loadSpot(int id) async {
-    var response = await spotRepository.getSpot(id: id);
+    var result = await spotRepository.getSpot(id: id);
 
-    if(response case Success<SpotDTO>(data: final spotResponse)){
+    if(result case Success<SpotDTO>(data: final spotResponse)){
       _spot = spotResponse;
       notifyListeners();
     } else {
       // TODO: Handle this case.
-      throw UnimplementedError();
+      throw Exception(result.toString());
     }
   }
 

@@ -20,18 +20,18 @@ class MapScreenNotifier with ChangeNotifier {
       position.northeast.longitude,
     );
 
-    var response = await spotRepository.getSpots(
+    var result = await spotRepository.getSpots(
       topleft: topleft,
       bottomright: bottomright,
     );
 
-    if(response case Success<BuiltList<SpotDTO>>(data: final spotsResponse)){
+    if(result case Success<BuiltList<SpotDTO>>(data: final spotsResponse)){
       _spots.clear();
       _spots.addAll(spotsResponse);
       notifyListeners();
     } else {
       // TODO: Handle this case.
-      throw UnimplementedError();
+      throw Exception(result.toString());
     }
   }
 }

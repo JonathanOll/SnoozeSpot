@@ -18,7 +18,7 @@ class AccountScreenNotifier with ChangeNotifier {
       _posts.addAll(posts);
     } else {
       // TODO: Handle this case.
-      throw UnimplementedError();
+      throw Exception(result.toString());
     }
 
     notifyListeners();
@@ -31,7 +31,7 @@ class AccountScreenNotifier with ChangeNotifier {
       _posts.insert(0, post);
     } else {
       // TODO: Handle this case.
-      throw UnimplementedError();
+      throw Exception(result.toString());
     }
 
     notifyListeners();
