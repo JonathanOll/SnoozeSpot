@@ -9,9 +9,10 @@ class FeedScreenNotifier with ChangeNotifier {
   final List<PostDTO> _posts = <PostDTO>[];
   List<PostDTO> get posts => _posts.toList();
 
-  int page = 0;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+
+  int _page = 0;
 
   void loadPosts() async {
     if (_isLoading) return;
@@ -19,41 +20,42 @@ class FeedScreenNotifier with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    try {
-      var result = await postRepository.getPosts(page: page++);
+    var result = await postRepository.getPosts(page: _page++);
 
-      if(result case Success<BuiltList<PostDTO>>(data: final posts)){
-        _posts.addAll(posts);
-      } else {
-        // TODO: Handle this case.
-        throw Exception(result.toString());
-      }
-
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+    if (result case Success<BuiltList<PostDTO>>(data: final posts)) {
+      _posts.addAll(posts);
+    } else {
+      // TODO: Handle this case.
+      throw Exception(result.toString());
     }
+
+    _isLoading = false;
+    notifyListeners();
   }
 
   void createPost(String content) async {
     var result = await postRepository.createPost(content);
 
-    if(result case Success<PostDTO>(data: final post)){
+    if (result case Success<PostDTO>(data: final post)) {
       _posts.insert(0, post);
+      notifyListeners();
     } else {
       Fluttertoast.showToast(
-          msg: "Could not create post",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM
+        msg: "Could not create post",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
       );
     }
-
-    notifyListeners();
   }
 
   void refresh() async {
     _posts.clear();
-    page = 0;
+    _page = 0;
     loadPosts();
+  }
+
+  void deletePost(int index) {
+    _posts.removeAt(index);
+    notifyListeners();
   }
 }

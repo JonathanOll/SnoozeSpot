@@ -69,7 +69,9 @@ class _FeedScreenState extends State<FeedScreen> {
             itemBuilder: (context, index) {
               if (index < notifier.posts.length) {
                 return FeedElement(
+                  key: ValueKey(notifier.posts[index].id),
                   post: notifier.posts[index],
+                  onDelete: () { notifier.deletePost(index); },
                 );
               }
 

@@ -52,6 +52,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
 
                     return FeedElement(
                       post: post,
+                      onDelete: () { notifier.deletePost(post); },
                     );
                   },
                 ),

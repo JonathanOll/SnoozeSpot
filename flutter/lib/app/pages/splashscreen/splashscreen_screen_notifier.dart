@@ -5,7 +5,7 @@ import 'package:snoozespot/repositories/user_repository.dart';
 import 'package:snoozespot/storage/auth_store.dart';
 import 'package:snoozespot/utils/result.dart';
 
-class SplashScreenScreenNotifier extends ChangeNotifier {
+class SplashScreenScreenNotifier with ChangeNotifier {
 
   bool _isReady = false;
 
