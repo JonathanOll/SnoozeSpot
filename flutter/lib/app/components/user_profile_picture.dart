@@ -20,7 +20,7 @@ class UserProfilePicture extends StatelessWidget {
       child: Image(
         image: user.profilePicture?.path != null
             ? NetworkImage(user.profilePicture!.path)
-            : AssetImage(Assets.imagesLobster),
+            : AssetImage(Assets.imagesDefaultProfilePicture),
         width: size ?? AppImageSize.xxlarge,
         height: size ?? AppImageSize.xxlarge,
       ),

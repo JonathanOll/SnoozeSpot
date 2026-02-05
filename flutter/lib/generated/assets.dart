@@ -3,9 +3,11 @@ class Assets {
   Assets._();
 
   static const String animationsSplashScreen = 'resources/animations/splash_screen.json';
+  static const String imagesDefaultProfilePicture = 'resources/images/default_profile_picture.png';
   static const String imagesGoogle = 'resources/images/google.png';
   static const String imagesIconShadow = 'resources/images/icon_shadow.png';
   static const String imagesLobster = 'resources/images/lobster.jpg';
   static const String imagesSelected = 'resources/images/selected.png';
+  static const String imagesSplashScreenGradient = 'resources/images/splash_screen_gradient.png';
 
 }

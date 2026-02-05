@@ -44,6 +44,12 @@ class _SplashScreenScreenState extends State<SplashScreenScreen> {
           child: Stack(
             alignment: Alignment.center,
             children: [
+              Image.asset(
+                Assets.imagesSplashScreenGradient,
+                width: double.infinity,
+                height: double.infinity,
+                fit: BoxFit.fill,
+              ),
               Lottie.asset(Assets.animationsSplashScreen),
               FractionallySizedBox(
                 widthFactor: 0.7,
