@@ -20,6 +20,8 @@ import 'package:snoozespot/app/pages/map/new_spot/new_spot_screen_notifier.dart'
 import 'package:snoozespot/app/pages/map/new_spot_comment/new_spot_comment_screen.dart';
 import 'package:snoozespot/app/pages/map/spot_details/spot_details_screen.dart';
 import 'package:snoozespot/app/pages/map/spot_details/spot_details_screen_notifier.dart';
+import 'package:snoozespot/app/pages/splashscreen/splashscreen_screen.dart';
+import 'package:snoozespot/app/pages/splashscreen/splashscreen_screen_notifier.dart';
 import 'package:snoozespot/resources/app_theme.dart';
 
 final RouteObserver<ModalRoute<void>> routeObserver =
@@ -45,6 +47,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => MapScreenNotifier()),
         ChangeNotifierProvider(create: (context) => SpotDetailsScreenNotifier()),
         ChangeNotifierProvider(create: (context) => NewSpotScreenNotifier()),
+        ChangeNotifierProvider(create: (context) => SplashScreenScreenNotifier()),
       ],
       child: MaterialApp(
         title: 'SnoozeSpot',
@@ -61,8 +64,9 @@ class MyApp extends StatelessWidget {
           MapScreen.routeName: (context) => MapScreen(),
           NewSpotCommentScreen.routeName: (context) => NewSpotCommentScreen(),
           NewSpotScreen.routeName: (context) => NewSpotScreen(),
+          SplashScreenScreen.routeName: (context) => SplashScreenScreen(),
         },
-        initialRoute: FeedScreen.routeName,
+        initialRoute: SplashScreenScreen.routeName,
         navigatorObservers: [routeObserver],
       ),
     );

@@ -2,7 +2,9 @@
 class Assets {
   Assets._();
 
-  static const String imagesLobster = 'resources/images/lobster.jpg';
+  static const String animationsSplashScreen = 'resources/animations/splash_screen.json';
   static const String imagesGoogle = 'resources/images/google.png';
+  static const String imagesIconShadow = 'resources/images/icon_shadow.png';
+  static const String imagesLobster = 'resources/images/lobster.jpg';
 
 }
