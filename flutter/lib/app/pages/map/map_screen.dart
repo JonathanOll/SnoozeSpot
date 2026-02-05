@@ -7,6 +7,7 @@ import 'package:snoozespot/app/components/bottom_bar.dart';
 import 'package:snoozespot/app/pages/map/map_screen_notifier.dart';
 import 'package:snoozespot/app/pages/map/new_spot/new_spot_screen.dart';
 import 'package:snoozespot/app/pages/map/spot_details/spot_details_screen.dart';
+import 'package:snoozespot/resources/app_color.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -49,6 +50,7 @@ class _MapScreenState extends State<MapScreen> {
             }
           }, icon: const Icon(Icons.add))
         ],
+        backgroundColor: AppColor.secondary,
       ),
       bottomNavigationBar: SnoozeSpotBottomBar(),
       body: SafeArea(

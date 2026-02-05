@@ -6,5 +6,6 @@ class Assets {
   static const String imagesGoogle = 'resources/images/google.png';
   static const String imagesIconShadow = 'resources/images/icon_shadow.png';
   static const String imagesLobster = 'resources/images/lobster.jpg';
+  static const String imagesSelected = 'resources/images/selected.png';
 
 }
