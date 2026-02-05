@@ -3,5 +3,6 @@ class Assets {
   Assets._();
 
   static const String imagesLobster = 'resources/images/lobster.jpg';
+  static const String imagesGoogle = 'resources/images/google.png';
 
 }
