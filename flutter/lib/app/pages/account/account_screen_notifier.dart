@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:snoozespot/repositories/post_repository.dart';
 import 'package:snoozespot/storage/auth_store.dart';
 import 'package:snoozespot/utils/result.dart';
@@ -16,19 +17,6 @@ class AccountScreenNotifier with ChangeNotifier {
 
     if(result case Success<BuiltList<PostDTO>>(data: final posts)){
       _posts.addAll(posts);
-    } else {
-      // TODO: Handle this case.
-      throw Exception(result.toString());
-    }
-
-    notifyListeners();
-  }
-
-  void createPost(String content) async {
-    var result = await postRepository.createPost(content);
-
-    if(result case Success<PostDTO>(data: final post)){
-      _posts.insert(0, post);
     } else {
       // TODO: Handle this case.
       throw Exception(result.toString());

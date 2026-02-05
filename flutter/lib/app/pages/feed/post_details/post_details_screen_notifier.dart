@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:snoozespot/repositories/post_repository.dart';
 import 'package:snoozespot/utils/result.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
@@ -33,8 +34,11 @@ class PostDetailsScreenNotifier with ChangeNotifier {
         b.comments.add(comment);
       });
     } else {
-      // TODO: Handle this case.
-      throw Exception(result.toString());
+      Fluttertoast.showToast(
+          msg: "Could not comment post",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM
+      );
     }
 
     notifyListeners();
