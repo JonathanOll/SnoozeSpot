@@ -548,7 +548,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **spotsPost**
-> SpotDTO spotsPost()
+> SpotDTO spotsPost(name, description, latitude, longitude, file)
 
 
 
@@ -559,9 +559,14 @@ No authorization required
 import 'package:snoozespot_api/api.dart';
 
 final api = SnoozespotApi().getDefaultApi();
+final String name = name_example; // String | 
+final String description = description_example; // String | 
+final double latitude = 1.2; // double | 
+final double longitude = 1.2; // double | 
+final MultipartFile file = BINARY_DATA_HERE; // MultipartFile | Fichier optionnel associé au post
 
 try {
-    final response = api.spotsPost();
+    final response = api.spotsPost(name, description, latitude, longitude, file);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling DefaultApi->spotsPost: $e\n');
@@ -569,7 +574,14 @@ try {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **name** | **String**|  | 
+ **description** | **String**|  | 
+ **latitude** | **double**|  | 
+ **longitude** | **double**|  | 
+ **file** | **MultipartFile**| Fichier optionnel associé au post | [optional] 
 
 ### Return type
 
@@ -581,7 +593,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: multipart/form-data
  - **Accept**: text/plain, */*
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

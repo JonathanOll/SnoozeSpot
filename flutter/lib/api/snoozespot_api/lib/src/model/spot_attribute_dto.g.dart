@@ -14,12 +14,12 @@ class _$SpotAttributeDTO extends SpotAttributeDTO {
   @override
   final StoredFileDTO? icon;
 
-  factory _$SpotAttributeDTO(
-          [void Function(SpotAttributeDTOBuilder)? updates]) =>
-      (SpotAttributeDTOBuilder()..update(updates))._build();
+  factory _$SpotAttributeDTO([
+    void Function(SpotAttributeDTOBuilder)? updates,
+  ]) => (SpotAttributeDTOBuilder()..update(updates))._build();
 
   _$SpotAttributeDTO._({required this.id, required this.name, this.icon})
-      : super._();
+    : super._();
   @override
   SpotAttributeDTO rebuild(void Function(SpotAttributeDTOBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -104,12 +104,19 @@ class SpotAttributeDTOBuilder
   _$SpotAttributeDTO _build() {
     _$SpotAttributeDTO _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$SpotAttributeDTO._(
             id: BuiltValueNullFieldError.checkNotNull(
-                id, r'SpotAttributeDTO', 'id'),
+              id,
+              r'SpotAttributeDTO',
+              'id',
+            ),
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'SpotAttributeDTO', 'name'),
+              name,
+              r'SpotAttributeDTO',
+              'name',
+            ),
             icon: _icon?.build(),
           );
     } catch (_) {
@@ -119,7 +126,10 @@ class SpotAttributeDTOBuilder
         _icon?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'SpotAttributeDTO', _$failedField, e.toString());
+          r'SpotAttributeDTO',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

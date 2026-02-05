@@ -4,10 +4,12 @@
 
 import 'dart:async';
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+
+import 'package:built_collection/built_collection.dart';
+import 'package:built_value/json_object.dart';
 import 'package:snoozespot_api/src/api_util.dart';
 import 'package:snoozespot_api/src/model/auth_response_dto.dart';
 import 'package:snoozespot_api/src/model/create_post_comment_request.dart';
@@ -1056,6 +1058,11 @@ class DefaultApi {
   ///
   ///
   /// Parameters:
+  /// * [name]
+  /// * [description]
+  /// * [latitude]
+  /// * [longitude]
+  /// * [file] - Fichier optionnel associé au post
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1066,6 +1073,11 @@ class DefaultApi {
   /// Returns a [Future] containing a [Response] with a [SpotDTO] as data
   /// Throws [DioException] if API call or serialization fails
   Future<Response<SpotDTO>> spotsPost({
+    required String name,
+    required String description,
+    required double latitude,
+    required double longitude,
+    MultipartFile? file,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1083,11 +1095,39 @@ class DefaultApi {
         'secure': <Map<String, String>>[],
         ...?extra,
       },
+      contentType: 'multipart/form-data',
       validateStatus: validateStatus,
     );
 
+    dynamic _bodyData;
+
+    try {
+      _bodyData = FormData.fromMap(<String, dynamic>{
+        r'name':
+            encodeFormParameter(_serializers, name, const FullType(String)),
+        r'description': encodeFormParameter(
+            _serializers, description, const FullType(String)),
+        r'latitude':
+            encodeFormParameter(_serializers, latitude, const FullType(double)),
+        r'longitude': encodeFormParameter(
+            _serializers, longitude, const FullType(double)),
+        if (file != null) r'file': file,
+      });
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
     final _response = await _dio.request<Object>(
       _path,
+      data: _bodyData,
       options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,

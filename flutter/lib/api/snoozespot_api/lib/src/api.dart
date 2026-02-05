@@ -2,17 +2,14 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'dart:io';
-
-import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
-import 'package:snoozespot_api/src/api/default_api.dart';
+import 'package:built_value/serializer.dart';
+import 'package:snoozespot_api/src/serializers.dart';
 import 'package:snoozespot_api/src/auth/api_key_auth.dart';
 import 'package:snoozespot_api/src/auth/basic_auth.dart';
 import 'package:snoozespot_api/src/auth/bearer_auth.dart';
 import 'package:snoozespot_api/src/auth/oauth.dart';
-import 'package:snoozespot_api/src/serializers.dart';
+import 'package:snoozespot_api/src/api/default_api.dart';
 
 class SnoozespotApi {
   static const String basePath = r'https://snoozespot_api';
@@ -42,12 +39,6 @@ class SnoozespotApi {
     } else {
       this.dio.interceptors.addAll(interceptors);
     }
-    (this.dio.httpClientAdapter as DefaultHttpClientAdapter)
-        .onHttpClientCreate = (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
-    };
   }
 
   void setOAuthToken(String name, String token) {

@@ -15,7 +15,7 @@ class SpotRepository {
       topLeftLatitude: topleft.latitude,
       topLeftLongitude: topleft.longitude,
       bottomRightLatitude: bottomright.latitude,
-      bottomRightLongitude: bottomright.longitude
+      bottomRightLongitude: bottomright.longitude,
     );
 
     return await Result.guardAsync(call);
@@ -27,13 +27,36 @@ class SpotRepository {
     return await Result.guardAsync(call);
   }
 
-  Future<Result<SpotCommentDTO>> createSpotComment({required int spotId, required String content, required double rating}) async {
-    call() => api.spotsIdCommentPost(id: spotId, createSpotCommentRequest: CreateSpotCommentRequest((b) {
-      b..rating = rating.toInt()
-        ..content = content;
-    },));
+  Future<Result<SpotCommentDTO>> createSpotComment({
+    required int spotId,
+    required String content,
+    required double rating,
+  }) async {
+    call() => api.spotsIdCommentPost(
+      id: spotId,
+      createSpotCommentRequest: CreateSpotCommentRequest((b) {
+        b
+          ..rating = rating.toInt()
+          ..content = content;
+      }),
+    );
 
     return await Result.guardAsync(call);
   }
 
+  Future<Result<SpotDTO>> createSpot({
+    required String name,
+    required String description,
+    required double latitude,
+    required double longitude,
+  }) async {
+    call() => api.spotsPost(
+      name: name,
+      description: description,
+      latitude: latitude,
+      longitude: longitude,
+    );
+
+    return await Result.guardAsync(call);
+  }
 }

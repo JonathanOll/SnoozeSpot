@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/app/components/bottom_bar.dart';
-import 'package:snoozespot/app/pages/account/account_screen.dart';
 import 'package:snoozespot/app/pages/feed/components/feed_element.dart';
 import 'package:snoozespot/app/pages/feed/feed_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/new_post/new_post_screen.dart';
-import 'package:snoozespot/app/pages/map/spotdetails/spot_details_screen.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -67,7 +65,7 @@ class _FeedScreenState extends State<FeedScreen> {
           },
           child: ListView.builder(
             controller: _scrollController,
-            itemCount: notifier.posts.length + 3,
+            itemCount: notifier.posts.length + 1,
             itemBuilder: (context, index) {
               if (index < notifier.posts.length) {
                 return FeedElement(
@@ -75,31 +73,11 @@ class _FeedScreenState extends State<FeedScreen> {
                 );
               }
 
-              if( index == notifier.posts.length  && notifier.isLoading ){
-                return Center(
-                  child: LoadingAnimationWidget.staggeredDotsWave(
-                    color: Colors.black,
-                    size: 100,
-                  ),
-                );
-              }
-
-              if (index == notifier.posts.length + 1) {
-                return ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(
-                      context,
-                    ).pushNamed(SpotDetailsScreen.routeName);
-                  },
-                  child: Text("autre page"),
-                );
-              }
-
-              return ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(AccountScreen.routeName);
-                },
-                child: Text("account"),
+              return Center(
+                child: LoadingAnimationWidget.staggeredDotsWave(
+                  color: Colors.black,
+                  size: 100,
+                ),
               );
             },
           ),

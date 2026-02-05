@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
+import 'package:snoozespot/app/components/outlined_textfield.dart';
 import 'package:snoozespot/resources/app_dimens.dart';
 
 class NewSpotCommentResult {
@@ -62,21 +63,7 @@ class _NewSpotCommentScreenState extends State<NewSpotCommentScreen> {
           child: Column(
             children: [
               StarRating(rating: rating, allowHalfRating: false, onRatingChanged: (rating) => _setRating(rating)),
-              TextField(
-                controller: contentController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 2),
-                  ),
-                  hintText: 'Content',
-                ),
-              ),
+              OutlinedTextField(controller: contentController, hintText: 'Content'),
             ],
           ),
         ),

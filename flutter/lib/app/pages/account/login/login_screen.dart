@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snoozespot/app/components/outlined_textfield.dart';
 import 'package:snoozespot/app/pages/account/login/login_screen_notifier.dart';
 import 'package:snoozespot/app/pages/account/signup/signup_screen.dart';
 import 'package:snoozespot/app/pages/feed/post_details/post_details_screen.dart';
@@ -38,36 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
           height: double.infinity,
           child: Column(
             children: [
-              TextField(
-                controller: usernameController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 2),
-                  ),
-                  hintText: 'Username',
-                ),
-              ),
-              TextField(
-                controller: passwordController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 2),
-                  ),
-                  hintText: 'Password',
-                ),
-              ),
+              OutlinedTextField(controller: usernameController, hintText: 'Username'),
+              OutlinedTextField(controller: passwordController, hintText: 'Password'),
               FilledButton(
                 onPressed: () {
                   Navigator.of(

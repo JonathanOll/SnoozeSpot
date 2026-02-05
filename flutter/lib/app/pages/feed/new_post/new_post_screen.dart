@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snoozespot/app/components/outlined_textfield.dart';
 import 'package:snoozespot/resources/app_dimens.dart';
 
 class NewPostScreen extends StatelessWidget {
@@ -24,21 +25,7 @@ class NewPostScreen extends StatelessWidget {
           height: double.infinity,
           child: Column(
             children: [
-              TextField(
-                controller: contentController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 2),
-                  ),
-                  hintText: 'Content',
-                ),
-              ),
+              OutlinedTextField(controller: contentController, hintText: 'Content')
             ],
           ),
         ),
