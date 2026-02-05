@@ -71,52 +71,54 @@ class _NewSpotScreenState extends State<NewSpotScreen> {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Division(
-              children: [
-                Text("Informations", style: AppTheme.titleLarge),
-                OutlinedTextField(controller: nameController, hintText: "Name"),
-                SizedBox(height: AppMargin.small),
-                OutlinedTextField(
-                  controller: descriptionController,
-                  hintText: "Description",
-                ),
-              ],
-            ),
-            Division(
-              children: [
-                Text("Position", style: AppTheme.titleLarge),
-                SizedBox(
-                  width: double.infinity,
-                  height: 250,
-                  child: Stack(
-                    children: [
-                      GoogleMap(
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(46.2, 5.21),
-                          zoom: 14,
-                        ),
-                        onMapCreated: (controller) {
-                          _mapController.complete(controller);
-                        },
-                      ),
-                      Center(
-                        child: Container(
-                          width: 16,
-                          height: 16,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      )
-                    ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Division(
+                children: [
+                  Text("Informations", style: AppTheme.titleLarge),
+                  OutlinedTextField(controller: nameController, hintText: "Name"),
+                  SizedBox(height: AppMargin.small),
+                  OutlinedTextField(
+                    controller: descriptionController,
+                    hintText: "Description",
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+              Division(
+                children: [
+                  Text("Position", style: AppTheme.titleLarge),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 250,
+                    child: Stack(
+                      children: [
+                        GoogleMap(
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(46.2, 5.21),
+                            zoom: 14,
+                          ),
+                          onMapCreated: (controller) {
+                            _mapController.complete(controller);
+                          },
+                        ),
+                        Center(
+                          child: Container(
+                            width: 16,
+                            height: 16,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

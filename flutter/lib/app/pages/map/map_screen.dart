@@ -42,7 +42,12 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(onPressed: () { Navigator.of(context).pushNamed(NewSpotScreen.routeName); }, icon: const Icon(Icons.add))
+          IconButton(onPressed: () async {
+            var result = await Navigator.of(context).pushNamed(NewSpotScreen.routeName);
+            if(result != null && result is NewSpotResult) {
+              notifier.createSpot(result);
+            }
+          }, icon: const Icon(Icons.add))
         ],
       ),
       bottomNavigationBar: SnoozeSpotBottomBar(),
@@ -66,11 +71,8 @@ class _MapScreenState extends State<MapScreen> {
                 (spot) => Marker(
                   position: LatLng(spot.latitude, spot.longitude),
                   markerId: MarkerId(spot.id.toString()),
-                  onTap: () async {
-                    var result = await Navigator.of(context).pushNamed(SpotDetailsScreen.routeName, arguments: spot.id);
-                    if(result != null && result is NewSpotResult) {
-                      
-                    }
+                  onTap: () {
+                    Navigator.of(context).pushNamed(SpotDetailsScreen.routeName, arguments: spot.id);
                   }
                 ),
               ),
