@@ -2,7 +2,9 @@
     <application
         android:label="snoozespot"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@drawable/snoozespot"
+        android:roundIcon="@drawable/snoozespot_round"
+        >
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
