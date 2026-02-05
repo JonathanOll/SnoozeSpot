@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:snoozespot/api/snoozespot_api/lib/snoozespot_api.dart';
 import 'package:snoozespot/repositories/post_repository.dart';
@@ -23,8 +24,11 @@ class FeedElementController extends ChangeNotifier  {
     post = updated;
 
     } else {
-      // TODO: Handle this case.
-      throw Exception(result.toString());
+      Fluttertoast.showToast(
+          msg: "Could not like post",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM
+      );
     }
 
     notifyListeners();

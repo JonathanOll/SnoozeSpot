@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:snoozespot/app/pages/map/new_spot/new_spot_screen.dart';
 import 'package:snoozespot/repositories/spot_repository.dart';
@@ -31,8 +32,11 @@ class MapScreenNotifier with ChangeNotifier {
       _spots.addAll(spotsResponse);
       notifyListeners();
     } else {
-      // TODO: Handle this case.
-      throw Exception(result.toString());
+      Fluttertoast.showToast(
+          msg: "Could not fetch data",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM
+      );
     }
   }
 
@@ -48,8 +52,11 @@ class MapScreenNotifier with ChangeNotifier {
       _spots.add(spot);
       notifyListeners();
     } else {
-      // TODO: Handle this case.
-      throw Exception(result.toString());
+      Fluttertoast.showToast(
+          msg: "Could not create spot",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM
+      );
     }
   }
 

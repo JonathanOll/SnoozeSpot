@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:snoozespot/repositories/post_repository.dart';
 import 'package:snoozespot/utils/result.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
@@ -40,8 +41,11 @@ class FeedScreenNotifier with ChangeNotifier {
     if(result case Success<PostDTO>(data: final post)){
       _posts.insert(0, post);
     } else {
-      // TODO: Handle this case.
-      throw Exception(result.toString());
+      Fluttertoast.showToast(
+          msg: "Could not create post",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM
+      );
     }
 
     notifyListeners();

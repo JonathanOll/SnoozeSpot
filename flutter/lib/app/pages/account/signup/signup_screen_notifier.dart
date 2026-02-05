@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:snoozespot/api/snoozespot_api/lib/snoozespot_api.dart';
 import 'package:snoozespot/repositories/user_repository.dart';
 import 'package:snoozespot/storage/auth_store.dart';
@@ -12,6 +13,12 @@ class SignupScreenNotifier with ChangeNotifier {
       authStore.setUser(authResponse.user);
       authStore.setJWT(authResponse.accessToken);
       return true;
+    } else {
+      Fluttertoast.showToast(
+          msg: "Could not sign in",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM
+      );
     }
 
     return false;

@@ -35,35 +35,40 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       bottomNavigationBar: SnoozeSpotBottomBar(),
       body: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                ?authStore.getUser() != null
-                    ? AccountElement(user: authStore.getUser()!)
-                    : null,
-
-                authStore.getUser() != null
-                    ? ElevatedButton(
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height,
+            ),
+            child: authStore.getUser() == null
+                ? Center(
+                    // centré uniquement pour le login
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(
+                              context,
+                            ).pushNamed(LoginScreen.routeName);
+                          },
+                          child: Text("login"),
+                        ),
+                      ],
+                    ),
+                  )
+                : Column(
+                    // affichage normal quand connecté
+                    children: [
+                      AccountElement(user: authStore.getUser()!),
+                      ElevatedButton(
                         onPressed: () {
                           notifier.logout();
                         },
                         child: Text("logout"),
-                      )
-                    : ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(
-                            context,
-                          ).pushNamed(LoginScreen.routeName);
-                        },
-                        child: Text("login"),
                       ),
-              ],
-            ),
+                    ],
+                  ),
           ),
         ),
       ),
