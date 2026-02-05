@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:built_value/json_object.dart';
 import 'package:snoozespot/api/api_generator.dart';
 import 'package:snoozespot/utils/result.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
@@ -21,6 +22,12 @@ class PostRepository {
 
   Future<Result<PostDTO>> createPost(String content) async {
     call() => api.postsPost(content: content);
+
+    return await Result.guardAsync(call);
+  }
+
+  Future<Result<JsonObject>> deletePost(int id) async {
+    call() => api.postsIdDelete(id: id);
 
     return await Result.guardAsync(call);
   }

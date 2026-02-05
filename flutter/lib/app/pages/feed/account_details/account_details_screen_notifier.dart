@@ -21,4 +21,15 @@ class AccountDetailsScreenNotifier with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void deletePost(PostDTO post) {
+    if (_account == null) return;
+
+    _account = _account!.rebuild(
+          (b) => b..posts.removeWhere((p) => p.id == post.id),
+    );
+
+    notifyListeners();
+  }
+
 }

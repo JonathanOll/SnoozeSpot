@@ -44,6 +44,9 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                   children: [
                     FeedElement(
                       post: notifier.post!,
+                      onDelete: () {
+                        Navigator.of(context).pop();
+                      },
                     ),
                     ...notifier.post!.comments.map(
                       (comment) => FeedComment(comment: comment),
