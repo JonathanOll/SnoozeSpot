@@ -5,6 +5,7 @@ import 'package:snoozespot/app/components/bottom_bar.dart';
 import 'package:snoozespot/app/pages/feed/components/feed_element.dart';
 import 'package:snoozespot/app/pages/feed/feed_screen_notifier.dart';
 import 'package:snoozespot/app/pages/feed/new_post/new_post_screen.dart';
+import 'package:snoozespot/resources/app_color.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -75,10 +76,13 @@ class _FeedScreenState extends State<FeedScreen> {
                 );
               }
 
-              return Center(
-                child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: Colors.black,
-                  size: 100,
+              return Container(
+                padding: EdgeInsets.all(25),
+                child: Center(
+                  child: LoadingAnimationWidget.beat(
+                    color: AppColor.primary,
+                    size: 25,
+                  ),
                 ),
               );
             },
