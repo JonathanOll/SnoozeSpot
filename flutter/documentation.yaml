@@ -319,7 +319,10 @@ paths:
                   format: binary
                   description: "Fichier optionnel associé au post"
               required:
-                - content
+                - name
+                - description
+                - latitude
+                - longitude
       description: ""
       responses:
         "500":
