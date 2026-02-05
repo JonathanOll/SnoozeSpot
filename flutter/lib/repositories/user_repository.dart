@@ -12,6 +12,12 @@ class UserRepository {
     return Result.guardAsync(call);
   }
 
+  Future<Result<UserDTO>> getMe() async {
+    call() => api.usersMeGet();
+
+    return Result.guardAsync(call);
+  }
+
   Future<Result<AuthResponseDTO>> login(String username, String password) async {
     call() => api.authLoginPost(
       userAuthRequest: UserAuthRequest(
