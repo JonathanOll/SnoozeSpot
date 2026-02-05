@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:snoozespot/repositories/post_repository.dart';
 import 'package:snoozespot/repositories/user_repository.dart';
 import 'package:snoozespot/utils/result.dart';
@@ -15,8 +16,12 @@ class AccountDetailsScreenNotifier with ChangeNotifier {
     if(result case Success<UserDTO>(data: final account)){
       _account = account;
     } else {
-      // TODO: Handle this case.
-      throw Exception(result.toString());
+      Fluttertoast.showToast(
+        msg: "Could not fetch data",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+      // TODO: remplacer le toast par le composant dédié une fois fait.
     }
 
     notifyListeners();

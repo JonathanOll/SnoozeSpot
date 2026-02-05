@@ -18,8 +18,12 @@ class AccountScreenNotifier with ChangeNotifier {
     if(result case Success<BuiltList<PostDTO>>(data: final posts)){
       _posts.addAll(posts);
     } else {
-      // TODO: Handle this case.
-      throw Exception(result.toString());
+      Fluttertoast.showToast(
+        msg: "Could not fetch data",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+      // TODO: remplacer le toast par le composant dédié une fois fait.
     }
 
     notifyListeners();

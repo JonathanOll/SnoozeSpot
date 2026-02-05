@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:snoozespot/repositories/spot_repository.dart';
 import 'package:snoozespot/utils/result.dart';
 import 'package:snoozespot_api/snoozespot_api.dart';
@@ -15,8 +16,12 @@ class SpotDetailsScreenNotifier with ChangeNotifier {
       _spot = spotResponse;
       notifyListeners();
     } else {
-      // TODO: Handle this case.
-      throw Exception(result.toString());
+      Fluttertoast.showToast(
+        msg: "Could not fetch data",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+      // TODO: remplacer le toast par le composant dédié une fois fait.
     }
   }
 
@@ -35,8 +40,11 @@ class SpotDetailsScreenNotifier with ChangeNotifier {
       });
       notifyListeners();
     } else {
-      // TODO: Handle this case.
-      throw UnimplementedError();
+      Fluttertoast.showToast(
+        msg: "Could not add comment",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
     }
   }
 
