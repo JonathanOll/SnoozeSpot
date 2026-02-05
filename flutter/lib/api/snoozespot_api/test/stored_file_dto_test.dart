@@ -1,5 +1,5 @@
-import 'package:snoozespot_api/snoozespot_api.dart';
 import 'package:test/test.dart';
+import 'package:snoozespot_api/snoozespot_api.dart';
 
 // tests for StoredFileDTO
 void main() {

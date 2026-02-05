@@ -1,5 +1,5 @@
-import 'package:snoozespot_api/snoozespot_api.dart';
 import 'package:test/test.dart';
+import 'package:snoozespot_api/snoozespot_api.dart';
 
 /// tests for DefaultApi
 void main() {
@@ -64,7 +64,7 @@ void main() {
 
     //
     //
-    //Future<PostDTO> postsPost() async
+    //Future<PostDTO> postsPost(String content, { MultipartFile file }) async
     test('test postsPost', () async {
       // TODO
     });
@@ -92,7 +92,7 @@ void main() {
 
     //
     //
-    //Future<SpotDTO> spotsPost() async
+    //Future<SpotDTO> spotsPost(String name, String description, double latitude, double longitude, { MultipartFile file }) async
     test('test spotsPost', () async {
       // TODO
     });

@@ -35,20 +35,20 @@ class _$SpotDTO extends SpotDTO {
   factory _$SpotDTO([void Function(SpotDTOBuilder)? updates]) =>
       (SpotDTOBuilder()..update(updates))._build();
 
-  _$SpotDTO._(
-      {required this.id,
-      required this.name,
-      required this.description,
-      required this.latitude,
-      required this.longitude,
-      required this.likeCount,
-      required this.pictures,
-      required this.attributes,
-      required this.comments,
-      this.creator,
-      this.rating,
-      this.createdAt})
-      : super._();
+  _$SpotDTO._({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.latitude,
+    required this.longitude,
+    required this.likeCount,
+    required this.pictures,
+    required this.attributes,
+    required this.comments,
+    this.creator,
+    this.rating,
+    this.createdAt,
+  }) : super._();
   @override
   SpotDTO rebuild(void Function(SpotDTOBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -209,19 +209,35 @@ class SpotDTOBuilder implements Builder<SpotDTO, SpotDTOBuilder> {
   _$SpotDTO _build() {
     _$SpotDTO _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$SpotDTO._(
             id: BuiltValueNullFieldError.checkNotNull(id, r'SpotDTO', 'id'),
-            name:
-                BuiltValueNullFieldError.checkNotNull(name, r'SpotDTO', 'name'),
+            name: BuiltValueNullFieldError.checkNotNull(
+              name,
+              r'SpotDTO',
+              'name',
+            ),
             description: BuiltValueNullFieldError.checkNotNull(
-                description, r'SpotDTO', 'description'),
+              description,
+              r'SpotDTO',
+              'description',
+            ),
             latitude: BuiltValueNullFieldError.checkNotNull(
-                latitude, r'SpotDTO', 'latitude'),
+              latitude,
+              r'SpotDTO',
+              'latitude',
+            ),
             longitude: BuiltValueNullFieldError.checkNotNull(
-                longitude, r'SpotDTO', 'longitude'),
+              longitude,
+              r'SpotDTO',
+              'longitude',
+            ),
             likeCount: BuiltValueNullFieldError.checkNotNull(
-                likeCount, r'SpotDTO', 'likeCount'),
+              likeCount,
+              r'SpotDTO',
+              'likeCount',
+            ),
             pictures: pictures.build(),
             attributes: attributes.build(),
             comments: comments.build(),
@@ -242,7 +258,10 @@ class SpotDTOBuilder implements Builder<SpotDTO, SpotDTOBuilder> {
         _creator?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'SpotDTO', _$failedField, e.toString());
+          r'SpotDTO',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

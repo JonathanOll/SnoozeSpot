@@ -21,13 +21,13 @@ class _$SpotCommentDTO extends SpotCommentDTO {
   factory _$SpotCommentDTO([void Function(SpotCommentDTOBuilder)? updates]) =>
       (SpotCommentDTOBuilder()..update(updates))._build();
 
-  _$SpotCommentDTO._(
-      {required this.id,
-      required this.user,
-      required this.description,
-      required this.rating,
-      this.createdAt})
-      : super._();
+  _$SpotCommentDTO._({
+    required this.id,
+    required this.user,
+    required this.description,
+    required this.rating,
+    this.createdAt,
+  }) : super._();
   @override
   SpotCommentDTO rebuild(void Function(SpotCommentDTOBuilder) updates) =>
       (toBuilder()..update(updates)).build();
@@ -127,15 +127,25 @@ class SpotCommentDTOBuilder
   _$SpotCommentDTO _build() {
     _$SpotCommentDTO _$result;
     try {
-      _$result = _$v ??
+      _$result =
+          _$v ??
           _$SpotCommentDTO._(
             id: BuiltValueNullFieldError.checkNotNull(
-                id, r'SpotCommentDTO', 'id'),
+              id,
+              r'SpotCommentDTO',
+              'id',
+            ),
             user: user.build(),
             description: BuiltValueNullFieldError.checkNotNull(
-                description, r'SpotCommentDTO', 'description'),
+              description,
+              r'SpotCommentDTO',
+              'description',
+            ),
             rating: BuiltValueNullFieldError.checkNotNull(
-                rating, r'SpotCommentDTO', 'rating'),
+              rating,
+              r'SpotCommentDTO',
+              'rating',
+            ),
             createdAt: createdAt,
           );
     } catch (_) {
@@ -145,7 +155,10 @@ class SpotCommentDTOBuilder
         user.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
-            r'SpotCommentDTO', _$failedField, e.toString());
+          r'SpotCommentDTO',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }
