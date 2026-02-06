@@ -9,22 +9,27 @@ import io.ktor.server.plugins.swagger.*
 import io.ktor.server.routing.*
 
 fun Application.configureHTTP() {
-    install(HttpsRedirect) {
-        // The port to redirect to. By default 443, the default HTTPS port.
-        sslPort = 443
-        // 301 Moved Permanently, or 302 Found redirect.
-        permanentRedirect = true
+    val disableSSL = System.getenv("DISABLE_SSL") == "true"
+    val disableAsync = System.getenv("DISABLE_ASYNCAPI") == "true"
+
+    if (!disableSSL) {
+        install(HttpsRedirect) {
+            sslPort = 443
+            permanentRedirect = true
+        }
     }
 
-    install(AsyncApiPlugin) {
-        extension = AsyncApiExtension.builder {
-            info {
-                title("SnoozeSpot API")
-                version("1.0.0")
-            }
-            servers {
-                server("localhost") {
-                    url = "http://localhost:443"
+    if(!disableAsync) {
+        install(AsyncApiPlugin) {
+            extension = AsyncApiExtension.builder {
+                info {
+                    title("SnoozeSpot API")
+                    version("1.0.0")
+                }
+                servers {
+                    server("localhost") {
+                        url = "http://localhost:443"
+                    }
                 }
             }
         }
@@ -32,9 +37,6 @@ fun Application.configureHTTP() {
 
     routing {
         swaggerUI(path = "swagger")
-    }
-
-    routing {
         openAPI(path = "openapi")
     }
 }

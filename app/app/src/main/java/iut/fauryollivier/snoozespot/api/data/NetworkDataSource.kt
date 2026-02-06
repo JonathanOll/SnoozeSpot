@@ -9,7 +9,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 object NetworkDataSource {
-    const val BASE_URL = "https://localhost:8080/"
+//    const val BASE_URL = "https://localhost:8080/"
+    const val BASE_URL = "https://snoozespot.onrender.com/"
 
     private lateinit var apiInstance: SnoozeSpotApi
 

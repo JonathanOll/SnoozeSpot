@@ -35,32 +35,45 @@ fun Application.module() {
 }
 
 private fun ApplicationEngine.Configuration.envConfig() {
-    val keyStoreFile = File("build/keystore.jks")
-    println("Using certificate file: ${keyStoreFile.absolutePath}")
-    val keyStore = buildKeyStore {
-        certificate(Config.SSL_CERTIFICATE_ALIAS) {
-            password = Config.SSL_CERTIFICATE_PASSWORD
-            domains = Config.SSL_CERTIFICATE_DOMAINS
+    val disableSSL = System.getenv("DISABLE_SSL") == "true"
+
+    if (!disableSSL) {
+        // LOCAL SSL
+        val keyStoreFile = File("build/keystore.jks")
+        println("Using certificate file: ${keyStoreFile.absolutePath}")
+
+        val keyStore = buildKeyStore {
+            certificate(Config.SSL_CERTIFICATE_ALIAS) {
+                password = Config.SSL_CERTIFICATE_PASSWORD
+                domains = Config.SSL_CERTIFICATE_DOMAINS
+            }
         }
+
+        keyStore.saveToFile(keyStoreFile, Config.SSL_CERTIFICATE_FILE_PASSWORD)
+
+        val exportedCertificateForAndroid = File("build/exportedCertificateForAndroid.cer")
+        exportCertificate(keyStore, Config.SSL_CERTIFICATE_ALIAS, exportedCertificateForAndroid)
+
+        sslConnector(
+            keyStore = keyStore,
+            keyAlias = Config.SSL_CERTIFICATE_ALIAS,
+            keyStorePassword = { Config.SSL_CERTIFICATE_FILE_PASSWORD.toCharArray() },
+            privateKeyPassword = { Config.SSL_CERTIFICATE_PASSWORD.toCharArray() }
+        ) {
+            port = 443
+            keyStorePath = keyStoreFile
+        }
+    } else {
+        println("SSL DISABLED /!\\")
     }
-    keyStore.saveToFile(keyStoreFile, Config.SSL_CERTIFICATE_FILE_PASSWORD)
 
-    val exportedCertificateForAndroid = File("build/exportedCertificateForAndroid.cer")
-    exportCertificate(keyStore, Config.SSL_CERTIFICATE_ALIAS, exportedCertificateForAndroid)
-
+    // POUR RENDER
     connector {
-        port = 80
-    }
-
-    sslConnector(
-        keyStore = keyStore,
-        keyAlias = Config.SSL_CERTIFICATE_ALIAS,
-        keyStorePassword = { Config.SSL_CERTIFICATE_FILE_PASSWORD.toCharArray() },
-        privateKeyPassword = { Config.SSL_CERTIFICATE_PASSWORD.toCharArray() }) {
-        port = 443
-        keyStorePath = keyStoreFile
+        port = System.getenv("PORT")?.toInt() ?: 8080
+        host = "0.0.0.0"
     }
 }
+
 
 private fun exportCertificate(keyStore: KeyStore, alias: String, outputFile: File) {
     val cert = keyStore.getCertificate(alias) as? java.security.cert.X509Certificate
