@@ -39,7 +39,7 @@ class RegisterViewModel : ViewModel() {
 
     fun register(localStorage: LocalStorage, navigateUp: () -> Unit) {
         viewModelScope.launch {
-            val response = UsersRepository.register(_username.value, _password.value, _email.value)
+            val response = UsersRepository.register(_email.value, _username.value, _password.value)
             if (response.isSuccessful && response.body() != null) {
                 val data = response.body()!!
                 localStorage.saveAuthToken(data.accessToken)
