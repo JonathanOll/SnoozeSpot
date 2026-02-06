@@ -8,7 +8,7 @@ group = "iut.fauryollivier.snoozespot.api"
 version = "0.0.1"
 
 application {
-    mainClass = "io.ktor.server.netty.EngineMain"
+    mainClass = "iut.fauryollivier.snoozespot.api.ApplicationKt"
 }
 
 dependencies {
