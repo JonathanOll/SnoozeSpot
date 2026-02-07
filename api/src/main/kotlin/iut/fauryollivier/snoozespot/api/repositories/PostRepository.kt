@@ -110,10 +110,10 @@ class PostRepository(
         return Result.success(id.value)
     }
 
-    fun getUserPosts(userId: Int): Result<List<Post>> {
+    fun getUserPosts(userId: Int, authUser: Int? = null): Result<List<Post>> {
         val posts = transaction {
             Tables.Posts.select { Tables.Posts.userId eq userId }.selectVisible().map {
-                it.toEntity(false)
+                it.toEntity(false, authUser)
             }
         }
         return Result.success(posts)
