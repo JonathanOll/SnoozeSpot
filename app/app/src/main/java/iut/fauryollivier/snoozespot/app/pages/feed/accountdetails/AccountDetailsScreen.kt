@@ -27,6 +27,7 @@ import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
 import iut.fauryollivier.snoozespot.app.components.HorizontalLine
+import iut.fauryollivier.snoozespot.app.components.Loader
 import iut.fauryollivier.snoozespot.app.pages.account.components.UserProfileCard
 import iut.fauryollivier.snoozespot.app.pages.feed.components.FeedElement
 import iut.fauryollivier.snoozespot.utils.ErrorMessage
@@ -66,7 +67,9 @@ fun AccountDetailsScreen(
             }
         }
     } else {
-        account?.let {
+        if (account == null) {
+            Loader()
+        } else {
             LazyColumn {
                 item {
                     UserProfileCard(
