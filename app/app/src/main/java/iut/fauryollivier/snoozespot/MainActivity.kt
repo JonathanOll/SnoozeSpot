@@ -28,41 +28,6 @@ import iut.fauryollivier.snoozespot.utils.Toaster
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        DatabaseBuilder.init(applicationContext)
-        LocalStorage(this).startObserving(lifecycleScope)
-        NetworkDataSource.init(this)
-        enableEdgeToEdge()
-        setContent {
-            SnoozeSpotTheme {
-
-                val showBottomBar = remember { mutableStateOf<Boolean>(false) }
-                val topBar = remember { mutableStateOf<@Composable () -> Unit>({ TopBar() }) }
-
-                val navController = rememberNavController()
-
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = topBar.value,
-                    bottomBar = {
-                        if (showBottomBar.value)
-                            BottomBar(navController)
-                    }
-                ) { innerPadding ->
-
-                    ToasterComponent()
-
-                    DestinationsNavHost(
-                        navGraph = NavGraphs.root,
-                        modifier = Modifier.padding(innerPadding),
-                        dependenciesContainerBuilder = {
-                            dependency(ScaffoldController(showBottomBar, topBar))
-                        },
-                        navController = navController
-                    )
-
-                }
-            }
-        }
+        CE CODE NE COMPILERA PAS
     }
 }
