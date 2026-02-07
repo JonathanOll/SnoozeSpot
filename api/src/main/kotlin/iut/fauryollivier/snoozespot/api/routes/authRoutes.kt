@@ -5,7 +5,6 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.swagger.v3.oas.annotations.tags.Tag
-import iut.fauryollivier.snoozespot.api.auth.JWTService
 import iut.fauryollivier.snoozespot.api.auth.model.UserAuthRequest
 import iut.fauryollivier.snoozespot.api.dtos.UserDTO
 import iut.fauryollivier.snoozespot.api.enums.StoredFileType
