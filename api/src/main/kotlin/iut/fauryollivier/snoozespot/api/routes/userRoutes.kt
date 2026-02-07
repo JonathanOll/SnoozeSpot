@@ -150,6 +150,18 @@ fun Route.userRoutes() {
             call.respond(HttpStatusCode.OK, result.getOrThrow())
         }
 
+        get("/friends") {
+            val currentUserId = call.currentUserId().getOrThrow()
+
+            val result = userService.getFriends(currentUserId)
+            if (result.isFailure) {
+                call.respond(HttpStatusCode.InternalServerError, "Could not fetch following list")
+                return@get
+            }
+
+            call.respond(HttpStatusCode.OK, result.getOrThrow())
+        }
+
 
 
     }

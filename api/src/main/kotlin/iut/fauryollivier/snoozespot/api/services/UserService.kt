@@ -22,7 +22,7 @@ class UserService(private val userRepository: UserRepository, private val postRe
 
         var user = result.getOrThrow()
 
-        val posts = postRepository.getUserPosts(id.getOrThrow())
+        val posts = postRepository.getUserPosts(id.getOrThrow(), authUser)
         if (posts.isSuccess)
             user = user.copy(
                 posts = posts.getOrThrow()
@@ -83,6 +83,14 @@ class UserService(private val userRepository: UserRepository, private val postRe
 
     fun getFollowing(userId: Int): Result<List<UserDTO>> {
         val result = userRepository.getFollowing(userId)
+        if (result.isFailure)
+            return Result.failure(result.exceptionOrNull()!!)
+
+        return Result.success(result.getOrThrow().map { it.toDTO() })
+    }
+
+    fun getFriends(userId: Int): Result<List<UserDTO>> {
+        val result = userRepository.getFriends(userId)
         if (result.isFailure)
             return Result.failure(result.exceptionOrNull()!!)
 
