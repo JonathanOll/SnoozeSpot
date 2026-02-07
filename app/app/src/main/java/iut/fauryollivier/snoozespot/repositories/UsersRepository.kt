@@ -103,7 +103,7 @@ object UsersRepository {
 
     suspend fun getFriends(): Response<List<UserDTO>> {
         try {
-            val result = NetworkDataSource.api.usersFollowingGet()
+            val result = NetworkDataSource.api.usersFriendsGet()
             if (result.isSuccessful)
                 return Response.success(result.body())
         } catch (_: Exception) {}

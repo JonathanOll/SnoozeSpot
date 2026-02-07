@@ -24,7 +24,6 @@ import iut.fauryollivier.snoozespot.app.components.TopBar
 import iut.fauryollivier.snoozespot.app.pages.NavGraphs
 import iut.fauryollivier.snoozespot.datastore.LocalStorage
 import iut.fauryollivier.snoozespot.room.DatabaseBuilder
-import iut.fauryollivier.snoozespot.utils.Toaster
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

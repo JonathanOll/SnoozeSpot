@@ -209,6 +209,38 @@ class UserRepository : RepositoryBase() {
         }
     }
 
+    fun getFriends(userId: Int): Result<List<User>> {
+        return try {
+            val users = transaction {
+                val following = Tables.Following
+                    .slice(Tables.Following.followedId)
+                    .select { Tables.Following.followerId eq userId }
+                    .map { it[Tables.Following.followedId] }
+
+                if (following.isEmpty()) return@transaction emptyList<User>()
+
+                val followers = Tables.Following
+                    .slice(Tables.Following.followerId)
+                    .select { Tables.Following.followedId eq userId }
+                    .map { it[Tables.Following.followerId] }
+
+                val mutual = following.intersect(followers.toSet())
+
+                if (mutual.isEmpty()) return@transaction emptyList<User>()
+
+                Tables.Users
+                    .select { Tables.Users.id inList mutual.toList() }
+                    .map { it.toEntity(loadRelations = false) }
+            }
+
+            Result.success(users)
+
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
 
     fun isFollowedBy(followedId: Int, followerId: Int): Result<Boolean> {
         val isFollowing = transaction {
