@@ -1,0 +1,11 @@
+backend:
+  - changed-files:
+      - any-glob-to-any-file: api/**
+
+frontend:
+  - changed-files:
+      - any-glob-to-any-file: app/**
+
+flutter:
+  - changed-files:
+      - any-glob-to-any-file: flutter/**
