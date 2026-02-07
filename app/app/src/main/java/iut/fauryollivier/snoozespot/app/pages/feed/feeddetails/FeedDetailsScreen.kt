@@ -24,6 +24,7 @@ import iut.fauryollivier.snoozespot.R
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.app.ScaffoldController
 import iut.fauryollivier.snoozespot.app.components.BackTopBar
+import iut.fauryollivier.snoozespot.app.components.Loader
 import iut.fauryollivier.snoozespot.app.pages.destinations.NewPostScreenDestination
 import iut.fauryollivier.snoozespot.app.pages.feed.feeddetails.components.FeedElementDetailed
 import iut.fauryollivier.snoozespot.app.pages.feed.newpost.NewPostResult
@@ -73,7 +74,9 @@ fun FeedDetailsScreen(
             }
         }
     } else {
-        postDTO?.let {
+        if(postDTO == null) {
+            Loader()
+        } else {
             FeedElementDetailed(
                 navigator,
                 postDTO!!,
