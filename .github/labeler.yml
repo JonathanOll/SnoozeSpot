@@ -1,0 +1,8 @@
+back:
+  - api/**
+
+front:
+  - app/**
+
+flutter:
+  - flutter/**
