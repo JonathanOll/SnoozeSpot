@@ -3,9 +3,12 @@ package iut.fauryollivier.snoozespot.app.pages.feed
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -117,6 +120,17 @@ fun FeedScreen(
                                 onDelete = { vm.deletePost(it) }
                             )
                         }
+
+                        if (state.endReached) {
+                            item {
+                                Row (
+                                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    Text(stringResource(R.string.no_more_to_show))
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -150,9 +164,12 @@ fun LazyFeed(
         derivedStateOf {
             val layoutInfo = lazyListState.layoutInfo
             val totalItems = layoutInfo.totalItemsCount
+
+            if (totalItems == 0) return@derivedStateOf false
+
             val lastVisibleItemIndex = (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + 1
 
-            lastVisibleItemIndex > (totalItems - buffer)
+            lastVisibleItemIndex >= totalItems - 1 - buffer
         }
     }
 

@@ -1,6 +1,7 @@
 package iut.fauryollivier.snoozespot.app.pages.feed
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -62,7 +63,7 @@ class FeedViewModel : ViewModel() {
     }
 
     fun loadNextPosts() {
-        if (_state.value.isLoading || _state.value.endReached) return
+        if (_state.value.isLoading || _state.value.endReached || _state.value.isRefreshing) return
 
         loadingState()
 

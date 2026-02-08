@@ -67,4 +67,5 @@
     <string name="no_friends_yet">Aucun ami :(</string>
     <string name="continue_with_google">Continuer avec Google</string>
     <string name="login_to_add_friends">Connectez vous pour ajouter des amis</string>
+    <string name="no_more_to_show">Rien de plus à voir</string>
 </resources>
