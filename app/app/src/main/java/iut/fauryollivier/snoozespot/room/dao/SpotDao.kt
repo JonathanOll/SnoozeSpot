@@ -5,18 +5,18 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import org.openapitools.client.models.room.SpotDTORoomModel
+import iut.fauryollivier.snoozespot.room.overridemodels.OverrideSpotDTORoomModel
 
 @Dao
 interface SpotDao {
     @Query("SELECT * FROM SpotDTO")
-    suspend fun getAll(): List<SpotDTORoomModel>
+    suspend fun getAll(): List<OverrideSpotDTORoomModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(spot: SpotDTORoomModel)
+    suspend fun insert(spot: OverrideSpotDTORoomModel)
 
     @Delete
-    suspend fun delete(spot: SpotDTORoomModel)
+    suspend fun delete(spot: OverrideSpotDTORoomModel)
 
     @Query("SELECT EXISTS(SELECT 1 FROM SpotDTO WHERE id = :spotId)")
     suspend fun exist(spotId: Int): Boolean

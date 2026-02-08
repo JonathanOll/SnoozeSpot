@@ -7,6 +7,7 @@ import iut.fauryollivier.snoozespot.api.generated.model.CreateSpotCommentRequest
 import iut.fauryollivier.snoozespot.api.generated.model.SpotCommentDTO
 import iut.fauryollivier.snoozespot.api.generated.model.SpotDTO
 import iut.fauryollivier.snoozespot.room.DatabaseBuilder
+import iut.fauryollivier.snoozespot.room.overridemodels.OverrideSpotDTORoomModel
 import iut.fauryollivier.snoozespot.utils.buildFileParts
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
@@ -81,7 +82,7 @@ object SpotsRepository {
 
     suspend fun saveOffline(spot: SpotDTO) {
         DatabaseBuilder.getInstance().SpotDao().insert(
-            SpotDTORoomModel(
+            OverrideSpotDTORoomModel(
                 roomTableId = spot.id,
                 id = spot.id,
                 name = spot.name,
@@ -92,6 +93,8 @@ object SpotsRepository {
                 creator = spot.creator,
                 rating = spot.rating,
                 createdAt = spot.createdAt,
+                pictures = spot.pictures,
+                comments = spot.comments
             )
         )
     }
