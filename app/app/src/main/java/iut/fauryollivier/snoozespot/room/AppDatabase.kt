@@ -1,7 +1,6 @@
 package iut.fauryollivier.snoozespot.room
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -9,10 +8,10 @@ import androidx.room.TypeConverters
 import iut.fauryollivier.snoozespot.api.generated.model.PostDTO
 import iut.fauryollivier.snoozespot.room.dao.PostDao
 import iut.fauryollivier.snoozespot.room.dao.SpotDao
-import org.openapitools.client.models.room.PostDTORoomModel
-import org.openapitools.client.models.room.SpotDTORoomModel
+import iut.fauryollivier.snoozespot.room.overridemodels.OverridePostDTORoomModel
+import iut.fauryollivier.snoozespot.room.overridemodels.OverrideSpotDTORoomModel
 
-@Database(entities = [SpotDTORoomModel::class, PostDTORoomModel::class], version = 1)
+@Database(entities = [OverrideSpotDTORoomModel::class, OverridePostDTORoomModel::class], version = 2)
 @TypeConverters(RoomJsonConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun SpotDao(): SpotDao
@@ -24,7 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
         PostDao().deleteLastN(toRemove)
 
         posts.forEach { dto ->
-            PostDao().insert(PostDTORoomModel(
+            PostDao().insert(OverridePostDTORoomModel(
                 dto.id,
                 dto.id,
                 dto.user,
@@ -32,6 +31,8 @@ abstract class AppDatabase : RoomDatabase() {
                 dto.likeCount,
                 dto.likedByUser,
                 dto.createdAt,
+                comments = dto.comments,
+                pictures = dto.pictures
             ))
         }
     }
@@ -46,6 +47,7 @@ object DatabaseBuilder {
             AppDatabase::class.java,
             "app_database"
         )
+            .fallbackToDestructiveMigration()
             .build()
         return instance!!
     }

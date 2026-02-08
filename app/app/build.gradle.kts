@@ -238,7 +238,6 @@ tasks.register("updateRetrofitModel") {
                 if (!retrofitText.contains("ITransformForStorage<$className>")) {
 
                     // on parse le deuxieme file
-
                     val packageLine =
                         retrofitText.lines().firstOrNull { it.startsWith("package") } ?: ""
                     val importInjection = """
@@ -310,23 +309,26 @@ tasks.register("initRoomLists") {
     doLast {
         val roomModelsDir = file("$srcDirPath/src/main/kotlin/org/openapitools/client/models/room")
 
-        roomModelsDir.walkTopDown().filter { it.isFile && it.extension == "kt" }
+        roomModelsDir.walkTopDown()
+            .filter { it.isFile && it.extension == "kt" }
             .forEach { roomModelFile ->
                 var text = roomModelFile.readText()
 
                 // Regex qui détecte : @Ignore lateinit var nom: List<Something>
                 val listLateinitRegex =
-                    Regex("@Ignore\\s+lateinit var (\\w+): kotlin\\.collections\\.List<[^>]+>")
+                    Regex("@Ignore\\s+lateinit var (\\w+): kotlin\\.collections\\.List<([^>]+)>")
 
                 // Remplace par : var nom: List<Type> = emptyList()
-                text = listLateinitRegex.replace(text) { match ->
-                    val propName = match.groupValues[1]
-                    "@Ignore var $propName: ${match.value.substringAfter(": ")} = emptyList()"
+                text = listLateinitRegex.replace(text) { matchResult ->
+                    val propName = matchResult.groupValues[1]
+                    val type = matchResult.groupValues[2]
+                    "var $propName: List<$type> = emptyList()"
                 }
 
                 roomModelFile.writeText(text)
                 println("Initialisé les listes dans ${roomModelFile.name}")
             }
+
     }
 }
 
