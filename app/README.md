@@ -288,19 +288,19 @@ Cette partie traitera de la gestion d'erreur lors de l'appel à un repository (p
 
 On distingue deux types de failure : 
 
-#### Le cas où si l'appel échoue, l'écran n'est pas du tout utilisable 
-(ex: un post ne charge pas sur la page détails)
+- #### Le cas où si l'appel échoue, l'écran n'est pas du tout utilisable 
+  - (ex: un post ne charge pas sur la page détails)
 
-Dans ce cas, il conviendra de faire apparaitre l'erreur en plein écran, avec un bouton en dessous permettant de relancer l'appel.
+  - Dans ce cas, il conviendra de faire apparaitre l'erreur en plein écran, avec un bouton en dessous permettant de relancer l'appel.
 
-Pour l'affichage de l'erreur, il conviendra d'utiliser la classe ErrorMessage, contenant les types d'erreurs classiques, ainsi que l'id des tradcode correspondants
+  - Pour l'affichage de l'erreur, il conviendra d'utiliser la classe ErrorMessage, contenant les types d'erreurs classiques, ainsi que l'id des tradcode correspondants
 
-#### Le cas où si l'appel échoue, on peut contionuer à utiliser l'écran normalement 
-(ex: le like d'un post ne fonctionne pas)
+- #### Le cas où si l'appel échoue, on peut contionuer à utiliser l'écran normalement 
+  - (ex: le like d'un post ne fonctionne pas)
 
-Dans ce cas, il conviendra de simplement afficher un toast indiquant à l'utilisateur que l'action n'a pas pu être réalisée (voir partie Toaster)
+  - Dans ce cas, il conviendra de simplement afficher un toast indiquant à l'utilisateur que l'action n'a pas pu être réalisée (voir partie Toaster)
 
-### routes API écrites à la main
+### Routes API écrites à la main
 
 Dans certains cas, le générateur de documentation OpenAPI ne permet pas de générer une documentation correcte pour certaines routes d'API (ex: routes gérant des uploads de fichiers).
 
