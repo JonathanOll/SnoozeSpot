@@ -1,1408 +1,341 @@
-# SnoozeSpot Android Application - Complete Documentation
+# Documentation technique SnoozeSpot
 
----
+## Présentation générale
 
-## Table of Contents
+SnoozeSpot est une appli de partage de lieu de sieste, permettant à des utilisateurs d'échanger dans un feed similaire au fonctionnement de twitter, mais également de poster des lieux de sieste sur une carte que les autres utilisateurs pourront commenter.
 
-1. [Project Overview](#project-overview)
-2. [Architecture & Design](#architecture--design)
-3. [Key Features](#key-features)
-4. [Technology Stack](#technology-stack)
-5. [Project Structure](#project-structure)
-6. [Setup & Installation](#setup--installation)
-7. [Build & Deployment](#build--deployment)
-8. [API Integration](#api-integration)
-9. [Database Schema](#database-schema)
-10. [Development Guidelines](#development-guidelines)
-11. [Contributing Guidelines](#contributing-guidelines)
-12. [Troubleshooting](#troubleshooting)
+L'application est écrite en [Kotlin](https://kotlinlang.org/), en utilisant la syntaxe [Compose](https://developer.android.com/develop/ui/compose/kotlin?hl=fr). [Retrofit](https://developer.android.com/codelabs/basic-android-kotlin-compose-getting-data-internet?hl=fr#0) est utilisé pour toute la partie appel à l'API, et une base de données [Room](https://developer.android.com/training/data-storage/room?hl=fr) est présente pour stocker des données en locale (surtout utilisé pour du cache).
 
----
+Pour la partie appel à l'API, retrofit requiert normalement l'écriture d'un interface kotlin déclarant chaque route avec les types de données en entrée et en sortie. Cette partie étant peu intéressante et très répétitive, elle est automatique sur SnoozeSpot. Une documentation yaml de l'api est générée automatiquement via IntelliJ, et l'app va chercher cette documentation pour générer les data class et les interfaces Retrofit nécessaires.
 
-## Project Overview
+## Gestion de projet
 
-### What is SnoozeSpot?
+### Github
 
-SnoozeSpot is a mobile-first Android application designed to help users discover, share, and manage safe resting spots. The application leverages location services and community-driven content to provide a comprehensive solution for travelers, commuters, and anyone in need of finding safe places to rest.
+SnoozeSpot utilise un repo github pour tout ce qui est de la gestion de version du code. En tout temps, deux branches sont présentes : la branche main (correspondant à la release) et la branche beta. Il est absoluement essentiel que ces deux branches restent saines, dans le sens ou les builds (front et back) doivent fonctionner pour pouvoir être rendu disponibles aux utilisateurs.
 
-### Target Audience
+Lorsqu'un développeur veut travailler sur une nouvelle fonctionnalité, il crée une nouvelle branche en se basant sur main, et push les changements une fois terminé.
 
-- Travelers and backpackers seeking accommodation recommendations
-- Commuters looking for rest areas during long journeys
-- Urban explorers discovering new locations
-- Community contributors sharing safe resting spots
+La branche main est protégée et ne peut être modifié que via la création d'une [PR](https://docs.github.com/fr/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). 
 
-### Current Status
+Fonctionnement d'une PR
+<img width="850" height="452" alt="GitHub-Pull-request-flow" src="https://github.com/user-attachments/assets/60c53c34-4231-4232-8501-186b5d8da6f2" />
 
-- **Version**: 1.0
-- **Minimum SDK**: Android 7.0 (API 24)
-- **Target SDK**: Android 15 (API 36)
-- **Java/Kotlin Version**: Java 11, Kotlin 2.2.20
-- **Current Environment**: Under active development with three build flavors (development, beta, production)
+Lors de la création d'une PR, il est demandé au développeur de remplir certaines informations dans le commentaire de cette dernière. Ces informations seront utiles aux autres développeurs pour saisir rapidement les changements apportés et permet également de traquer la source d'apparition d'un bug.
 
-### Core Capabilities
+Une pull request ne peut être merge qu'à condition que le build bitrise fonctionne et qu'un autre développeur a approuvé les changements.
 
-- **Location Mapping**: Integration with Google Maps to display and explore rest spots globally
-- **Post Management**: Create, and delete posts about discovered spots
-- **Comments & Discussion**: Community engagement through comments on posts
-- **User Authentication**: Secure user registration and login
-- **Multi-environment Support**: Development, beta, and production builds with separate configurations
-- **Local Data Persistence**: Room database for offline-first functionality
-- **User Preferences**: DataStore integration for lightweight preference management
+Une fois une PR créée, un workflow Github se lancera pour ajouter automatiquement des labels sur cette dernière. En cas de changements sur l'application (respectivement l'api), le tag "frontend" (resp. "backend") sera ajouté sans actions supplémentaires requises de la part du développeur.
 
----
-
-## Architecture & Design
-
-### Architectural Pattern: MVVM + Repository
-
-SnoozeSpot follows the **Model-View-ViewModel** (MVVM) architecture combined with the **Repository Pattern** to ensure separation of concerns, testability, and maintainability.
-
-```
-UI Layer (Jetpack Compose)
-    ↓
-ViewModel Layer
-    ↓
-Repository Layer
-    ↓
-Data Layer (Room, DataStore, API)
-```
-
-### Layer Descriptions
-
-#### 1. **UI Layer - Jetpack Compose**
-- Modern declarative UI framework
-- Composable functions for screen layouts
-- State management through ViewModels
-- Located in: `src/main/java/iut/fauryollivier/snoozespot/ui/`
-
-#### 2. **ViewModel Layer**
-- Manages UI state and business logic
-- Survives configuration changes
-- Communicates with repositories
-- Handles user interactions
-
-#### 3. **Repository Layer**
-- Abstract data sources (API, local database)
-- Implements Repository Pattern for clean API
-- Handles data synchronization logic
-- Located in: `src/main/java/iut/fauryollivier/snoozespot/repositories/`
-
-#### 4. **Data Layer**
-Composed of multiple data sources:
-
-- **Network Data Source** (`api/`): REST API client generated by OpenAPI Generator
-- **Local Database** (`room/`): Room persistence layer with Entities, DAOs, and TypeConverters
-- **Preferences** (`datastore/`): DataStore for lightweight user preferences
-
-### Design Principles
-
-1. **Separation of Concerns**: Each layer has distinct responsibilities
-2. **Single Responsibility Principle**: Each class/function does one thing well
-3. **Dependency Injection**: Loose coupling between components
-4. **Reactive Programming**: Flow-based data streams for real-time updates
-5. **Error Handling**: Graceful error recovery and user feedback
-
----
-
-## Key Features
-
-### 1. Spot Discovery & Mapping
-- **Google Maps Integration**: Display all rest spots on an interactive map
-- **Spot Details**: Comprehensive information about each spot (location, ratings)
-
-### 2. Post Management
-- **Create Posts**: Users can submit new rest spot discoveries
-- **Delete Posts**: Remove posts (with appropriate permissions)
-- **Rich Content**: Support for images
-
-### 3. User Engagement
-- **Comments**: Discuss spots with other users
-- **Ratings & Reviews**: Rate spots on safety, cleanliness, comfort
-
-### 4. User Management
-- **Authentication**: Secure login and registration
-- **User Profiles**: Personal information and activity history
-- **Preferences**: Save favorite spots and customize experience
-
-### 5. Multi-environment Deployment
-- **Development Flavor**: For internal testing with dev API endpoint
-- **Beta Flavor**: For external testing with beta API endpoint
-- **Production Flavor**: Official release with production API endpoint
-- Each flavor maintains separate API keys and configurations
-
-### 6. Offline-First Capability
-- **Local Caching**: Room database stores downloaded spots and user posts
-- **Sync on Reconnection**: Automatically synchronizes local changes when connection is restored
-- **Conflict Resolution**: Handles data conflicts between local and server versions
-
----
-
-## Technology Stack
-
-### Core Framework & UI
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Kotlin** | 2.2.20 | Primary programming language |
-| **Jetpack Compose** | 2024.09.00 | Declarative UI framework |
-| **Compose Destinations** | 1.10.2 | Navigation between screens |
-| **Material 3** | Latest | UI design system and components |
-| **Coil Compose** | 3.3.0 | Image loading and caching |
-
-### Architecture & Data
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Room Database** | 2.8.4 | Local SQLite persistence |
-| **DataStore** | 1.2.0 | Lightweight preferences storage |
-| **Kotlin Coroutines** | Integrated | Asynchronous programming |
-| **Flow** | Integrated | Reactive data streams |
-
-### Network & API
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Retrofit** | 2.9.0 / 3.0.0 | HTTP client framework |
-| **OkHttp** | 5.1.0 | HTTP interceptor and client |
-| **Moshi** | 1.15.2 | JSON serialization |
-| **Kotlinx Serialization** | 1.9.0 | Kotlin-native serialization |
-| **OpenAPI Generator** | 7.16.0 | API client code generation |
-| **Logging Interceptor** | 5.1.0 | HTTP request/response logging |
-
-### Location & Maps
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Google Maps Compose** | 6.12.1 | Interactive map UI component |
-| **Location Services** | Android SDK | User location retrieval |
-
-### Testing
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **JUnit 4** | 4.13.2 | Unit testing framework |
-| **JUnit 5** | 3.4.2 | Advanced testing features |
-| **Espresso** | 3.7.0 | UI testing framework |
-
-### Build & Development
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Gradle** | 8.11.1 (AGP) | Build automation |
-| **Gradle Secrets Plugin** | 2.0.1 | Secure API key management |
-| **ProGuard** | Built-in | Code obfuscation |
-| **KSP** | 2.2.20-2.0.3 | Kotlin Symbol Processing (annotation processing) |
-
-### Android Framework
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **AndroidX Core** | 1.17.0 | Modern Android API compatibility |
-| **AndroidX Lifecycle** | 2.9.3-2.9.4 | Lifecycle-aware components |
-| **AndroidX Activity** | 1.11.0 | Activity integration with Compose |
-
----
-
-## Project Structure
-
-```
-SnoozeSpot/
-├── app/
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/iut/fauryollivier/snoozespot/
-│   │   │   │   ├── api/                    # OpenAPI generated + NetworkDataSource
-│   │   │   │   │   ├── generated/          # OpenAPI generator output (auto-generated)
-│   │   │   │   │   └── NetworkDataSource.kt # Custom network data layer
-│   │   │   │   │
-│   │   │   │   ├── app/                    # Application class & global config
-│   │   │   │   │
-│   │   │   │   ├── datastore/              # DataStore preferences
-│   │   │   │   │   ├── UserPreferences.kt
-│   │   │   │   │   └── PreferencesRepository.kt
-│   │   │   │   │
-│   │   │   │   ├── repositories/           # Repository implementation
-│   │   │   │   │   ├── SpotRepository.kt
-│   │   │   │   │   ├── UserRepository.kt
-│   │   │   │   │   └── CommentRepository.kt
-│   │   │   │   │
-│   │   │   │   ├── room/                   # Room database layer
-│   │   │   │   │   ├── db/                 # Database class & migrations
-│   │   │   │   │   │   ├── AppDatabase.kt
-│   │   │   │   │   │   └── migrations/
-│   │   │   │   │   ├── entity/             # Room entities (@Entity)
-│   │   │   │   │   │   ├── SpotEntity.kt
-│   │   │   │   │   │   ├── PostEntity.kt
-│   │   │   │   │   │   └── CommentEntity.kt
-│   │   │   │   │   ├── dao/                # Data Access Objects
-│   │   │   │   │   │   ├── SpotDao.kt
-│   │   │   │   │   │   ├── PostDao.kt
-│   │   │   │   │   │   └── CommentDao.kt
-│   │   │   │   │   └── converter/          # Type converters
-│   │   │   │   │       └── RoomJsonConverters.kt
-│   │   │   │   │
-│   │   │   │   ├── ui/                     # Jetpack Compose screens
-│   │   │   │   │   ├── screens/            # Full-screen composables
-│   │   │   │   │   │   ├── MapScreen.kt
-│   │   │   │   │   │   ├── DetailScreen.kt
-│   │   │   │   │   │   ├── CreatePostScreen.kt
-│   │   │   │   │   │   └── AuthScreen.kt
-│   │   │   │   │   ├── components/         # Reusable UI components
-│   │   │   │   │   │   ├── SpotCard.kt
-│   │   │   │   │   │   ├── CommentItem.kt
-│   │   │   │   │   │   └── RatingBar.kt
-│   │   │   │   │   ├── viewmodel/          # ViewModels for screens
-│   │   │   │   │   │   ├── MapViewModel.kt
-│   │   │   │   │   │   └── DetailViewModel.kt
-│   │   │   │   │   └── navigation/         # Navigation setup
-│   │   │   │   │       └── NavGraph.kt
-│   │   │   │   │
-│   │   │   │   ├── utils/                  # Utility functions
-│   │   │   │   │   ├── Constants.kt
-│   │   │   │   │   ├── Extensions.kt
-│   │   │   │   │   └── Validators.kt
-│   │   │   │   │
-│   │   │   │   └── MainActivity.kt         # Application entry point
-│   │   │   │
-│   │   │   └── res/                        # Resources
-│   │   │       ├── drawable/               # Images and vectors
-│   │   │       ├── values/                 # Strings, colors, dimens
-│   │   │       ├── xml/                    # Network security config
-│   │   │       └── layout/                 # XML layouts (if any)
-│   │   │
-│   │   ├── androidTest/                    # Instrumented tests
-│   │   ├── test/                           # Unit tests
-│   │   └── beta/                           # Beta flavor-specific resources
-│   │
-│   ├── build.gradle.kts                    # App-level Gradle configuration
-│   └── proguard-rules.pro                  # ProGuard obfuscation rules
-│
-├── gradle/
-│   └── libs.versions.toml                  # Centralized dependency versioning
-│
-├── build.gradle.kts                        # Root Gradle configuration
-├── settings.gradle.kts                     # Project structure definition
-├── gradle.properties                       # Gradle system properties
-├── secrets.properties                      # API keys and secrets (git-ignored)
-├── local.properties                        # Local development config
-└── doc.md                                  # This documentation file
-```
-
-### Key Directories Explained
-
-**`api/`** - Network communication layer
-- Contains OpenAPI-generated Retrofit service definitions
-- Custom NetworkDataSource implementations for high-level API calls
-- Error handling and response transformation
-
-**`repositories/`** - Business logic & data orchestration
-- Abstracts data sources (API, local database)
-- Implements caching and sync logic
-- Handles complex data operations
-
-**`room/`** - Local persistence layer
-- **entity/**: Database table definitions
-- **dao/**: SQL query methods
-- **converter/**: Custom type conversions for complex objects
-- **db/**: Database setup and migrations
-
-**`datastore/`** - User preferences
-- Lightweight key-value storage
-- Non-sensitive user settings and preferences
-
-**`ui/`** - User interface layer
-- **screens/**: Full-screen Composables representing app pages
-- **components/**: Reusable UI building blocks
-- **viewmodel/**: State management per screen
-- **navigation/**: Screen navigation graph
-
-**`utils/`** - Shared utilities
-- Constants, extension functions
-- Validation and formatting helpers
-
----
-
-## Setup & Installation
-
-### Prerequisites
-
-Before setting up SnoozeSpot, ensure you have the following installed:
-
-1. **Android Studio**: Latest stable version (Koala or newer)
-2. **Android SDK**: 
-   - Minimum SDK API 24 (Android 7.0)
-   - Target SDK API 36 (Android 15)
-3. **Java Development Kit**: Java 11 or later
-4. **Git**: For cloning the repository
-5. **Gradle**: 8.11.1 or compatible version
-
-### Step 1: Clone the Repository
-
-```bash
-git clone <repository-url>
-cd SnoozeSpot2
-```
-
-### Step 2: Install SDK Components
-
-Open Android Studio and ensure the following SDK components are installed:
-- Android SDK Platform 36 (or later)
-- Android SDK Build Tools 36.x
-- Google APIs or Google Play Services add-ons
-- Android Emulator
-
-### Step 3: Configure Gradle Properties
-
-Edit `gradle.properties` and configure JVM memory:
-```properties
-org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
-```
-
-### Step 4: Set Up API Keys
-
-Create a `secrets.properties` file in the project root:
-
-```properties
-# Google Maps API Key
-MAPS_API_KEY=your_google_maps_api_key_here
-
-# API Server Endpoints (example)
-API_BASE_URL_DEV=https://dev-api.snoozespot.local
-API_BASE_URL_BETA=https://beta-api.snoozespot.com
-API_BASE_URL_PROD=https://api.snoozespot.com
-```
-
-**Important**: Never commit `secrets.properties` to version control. Add it to `.gitignore`.
-
-### Step 5: OpenAPI Generator Configuration
-
-The project uses OpenAPI Generator to create API client code. Ensure you have:
-1. OpenAPI specification file (e.g., `openapi.yaml` or `openapi.json`)
-2. Generator configuration in `build.gradle.kts`
-
-### Step 6: Build the Project
-
-```bash
-# Sync Gradle (in Android Studio or terminal)
-./gradlew clean build
-
-# Or use Android Studio's "Sync Now" button
-```
-
-### Step 7: Run the App
-
-**Using Android Studio:**
-1. Select desired build flavor (development, beta, production) from Build Variants
-2. Run → Run 'app' (or press Shift+F10)
-
-**Using Command Line:**
-```bash
-./gradlew installDevelopmentDebug     # Install development build
-./gradlew installBetaDebug            # Install beta build
-./gradlew installProductionDebug      # Install production build
-```
-
----
-
-## Build & Deployment
-
-### Build System Overview
-
-SnoozeSpot uses **Gradle** with **Kotlin DSL** for build automation. The build system supports multiple flavors and build types for different deployment scenarios.
-
-### Build Flavors
-
-The project defines three product flavors, each targeting a different environment:
-
-#### 1. Development Flavor
-- **Application ID**: `iut.fauryollivier.snoozespot.dev`
-- **Version Suffix**: `-dev`
-- **API Endpoint**: Development/staging server
-- **API Key**: Development API key (buildConfigField: `clefDev`)
-- **Use Case**: Internal testing and development
-- **Command**: `./gradlew installDevelopmentDebug`
-
-#### 2. Beta Flavor
-- **Application ID**: `iut.fauryollivier.snoozespot.beta`
-- **Version Suffix**: `-beta`
-- **API Endpoint**: Beta server for external testing
-- **API Key**: Beta API key (buildConfigField: `clefBeta`)
-- **Use Case**: User acceptance testing (UAT) and external feedback
-- **Command**: `./gradlew installBetaDebug`
-
-#### 3. Production Flavor
-- **Application ID**: `iut.fauryollivier.snoozespot`
-- **Version Name**: No suffix (official version)
-- **API Endpoint**: Production server
-- **API Key**: Production API key (buildConfigField: `clefProd`)
-- **Use Case**: Official release to Google Play Store
-- **Command**: `./gradlew installProductionDebug`
-
-### Build Types
-
-| Build Type | Optimization | Debugging | Use Case |
-|-----------|--------------|-----------|----------|
-| **Debug** | Minimal | Full symbols | Development & testing |
-| **Release** | ProGuard enabled | Symbols removed | Production distribution |
-
-### Building for Release
-
-```bash
-# Production release build
-./gradlew assembleProductionRelease
-
-# Creates: app/build/outputs/apk/production/release/app-production-release.apk
-
-# Create Android App Bundle (for Google Play Store)
-./gradlew bundleProductionRelease
-
-# Creates: app/build/outputs/bundle/productionRelease/app-production-release.aab
-```
-
-### OpenAPI Client Code Generation
-
-The build process automatically generates Retrofit API client code from OpenAPI specifications:
-
-```bash
-# Triggered during build process
-./gradlew generateOpenApiClient
-
-# Generates code in: app/build/generated/openapi/
-```
-
-**Configuration in `build.gradle.kts`:**
-```kotlin
-openApiGenerator {
-    generatorName.set("kotlin")
-    inputSpec.set("path/to/openapi.yaml")
-    outputDir.set("$buildDir/generated/openapi/")
-    packageName.set("iut.fauryollivier.snoozespot.api.generated")
-}
-```
-
-### Signing Configuration
-
-For production releases, configure signing in `build.gradle.kts`:
-
-```kotlin
-signingConfigs {
-    create("release") {
-        storeFile = file("path/to/keystore.jks")
-        storePassword = System.getenv("KEYSTORE_PASSWORD")
-        keyAlias = System.getenv("KEY_ALIAS")
-        keyPassword = System.getenv("KEY_PASSWORD")
-    }
-}
-
-buildTypes {
-    release {
-        signingConfig = signingConfigs.getByName("release")
-    }
-}
-```
-
-### Build Variants
-
-The Gradle build system creates **9 build variants** (3 flavors × 3 build types):
-
-```
-developmentDebug, developmentRelease
-betaDebug, betaRelease
-productionDebug, productionRelease
-```
-
-Select variants in Android Studio via **Build → Select Build Variant**.
-
----
-
-## API Integration
-
-### Overview
-
-SnoozeSpot communicates with a backend REST API for data persistence and user management. The API client is generated using **OpenAPI Generator** and consumed through the **Repository Pattern**.
-
-### API Architecture
-
-```
-UI/ViewModel
-    ↓
-Repository (SpotRepository, UserRepository, etc.)
-    ↓
-NetworkDataSource
-    ↓
-OpenAPI-Generated Retrofit Service
-    ↓
-OkHttp Client (with interceptors)
-    ↓
-REST API Server
-```
-
-### OpenAPI Generator Workflow
-
-1. **OpenAPI Specification**: Define API in YAML/JSON format
-2. **Generate Client**: Gradle task generates Kotlin/Retrofit code
-3. **Generated Artifacts**: 
-   - Service interfaces with `@retrofit2.http.*` annotations
-   - Model classes for requests/responses
-   - API client factory classes
-4. **Custom Wrapping**: Create NetworkDataSource classes for high-level operations
-
-### Network Configuration
-
-#### Base URL Configuration
-
-```kotlin
-// Configured per build flavor in build.gradle.kts
-buildConfigField("String", "API_BASE_URL_DEV", "\"https://dev-api.example.com\"")
-buildConfigField("String", "API_BASE_URL_PROD", "\"https://api.example.com\"")
-
-// Used in Retrofit setup
-val retrofit = Retrofit.Builder()
-    .baseUrl(BuildConfig.API_BASE_URL_DEV)
-    .addConverterFactory(JsonConverterFactory.create())
-    .client(httpClient)
-    .build()
-```
-
-#### HTTP Client Configuration
-
-OkHttp with custom interceptors:
-
-```kotlin
-val httpClient = OkHttpClient.Builder()
-    .addInterceptor(AuthenticationInterceptor())      // Add auth headers
-    .addInterceptor(LoggingInterceptor())             // Log requests/responses
-    .addInterceptor(ErrorHandlingInterceptor())       // Handle HTTP errors
-    .connectTimeout(30, TimeUnit.SECONDS)
-    .readTimeout(30, TimeUnit.SECONDS)
-    .writeTimeout(30, TimeUnit.SECONDS)
-    .build()
-```
-
-### Authentication
-
-Implement authentication through interceptors:
-
-```kotlin
-class AuthenticationInterceptor : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-            .newBuilder()
-            .addHeader("Authorization", "Bearer $authToken")
-            .build()
-        return chain.proceed(request)
-    }
-}
-```
-
-### Response Handling
-
-#### Success Response Example
-
-```kotlin
-// Repository method
-suspend fun fetchSpots(): List<SpotDTO> {
-    return try {
-        apiService.getSpots()
-    } catch (e: HttpException) {
-        handleHttpError(e)
-    } catch (e: IOException) {
-        handleNetworkError(e)
-    }
-}
-
-// Save to local database
-suspend fun fetchAndCacheSpots() {
-    val spots = fetchSpots()
-    spotDao.insertSpots(spots.map { it.toRoomEntity() })
-}
-```
-
-#### Error Handling
-
-```kotlin
-sealed class ApiResult<T> {
-    data class Success<T>(val data: T) : ApiResult<T>()
-    data class Error<T>(val exception: Exception) : ApiResult<T>()
-    class Loading<T> : ApiResult<T>()
-}
-
-// Usage
-Flow<ApiResult<List<Spot>>> = flow {
-    emit(ApiResult.Loading())
-    try {
-        val data = apiService.getSpots()
-        emit(ApiResult.Success(data))
-    } catch (e: Exception) {
-        emit(ApiResult.Error(e))
-    }
-}
-```
-
-### JSON Serialization
-
-SnoozeSpot supports both **Moshi** and **Kotlinx Serialization**:
-
-```kotlin
-// Moshi (generated by OpenAPI)
-@JsonClass(generateAdapter = true)
-data class SpotDTO(
-    @Json(name = "spot_id")
-    val spotId: String,
-    val name: String,
-    val latitude: Double,
-    val longitude: Double
-)
-
-// Kotlinx Serialization
-@Serializable
-data class PostDTO(
-    @SerialName("post_id")
-    val postId: String,
-    val content: String,
-    @SerialName("created_at")
-    val createdAt: String
-)
-```
-
-### Testing API Integration
-
-```kotlin
-// Mock API responses for testing
-class MockApiService : SpotApiService {
-    override suspend fun getSpots(): List<SpotDTO> {
-        return listOf(
-            SpotDTO("1", "Cozy Park", 48.8566, 2.3522),
-            SpotDTO("2", "Quiet Library", 48.8566, 2.3525)
-        )
-    }
-}
-```
-
----
-
-## Database Schema
-
-### Overview
-
-SnoozeSpot uses **Room Database** for local SQLite persistence, enabling offline functionality and efficient data caching.
-
-### Database Architecture
-
-```
-AppDatabase (SQLite)
-├── Spots Table
-├── Posts Table
-├── Comments Table
-├── Users Table (optional)
-└── Migrations (versioning)
-```
-
-### Entities
-
-#### SpotEntity
-Represents a geographical rest spot.
-
-```kotlin
-@Entity(tableName = "spots")
-data class SpotEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    val spotId: String,           // API server ID
-    val name: String,
-    val description: String,
-    val latitude: Double,
-    val longitude: Double,
-    val category: String,         // "park", "library", "bench", etc.
-    val amenities: String,        // JSON array (converted)
-    val safetyRating: Float,
-    val cleanlinessRating: Float,
-    val comfortRating: Float,
-    val createdAt: Long,          // Timestamp
-    val updatedAt: Long,
-    val isFavorite: Boolean = false,
-    @ColumnInfo(name = "image_url")
-    val imageUrl: String? = null
-)
-```
-
-#### PostEntity
-Represents a user post about a spot.
-
-```kotlin
-@Entity(
-    tableName = "posts",
-    foreignKeys = [
-        ForeignKey(
-            entity = SpotEntity::class,
-            parentColumns = ["spotId"],
-            childColumns = ["spotId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
-data class PostEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    val postId: String,           // API server ID
-    val spotId: String,           // Reference to Spot
-    val userId: String,
-    val content: String,
-    val imageUrls: String,        // JSON array (converted)
-    val timestamp: Long,
-    val upvotes: Int = 0,
-    val downvotes: Int = 0,
-    val isSynced: Boolean = false // Sync flag for offline posts
-)
-```
-
-#### CommentEntity
-Represents comments on posts.
-
-```kotlin
-@Entity(
-    tableName = "comments",
-    foreignKeys = [
-        ForeignKey(
-            entity = PostEntity::class,
-            parentColumns = ["postId"],
-            childColumns = ["postId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
-data class CommentEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    val commentId: String,
-    val postId: String,
-    val userId: String,
-    val content: String,
-    val timestamp: Long,
-    val isSynced: Boolean = false
-)
-```
-
-### Type Converters
-
-Complex objects are converted to JSON strings for storage:
-
-```kotlin
-class RoomJsonConverters {
-    @TypeConverter
-    fun listToJson(list: List<String>?): String? {
-        return list?.let { Gson().toJson(it) }
-    }
-
-    @TypeConverter
-    fun jsonToList(json: String?): List<String>? {
-        return json?.let { 
-            Gson().fromJson(it, object : TypeToken<List<String>>() {}.type)
-        }
-    }
-
-    @TypeConverter
-    fun mapToJson(map: Map<String, Any>?): String? {
-        return map?.let { Gson().toJson(it) }
-    }
-
-    @TypeConverter
-    fun jsonToMap(json: String?): Map<String, Any>? {
-        return json?.let {
-            Gson().fromJson(it, object : TypeToken<Map<String, Any>>() {}.type)
-        }
-    }
-}
-```
-
-### Data Access Objects (DAOs)
-
-#### SpotDao
-
-```kotlin
-@Dao
-interface SpotDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSpots(spots: List<SpotEntity>)
-
-    @Query("SELECT * FROM spots ORDER BY name ASC")
-    fun getAllSpots(): Flow<List<SpotEntity>>
-
-    @Query("SELECT * FROM spots WHERE id = :spotId")
-    fun getSpotById(spotId: Long): Flow<SpotEntity>
-
-    @Query("SELECT * FROM spots WHERE isFavorite = 1")
-    fun getFavoriteSpots(): Flow<List<SpotEntity>>
-
-    @Query("SELECT * FROM spots WHERE safetyRating >= :minRating")
-    fun getSpotsByRating(minRating: Float): Flow<List<SpotEntity>>
-
-    @Delete
-    suspend fun deleteSpot(spot: SpotEntity)
-
-    @Query("DELETE FROM spots WHERE spotId = :spotId")
-    suspend fun deleteSpotById(spotId: String)
-}
-```
-
-#### PostDao
-
-```kotlin
-@Dao
-interface PostDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPost(post: PostEntity)
-
-    @Query("SELECT * FROM posts WHERE spotId = :spotId ORDER BY timestamp DESC")
-    fun getPostsBySpot(spotId: String): Flow<List<PostEntity>>
-
-    @Query("SELECT * FROM posts WHERE userId = :userId ORDER BY timestamp DESC")
-    fun getPostsByUser(userId: String): Flow<List<PostEntity>>
-
-    @Query("SELECT * FROM posts WHERE isSynced = 0")
-    suspend fun getUnsyncedPosts(): List<PostEntity>
-
-    @Update
-    suspend fun updatePost(post: PostEntity)
-
-    @Delete
-    suspend fun deletePost(post: PostEntity)
-}
-```
-
-#### CommentDao
-
-```kotlin
-@Dao
-interface CommentDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertComment(comment: CommentEntity)
-
-    @Query("SELECT * FROM comments WHERE postId = :postId ORDER BY timestamp DESC")
-    fun getCommentsByPost(postId: String): Flow<List<CommentEntity>>
-
-    @Query("SELECT * FROM comments WHERE isSynced = 0")
-    suspend fun getUnsyncedComments(): List<CommentEntity>
-
-    @Delete
-    suspend fun deleteComment(comment: CommentEntity)
-}
-```
-
-### Database Setup
-
-```kotlin
-@Database(
-    entities = [
-        SpotEntity::class,
-        PostEntity::class,
-        CommentEntity::class
-    ],
-    version = 1,
-    exportSchema = true
-)
-@TypeConverters(RoomJsonConverters::class)
-abstract class AppDatabase : RoomDatabase() {
-    abstract fun spotDao(): SpotDao
-    abstract fun postDao(): PostDao
-    abstract fun commentDao(): CommentDao
-
-    companion object {
-        @Volatile
-        private var INSTANCE: AppDatabase? = null
-
-        fun getInstance(context: Context): AppDatabase {
-            return INSTANCE ?: synchronized(this) {
-                Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "snoozespot.db"
-                )
-                .addCallback(DatabaseCallback())
-                .build()
-                .also { INSTANCE = it }
-            }
-        }
-    }
-}
-```
-
-### Database Migrations
-
-When schema changes, create migration files:
-
-```kotlin
-val MIGRATION_1_2 = object : Migration(1, 2) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL(
-            "ALTER TABLE posts ADD COLUMN edited_at INTEGER DEFAULT 0"
-        )
-    }
-}
-
-// Apply in database builder
-Room.databaseBuilder(context, AppDatabase::class.java, "snoozespot.db")
-    .addMigrations(MIGRATION_1_2)
-    .build()
-```
-
----
-
-## Development Guidelines
-
-### Code Style & Conventions
-
-#### Kotlin Naming Conventions
-
-```kotlin
-// Classes: PascalCase
-class SpotViewModel { }
-
-// Functions & properties: camelCase
-fun fetchSpots() { }
-val spotCount = 0
-
-// Constants: CONSTANT_CASE (or val in objects)
-object Constants {
-    const val MAX_RETRIES = 3
-    const val API_TIMEOUT = 30L
-}
-
-// Enum and sealed classes: PascalCase
-enum class SortOption {
-    NAME_ASC,
-    RATING_DESC,
-    DISTANCE
-}
-
-sealed class ApiResult<T> {
-    data class Success<T>(val data: T) : ApiResult<T>()
-    data class Error<T>(val message: String) : ApiResult<T>()
-}
-```
-
-#### Compose Function Conventions
-
-```kotlin
-// File organization: one main function per file or related functions grouped
-
-// Composable function naming: noun or adjective describing UI
+### Bitrise
+
+Bitrise est un outil de CI permettant de build l'application à chaque push sur la branche main, ainsi que la mise à disposition d'un lien de téléchargement pour les utilisateurs. On utilise également bitrise pour valider qu'une PR build bien, afin d'éviter d'introduire des changements qui cassent main.
+
+### Render
+
+Render est également un outil de CI, mais il nous permet cette fois de build l'API et de la mettre à disposition sur une URL fixe. À chaque push concernant l'api sur main le service déploiera une nouvelle instance de l'API sur une machine virtuelle créée à l'occasion, et joignable à l'url https://snoozespot.onrender.com/
+
+À noter que le déploiement peut prendre une dizaine de minute, et qu'au bout d'un certain temps d'inactivité, l'api est éteinte, pour être redémarrée dès qu'un nouvel appel est détecté (le démarrage peut prendre une bonne minute, d'où le splashscreen plus long que d'ordinaire).
+
+### Trello
+
+Pour le suivi de développement, on utilise un Trello. Le board contient 7 listes :
+- Future : une liste des développements à réaliser dans un futur plus ou moins proche (pas forcément de fonctionnalités claires, juste une idée globale)
+- Ready : les développements prêts à être réalisés, les fonctionnalités requises sont plus précises
+- Blocked : les développements déjà commencés, mais bloqués car en attente d'une autre fonctionnalité
+- In Progress : les développements en cours
+- To Review : les développements terminés dont la PR est créée, mais pas encore merge
+- Done : les développements terminés, et dont les PRs ont été merge
+- Tools : une simple liste des liens pour différents éléments du projet (doc, repo git, ...)
+
+Chaque tâche devra être agrémentée de tags pour la caractériser : des tags "front", "api" si concerné, et un tag ["story point"](https://www.atlassian.com/fr/agile/project-management/estimation), un nombre correspondant à la difficulté/temps estimé pour cette tâche.
+
+## Installation du poste
+
+- Installer Android Studio
+- Installer IntelliJ
+- Cloner le repo `git clone https://github.com/JonathanOll/SnoozeSpot`
+- Ouvrir le dossier /app/ avec Android Studio, et /api/ avec IntelliJ
+- Sync gradle
+- Dans la barre du haut, cliquer sur Edit Configurations
+<img width="326" height="228" alt="image" src="https://github.com/user-attachments/assets/299b09eb-26cc-4f30-aa9b-63fea83e7e40" />
+
+- Créer une nouvelle configuration
+<img width="286" height="78" alt="image" src="https://github.com/user-attachments/assets/04b70054-ec6d-44aa-af3f-0889ab9a2932" />
+
+- Tout en bas de la partie droite de la fenêtre, ajouter une task "Run Gradle Task"
+<img width="880" height="688" alt="image" src="https://github.com/user-attachments/assets/137fb46e-32b5-4bfa-896c-c72db047e5ca" />
+
+- Sélectionner le gradle project app:app, et saisir preBuild dans "Tasks", puis valider
+<img width="367" height="302" alt="image" src="https://github.com/user-attachments/assets/82396dcf-f53a-4451-b555-60475ad07e62" />
+
+- Placer cette tâche au dessus de "Gradle-aware Make", puis appliquer les changements
+<img width="628" height="78" alt="image" src="https://github.com/user-attachments/assets/3c577aef-ff56-47de-974d-c900528a35b5" />
+
+Le poste devrait maintenant être opérationnel
+
+/!\ à noter qu'en local, chaque relancement de l'API requerra le relancement de l'app (voir partie Développement en local)
+
+## Conventions de nommage
+
+- Les noms des packages sont en flatcase
+- Les noms des fichiers, classes et composants sont en PascalCase
+- Les noms des variables et fonctions sont en camelCase
+- Les tradcodes sont en snake_case
+
+## Architecture globale
+
+Diagramme de l'archi globale de l'appli
+<img width="762" height="352" alt="Diagramme sans nom drawio" src="https://github.com/user-attachments/assets/f5263c6d-73d0-453f-8f52-52ba7d27d6c2" />
+
+### MVVM
+
+L'application de base sur une architecture de type MVVM (Modèle, Vue, Vue-Modèle), une approche visant à séparer les données d'une application (le modèle) de sa présentation (la vue), le vue-modèle agissant comme un pont entre ces 2 éléments.
+
+/!\ à noter que la chaine est bien à respecter, en aucun cas une vue ne doit faire appel directement à un repository ou à la DB locale.
+
+### Repositories
+
+Un repository est une couche d'abstraction entre l'accès aux données et les ViewModels. Leur rôle est de garantir une transparence quant à l'appel à l'api et la DB locale. Ainsi, pour récupérer la liste des spots, un ViewModel fera un appel du type `SpotsRepository.getSpots()`, et le repository se chargera d'essayer de récupérer les données de l'API, en cas d'erreur de récupérer les données de la DB locale.
+
+Le rôle du repository est également d'assurer la partie gestion d'erreur, afin d'éviter d'incessants try catchs dans les ViewModels. Pour ce, toutes les fonctions des repositories retournent non pas le type de la donnée demandée directement, mais une `Response<Type>`, basée sur le [design pattern Result](https://medium.com/@wgyxxbf/result-pattern-a01729f42f8c). Ainsi, dans un ViewModel, on vérifie si un appel a fonctionné en faisant `response.isSuccessful`, dans quel cas on pourra accéder à la donnée avec `response.body()`.
+
+### View & ViewModel
+
+Une vue est donc la partie visuelle, aka la "présentation", elle représente ce avec quoi l'utilisateur interagit pour utiliser l'app. Comme expliqué précédemment, un ViewModel est le "pont" entre les données et la vue.
+
+Pour créer une nouvelle vue, créer le <page>Screen et <page>ViewModel (cf. partie Fichiers), la structure de ces fichiers doit être la suivante : 
+
+#### \<page\>Screen
+
+```Kotlin
+... # package & imports
+
+@Destination
 @Composable
-fun SpotCard(spot: Spot, onSpotClick: (Spot) -> Unit) {
-    // Implementation
-}
-
-// Internal/preview functions: prefix with underscore or @Preview annotation
-@Preview
-@Composable
-private fun SpotCardPreview() {
-    SpotCard(
-        spot = Spot.MOCK_DATA,
-        onSpotClick = {}
-    )
-}
-
-// State management
-@Composable
-fun SpotListScreen(viewModel: SpotListViewModel = viewModel()) {
-    val spots by viewModel.spots.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    
-    // UI composition
-}
-```
-
-### Repository Pattern Implementation
-
-```kotlin
-// High-level business logic
-class SpotRepository(
-    private val apiService: SpotApiService,
-    private val spotDao: SpotDao,
-    private val context: Context
+fun <page>Screen(
+  navigator: DestinationsNavigator, // Permet la navigation entre les écrans
+  scaffoldController: ScaffoldController, // Permet de gérer la topbar/bottombar à afficher sur l'écran
+  modifier: Modifier = Modifier,
+  vm: <page>ViewModel = viewModel(), // Inclus par android via l'injection de dépendance
 ) {
-    // Return Flow for reactive data
-    fun getSpots(): Flow<Result<List<Spot>>> = flow {
-        emit(Result.Loading)
-        try {
-            // Try network first
-            val apiSpots = apiService.getSpots()
-            spotDao.insertSpots(apiSpots.map { it.toEntity() })
-            emit(Result.Success(apiSpots.map { it.toDomain() }))
-        } catch (e: Exception) {
-            // Fall back to cache
-            val cachedSpots = spotDao.getAllSpots().firstOrNull() ?: emptyList()
-            if (cachedSpots.isNotEmpty()) {
-                emit(Result.Success(cachedSpots.map { it.toDomain() }))
-            } else {
-                emit(Result.Error(e))
-            }
-        }
+  LaunchedEffect(true) {
+    scaffoldController.topBar.value = { BackTopBar(navigator) } // Ou autre, voir partie "Quelques éléments"
+    scaffoldController.showBottomBar.value = <true/false>
+  }
+
+  val <data>: <DataType> by vm.<data>.collectAsState() // Permet de reconstruire les composants qu'il faut lors du changement d'état de <data> dans le ViewModel
+  ... // collecte d'autres données du ViewModel
+
+  // SI BESOIN
+  LaunchedEffect(true) {
+    vm.<fetchData>() // appel automatique au ViewModel, ex: pour lancer un appel api qui charge les données
+  }
+
+   ... // Le reste du composant
+}
+```
+
+#### \<page\>ViewModel
+
+```Kotlin
+... # package & imports
+
+class <page>ViewModel: ViewModel() {
+  private val _data = MutableStateFlow<Type>(<default_value>) // variable que le ViewModel va mettre à jour 
+  val data = _data.asStateFlow() // variable que la vue va récupérer et observer
+
+  fun fetchData() { # exemple d'appel à un repository
+    viewModelScope.launch {
+      val response = DataRepository.fetchData()
+      if (response.isSuccessful)
+        _data.update { response.body() }
+      else
+        Toaster.instance.toast(R.string.could_not_fetch) // voir partie "Quelques éléments"
     }
-
-    // Single operation
-    suspend fun createPost(post: Post): Result<Post> = withContext(Dispatchers.IO) {
-        return@withContext try {
-            val created = apiService.createPost(post.toDTO())
-            postDao.insertPost(created.toEntity())
-            Result.Success(created.toDomain())
-        } catch (e: Exception) {
-            Result.Error(e)
-        }
-    }
-}
-
-sealed class Result<T> {
-    data class Success<T>(val data: T) : Result<T>()
-    data class Error<T>(val exception: Exception) : Result<T>()
-    class Loading<T> : Result<T>()
+  }
 }
 ```
 
-### Error Handling
-
-```kotlin
-// Custom exception types
-sealed class SnoozeSpotException : Exception() {
-    data class NetworkException(val statusCode: Int, message: String) : SnoozeSpotException()
-    data class DataValidationException(val field: String, message: String) : SnoozeSpotException()
-    data class AuthenticationException(message: String) : SnoozeSpotException()
-}
-
-// Error handling in ViewModel
-class SpotListViewModel(private val repository: SpotRepository) : ViewModel() {
-    private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error.asStateFlow()
-
-    fun loadSpots() {
-        viewModelScope.launch {
-            repository.getSpots()
-                .catch { e ->
-                    _error.value = when (e) {
-                        is SnoozeSpotException.NetworkException -> "Network error: ${e.statusCode}"
-                        is SnoozeSpotException.AuthenticationException -> "Please log in again"
-                        else -> "An error occurred"
-                    }
-                }
-                .collect { spots -> /* update UI */ }
-        }
-    }
-
-    fun clearError() {
-        _error.value = null
-    }
-}
-```
-// UI test example
-class SpotListScreenTest {
-    @get:Rule
-    val composeTestRule = createComposeRule()
-
-    @Test
-    fun testSpotCardDisplaysCorrectly() {
-        val spot = Spot.MOCK_DATA
-        composeTestRule.setContent {
-            SpotCard(spot, {})
-        }
-
-        composeTestRule.onNodeWithText(spot.name).assertIsDisplayed()
-    }
-}
-```
-
-### Dependency Injection
-
-While SnoozeSpot doesn't use a formal DI framework currently, consider these patterns:
-
-```kotlin
-// Manual injection in Application class
-class SnoozeSpotApp : Application() {
-    private val database by lazy { AppDatabase.getInstance(this) }
-    private val repository by lazy { SpotRepository(apiService, database.spotDao()) }
-
-    fun getRepository(): SpotRepository = repository
-}
-
-// Or use Hilt for automatic dependency injection (recommended for larger projects)
-// Add dependency: implementation("com.google.dagger:hilt-android:latest")
-
-@HiltViewModel
-class SpotListViewModel @Inject constructor(
-    private val repository: SpotRepository
-) : ViewModel() {
-    // ViewModel implementation
-}
-```
-
----
-
-## Contributing Guidelines
-
-### Contribution Workflow
-
-1. **Fork the Repository**
-   ```bash
-   # Clone your fork
-   git clone https://github.com/your-username/SnoozeSpot.git
-   cd SnoozeSpot
-   ```
-
-2. **Create a Feature Branch**
-   ```bash
-   # Use descriptive branch names
-   git checkout -b feature/add-favorites-list
-   git checkout -b bugfix/fix-map-crashes
-   git checkout -b chore/update-dependencies
-   ```
-
-3. **Make Changes**
-   - Follow code style guidelines (see Development Guidelines section)
-   - Write clean, well-commented code
-   - Add unit tests for new functionality
-   - Update documentation as needed
-
-4. **Commit Your Changes**
-   ```bash
-   # Follow commit message format
-   git commit -m "feat: add favorites list to home screen
-
-   - Display user's favorite spots in dedicated section
-   - Add swipe-to-remove gesture
-   - Persist favorites in Room database
-   
-   Closes #123"
-   ```
-
-### Commit Message Format
-
-Follow conventional commits:
+## Fichiers 
 
 ```
-<type>(<scope>): <subject>
-
-<body>
-
-<footer>
+app/
+├── app/
+│   └── src/
+│       └── main/
+│           ├── java/
+│           │   └── iut/
+│           │       └── fauryollivier/
+│           │           └── snoozespot/
+│           │               ├── api/   # Toute la partie appel à l'API, utilisée en principe uniquement par les repositories
+│           │               │   └── data/
+│           │               │       ├── AuthInterceptor.kt
+│           │               │       ├── NetworkDataSource.kt
+│           │               │       └── SnoozeSpotApi.kt
+│           │               │   └── generated/
+│           │               │       ...   # Tout le code généré par OpenAPI à partir de la doc pour les appels API
+│           │               ├── app/
+│           │               │   ├── components/
+│           │               │   │   └── ...   # Un ensemble de composants utilisés un peu partout dans l'app (ex: ExpandableImage)
+│           │               │   ├── pages/
+│           │               │   │   └── <page>/
+│           │               │   │       ├── <page>Screen.kt   # La view cet écran
+│           │               │   │       ├── <page>ViewModel.kt   # le ViewModel de cet écran
+│           │               │   │       ├── components/   # Un ensemble de components utilisé uniquement par cet écran (et éventuellement ses sous-écrans)
+│           │               │   │       │   └── ...
+│           │               │   │       └── <subpage>/
+│           │               │   │       │   ├── <subpage>Screen.kt   # La view du sous-écran
+│           │               │   │       │   └── <subpage>ViewModel.kt   # Le ViewModel de ce sous écran (absent s'il n'en a pas)
+│           │               │   └── ScaffoldController.kt   # Permet de gérer la TopBar/BottomBar à afficher sur chaque écran
+│           │               ├── datastore/
+│           │               │   └── LocalStorage.kt   # Sert à stocker le token et l'user connecté
+│           │               ├── MainActivity.kt   # Initialisation de certains composants, mise en place du toaster...
+│           │               ├── repositories/   # Couche d'abstraction permettant l'accès aux données de l'api depuis les ViewModels
+│           │               │   └── ...
+│           │               ├── room/   # Database locale
+│           │               │   ├── AppDatabase.kt
+│           │               │   ├── dao/
+│           │               │   │   └── ...
+│           │               │   ├── overridemodels/   # Modèles écrits à la main (souvent repris de ceux générés par OpenAPI) car le générateur ne permet pas d'obtenir le résultat cherché
+│           │               │   │   └── ...
+│           │               │   └── RoomJsonConverters.kt
+│           │               ├── ui/
+│           │               │   └── theme/
+│           │               │       ├── Color.kt
+│           │               │       ├── Theme.kt
+│           │               │       └── Type.kt
+│           │               └── utils/   # Elements utiles à plusieurs endroits qui n'ont pas leur place ailleurs
+│           │                   ├── ErrorMessage.kt
+│           │                   ├── GoogleAuthHelper.kt
+│           │                   ├── Toaster.kt
+│           │                   ├── UiEvent.kt
+│           │                   └── Utils.kt
+│           └── res/
+│               ├── drawable/
+│               │   └── ...   # Les images
+│               ├── raw/
+│               │   └── ...   # Animations & certificat SSL auto-généré pour le dev
+│               └── values/
+│                   └── ...   # Infos sur le thème de l'app, traductions
+├── ...
+└── local.properties   # Pas gitté car contient des clés d'API, demander aux autres devs pour l'avoir
 ```
 
-**Type**: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
-**Scope**: `api`, `ui`, `database`, `auth`, `maps`, etc.
-**Subject**: Imperative mood, no period, max 50 chars
-**Body**: Explain what and why, not how
-**Footer**: Reference issues: `Closes #123`, `Fixes #456`
+## Quelques éléments
 
-### Code Review Expectations
+### Traductions
 
-- All PRs require at least 1 approval before merging
-- Address review comments before re-requesting review
-- Run tests locally before submitting
-- Keep commits organized and logically grouped
-- Update branch if conflicts arise with main
+Tous les textes de l'application sont traduits en utilisant [le système de traductions d'Android](https://developer.android.com/studio/write/translations-editor?hl=fr). Ainsi, à l'ajout d'un nouveau texte, il devra être saisi dans chaque langue, comme décrit dans la documentation android.
 
-### Testing Requirements
+Pour accéder à ses traductions, on utilise la classe R :
 
-- Add unit tests for new business logic
-- Add UI tests for new screens/components
-- Ensure existing tests pass: `./gradlew test`
-- Run code quality checks: `./gradlew lint`
-
-### Documentation Updates
-
-- Update relevant sections in `doc.md` for significant changes
-- Add Javadoc comments for public API
-- Update README if user-facing features change
-- Add code examples for complex implementations
-
----
-
-## Troubleshooting
-
-### Common Issues & Solutions
-
-#### 1. Gradle Sync Failures
-
-**Problem**: "Could not download artifact" or "Repository not found"
-
-**Solution**:
-```bash
-# Clear Gradle cache
-./gradlew clean
-
-# Update dependencies
-./gradlew dependencies --refresh-dependencies
-
-# Sync project in Android Studio: File → Sync Now
-```
-
-#### 2. OpenAPI Generator Errors
-
-**Problem**: "OpenAPI spec file not found" or "Generator failed"
-
-**Solution**:
-- Verify OpenAPI spec file path in `build.gradle.kts`
-- Check spec file format (must be valid YAML/JSON)
-- Regenerate: `./gradlew generateOpenApiClient --rerun-tasks`
-- Check output in `app/build/generated/openapi/`
-
-#### 3. Google Maps API Errors
-
-**Problem**: "MapsInitializationException" or blank map
-
-**Solution**:
-```properties
-# Verify MAPS_API_KEY in secrets.properties
-MAPS_API_KEY=your_valid_key_here
-
-# Ensure API is enabled in Google Cloud Console:
-# 1. Go to Google Cloud Console
-# 2. Enable "Maps SDK for Android"
-# 3. Generate/copy API key
-# 4. Add app's SHA-1 fingerprint to key restrictions
-
-# Debug with logcat
-adb logcat | grep "MapsInitializationException"
-```
-
-#### 4. Certificate/SSL Errors
-
-**Problem**: "CERTIFICATE_VERIFY_FAILED" when calling API
-
-**Solution**:
-```kotlin
-// For development only - add to OkHttpClient builder:
-val builder = OkHttpClient.Builder()
-if (BuildConfig.DEBUG) {
-    // Only for dev/testing with self-signed certificates
-    builder.hostnameVerifier { _, _ -> true }
-}
-
-// For production: ensure server has valid SSL certificate
-```
-
-#### 5. Database Migration Errors
-
-**Problem**: "Room cannot verify the data integrity" or migration crash
-
-**Solution**:
-```kotlin
-// Uninstall app to clear database during development
-adb uninstall iut.fauryollivier.snoozespot.dev
-
-// Or use fallback strategy in AppDatabase:
-Room.databaseBuilder(context, AppDatabase::class.java, "snoozespot.db")
-    .fallbackToDestructiveMigration()  // Only for dev!
-    .build()
-
-// For production: create proper migration files
-val MIGRATION_1_2 = object : Migration(1, 2) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        // Migration SQL
-    }
+```Kotlin
+@Composable
+fun Composant(...) {
+  Text(stringResource(R.string.example_trad_code))
 }
 ```
 
-#### 6. Build Variant Not Changing
+### Topbar/bottombar
 
-**Problem**: App still uses old flavor after changing variant
+Comme mentionné dans la partie Architecture globale, chaque vue doit prendre en paramètre un ScaffoldController, permettant de gérer la topbar et la bottombar à afficher.
 
-**Solution**:
-```bash
-# Clean build completely
-./gradlew clean
+#### BottomBar
 
-# Rebuild
-./gradlew assembleProductionDebug
+L'app utilise une unique bottomBar, le ScaffoldController permet donc de choisir de l'afficher ou non.
 
-# In Android Studio:
-# - Go to Build → Clean Project
-# - Go to View → Tool Windows → Build Variants
-# - Select desired variant
-# - Sync Gradle
+```Kotlin
+@Composable
+fun Composant(..., scaffoldController: ScaffoldController) {
+  LaunchedEffect(true) {
+    scaffoldController.showBottomBar.value = <true/false>
+  }
+
+  ...
+}
 ```
 
-#### 7. Network Timeouts
+#### TopBar
 
-**Problem**: API calls timeout frequently
+La topbar quant à elle possède plusieurs variantes. Toutes ces variantes sont disponibles dans app/components/TopBar.kt. Les topbars disponibles sont des topbars assez génériques (une topbar avec simplement le logo de l'app, une topbar avec un bouton retour, ...).
 
-**Solution**:
-```kotlin
-// Increase timeout in OkHttpClient
-val httpClient = OkHttpClient.Builder()
-    .connectTimeout(60, TimeUnit.SECONDS)  // Increase from 30
-    .readTimeout(60, TimeUnit.SECONDS)
-    .writeTimeout(60, TimeUnit.SECONDS)
-    .build()
+```Kotlin
+@Composable
+fun Composant(..., scaffoldController: ScaffoldController) {
+  LaunchedEffect(true) {
+    scaffoldController.topBar.value = { DefaultTopBar() }
+  }
 
-// Check network connectivity
-// Consider implementing exponential backoff for retries
+  ...
+}
 ```
 
-#### 8. Compose Layout Issues
+### Toaster
 
-**Problem**: UI elements not rendering correctly
+D'ordinaire, pour faire apparaitre un toast en Kotlin Compose, il faut avoir accès au Contexte, ce qui est le cas des vues, mais pas des ViewModels (sauf si on le passe en paramètre d'une fonction appelée par la vue, mais ce n'est pas une bonne pratique).
 
-**Solution**:
-- Check preview annotations: `@Preview`
-- Use `debugInspectorInfo()` for layout debugging
-- Verify state updates in `LaunchedEffect`
-- Check for recomposition loops (side effects in composables)
-- Use `remember` for state preservation
+Pour pallier à ce problème, nous avons mis en place ce qu'on a décidé d'appeler un "Toaster", un singleton qui peut être appelé depuis n'importe où dans l'appli (notamment dans les ViewModels), possédant une méthode `toast(string)`. L'appel à cette méthode alimente un flux d'évènement (Plus précisemment un [MutableSharedFlow](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-mutable-shared-flow/)), qui est observé à la racine de l'application pour afficher les toasts demandés.
 
-#### 9. Room Query Errors
-
-**Problem**: "androidx.room.RoomSQLiteQuery: (SQLiteException)"
-
-**Solution**:
-```kotlin
-// Verify SQL syntax in @Query annotations
-// Common mistakes:
-@Query("SELECT * FROM spots WHERE name LIKE :query")  // Correct
-@Query("SELECT * FROM spots WHERE name LIKE %:query%") // Wrong - use binding
-
-// Use database inspector: Device File Explorer → data/data/[app_id]/databases/
+Utilisation : 
+```Kotlin
+Toaster.instance.toast(R.string.example_toast)
 ```
 
-#### 10. Memory Leaks
+### Gestion d'erreur
 
-**Problem**: App crashes with "OutOfMemoryError"
+Cette partie traitera de la gestion d'erreur lors de l'appel à un repository (pas de try catch, on parle bien de lorsque la Response n'est pas successful).
 
-**Solution**:
-- Check image loading (use Coil for caching)
-- Verify coroutine scope cleanup
-- Use Android Profiler to detect leaks:
-  - Run → Profile [app name]
-  - Memory tab → Heap Dump → Analyze
+On distingue deux types de failure : 
 
----
+- #### Le cas où si l'appel échoue, l'écran n'est pas du tout utilisable 
+  - (ex: un post ne charge pas sur la page détails)
 
-## Additional Resources
+  - Dans ce cas, il conviendra de faire apparaitre l'erreur en plein écran, avec un bouton en dessous permettant de relancer l'appel.
 
-### Official Documentation
-- [Android Developers](https://developer.android.com/)
-- [Jetpack Compose](https://developer.android.com/jetpack/compose)
-- [Room Database](https://developer.android.com/training/data-storage/room)
-- [Retrofit](https://square.github.io/retrofit/)
-- [Google Maps Platform](https://developers.google.com/maps)
+  - Pour l'affichage de l'erreur, il conviendra d'utiliser la classe ErrorMessage, contenant les types d'erreurs classiques, ainsi que l'id des tradcode correspondants
 
-### Libraries & Tools
-- [Gradle Build Tool](https://gradle.org/)
-- [OkHttp](https://square.github.io/okhttp/)
-- [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html)
-- [OpenAPI Generator](https://openapi-generator.tech/)
+- #### Le cas où si l'appel échoue, on peut contionuer à utiliser l'écran normalement 
+  - (ex: le like d'un post ne fonctionne pas)
 
-### Getting Help
-- Check existing GitHub issues
-- Review Android official documentation
-- Check Stack Overflow with tags: `android`, `kotlin`, `jetpack-compose`
+  - Dans ce cas, il conviendra de simplement afficher un toast indiquant à l'utilisateur que l'action n'a pas pu être réalisée (voir partie Toaster)
 
----
+### Routes API écrites à la main
 
-## Changelog
+Dans certains cas, le générateur de documentation OpenAPI ne permet pas de générer une documentation correcte pour certaines routes d'API (ex: routes gérant des uploads de fichiers).
 
-### Version 1.0 (Current)
-- Initial release
-- Core features: Spot discovery, mapping, posts, comments
-- Multi-flavor build support
-- Google Maps integration
-- Room database persistence
-- Jetpack Compose UI
+Dans ce cas, il conviendra d'écrire les fonctions d'interfaces Retrofit à la main, dans le fichier /api/data/SnoozeSpotApi.kt, au sein de l'interface SnoozeSpotApi.
 
----
+## Développement en local
 
-**Last Updated**: January 13, 2026
-**Maintained By**: SnoozeSpot Development Team
+/!\ Bien suivre la procédure décrite dans la partie "Installation du poste".
 
+### Build-variants
+
+Les builds variants sont accessibles sous Android Studio via ce menu :
+
+<img width="349" height="544" alt="image" src="https://github.com/user-attachments/assets/e85a975a-1003-4d6d-8360-653066d47ca0" />
+
+Il existe 3 types de builds : 
+- development : pour le développement local
+- beta : version beta de l'application
+- production : version de l'application publiée et exploitable par de vrais utilisateurs
+
+à noter que les 2 derniers types de builds sont configurés pour utiliser l'API déployée sur render, tandis que le type development utilisera l'api déployée en local (ip https://localhost:8080) (voir partie ADB Reverse)
+
+### ADB reverse
+
+Pour le développement en local, il est nécessaire que l'application puisse récupérer les données de l'API hébergée sur la machine du développeur. Pour cela, il convient de mettre en place du port forwarding du téléphone à la machine de développeur. Dans l'idée, cela revient à rediriger un port X du localhost du téléphone à un port Y de la machine du développeur (ex: aller sur localhost:8080 du téléphone peut faire appel au localhost:443 de la machine du développeur). 
+
+- La première étape consiste à [activer l'USB debugging](https://developer.android.com/studio/debug/dev-options?hl=fr)
+- La deuxieme étape consiste à installer [ADB](https://developer.android.com/tools/adb) sur la machine du développeur
+- La troisième étape est de brancher le téléphone à la machine du développeur via un cable USB permettant le transfert de données
+- La quatrièeme et dernière étape consiste à ouvrir un shell et taper `adb reverse tcp:8080 tcp:443`, avant d'accepter la demande qui devrait apparaitre sur le téléphone
+
+### Certificat SSL auto-généré
+
+Dans un soucis de sécurité avec Android, il a été nécessaire de générer un certificat SSL pour pouvoir contacter l'API en HTTPS. Pour cela, on utilise un outil lors du lancement de l'API qui va généré un certificat auto-signé. Le problème est maintenant qu'Android n'accepte pas les certificats auto-signés par défaut, il faut donc lui indiquer que ce certificat peut être utilisé sans risque. Alors, lors du lancement de l'API, on copie le certificat généré dans les fichiers de l'app pour qu'il soit inclus dans son build, et qu'Android accepte son utilisation.
+
+C'est pour cette raison que dès lors qu'on relance l'API, il est nécessaire de recompiler l'app, sans quoi on ne pourra plus la contacter.
+
+certificat auto-généré
