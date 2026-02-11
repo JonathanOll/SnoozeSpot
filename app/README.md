@@ -4,14 +4,30 @@
 
 SnoozeSpot est une appli de partage de lieu de sieste, permettant à des utilisateurs d'échanger dans un feed similaire au fonctionnement de twitter, mais également de poster des lieux de sieste sur une carte que les autres utilisateurs pourront commenter.
 
-L'application est écrite en Kotlin, en utilisant la syntaxe Compose.
+L'application est écrite en Kotlin, en utilisant la syntaxe Compose. Retrofit est utilisé pour toute la partie appel à l'API, et une base de données Room est présente pour stocker des données en locale (surtout utilisé pour du cache).
 
 ## Architecture globale
 
-L'application de base sur une architecture de type MVVM (Modèle, Vue, Vue-Modèle), 
+Diagramme de l'archi globale de l'appli
+<img width="762" height="352" alt="Diagramme sans nom drawio" src="https://github.com/user-attachments/assets/f5263c6d-73d0-453f-8f52-52ba7d27d6c2" />
 
-Repositories, viewmodels, view
+### MVVM
 
+L'application de base sur une architecture de type MVVM (Modèle, Vue, Vue-Modèle), une approche visant à séparer les données d'une application (le modèle) de sa présentation (la vue), le vue-modèle agissant comme un pont entre ces 2 éléments.
+
+/!\ à noter que la chaine est bien à respecter, en aucun cas une vue ne doit faire appel directement à un repository ou à la DB locale.
+
+### Repositories
+
+Un repository est une couche d'abstraction entre l'accès aux données et les ViewModels. Leur rôle est de garantir une transparence quant à l'appel à l'api et la DB locale. Ainsi, pour récupérer la liste des spots, un ViewModel fera un appel du type `SpotsRepository.getSpots()`, et le repository se chargera d'essayer de récupérer les données de l'API, en cas d'erreur de récupérer les données de la DB locale.
+
+Le rôle du repository est également d'assurer la partie gestion d'erreur, afin d'éviter d'incessants try catchs dans les ViewModels. Pour ce, toutes les fonctions des repositories retournent non pas le type de la donnée demandée directement, mais une `Response<Type>`, basée sur le [design pattern Result](https://medium.com/@wgyxxbf/result-pattern-a01729f42f8c). Ainsi, dans un ViewModel, on vérifie si un appel a fonctionné en faisant `response.isSuccessful`, dans quel cas on pourra accéder à la donnée avec `response.body()`.
+
+Repositories, viewmodels, view, Toaster
+
+## Gestion de projet
+
+Git, PR, Bitrise, render, trello
 
 ## Fichiers 
 
