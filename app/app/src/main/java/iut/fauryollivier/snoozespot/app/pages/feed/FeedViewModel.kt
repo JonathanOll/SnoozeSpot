@@ -68,20 +68,16 @@ class FeedViewModel : ViewModel() {
         loadingState()
 
         viewModelScope.launch {
-            try {
-                val nextPage = _state.value.page + 1
-                val response = PostsRepository.getPosts(page = nextPage)
+            val nextPage = _state.value.page + 1
+            val response = PostsRepository.getPosts(page = nextPage)
 
-                if (response.isSuccessful && response.body() != null) {
-                    successState(response.body()!!, nextPage)
-                } else {
-                    if(nextPage == 0)
-                        errorState(ErrorMessage.LOADING_ERROR)
-                     else
-                        Toaster.instance.toast(R.string.failed_to_fetch_data)
-                }
-            } catch (_: Exception) {
-                errorState()
+            if (response.isSuccessful && response.body() != null) {
+                successState(response.body()!!, nextPage)
+            } else {
+                if(nextPage == 0)
+                    errorState(ErrorMessage.LOADING_ERROR)
+                else
+                    Toaster.instance.toast(R.string.failed_to_fetch_data)
             }
         }
     }
