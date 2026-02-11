@@ -10,7 +10,45 @@ Pour la partie appel à l'API, retrofit requiert normalement l'écriture d'un in
 
 ## Gestion de projet
 
-Git, PR, Bitrise, render, trello
+### Github
+
+SnoozeSpot utilise un repo github pour tout ce qui est de la gestion de version du code. En tout temps, deux branches sont présentes : la branche main (correspondant à la release) et la branche beta. Il est absoluement essentiel que ces deux branches restent saines, dans le sens ou les builds (front et back) doivent fonctionner pour pouvoir être rendu disponibles aux utilisateurs.
+
+Lorsqu'un développeur veut travailler sur une nouvelle fonctionnalité, il crée une nouvelle branche en se basant sur main, et push les changements une fois terminé.
+
+La branche main est protégée et ne peut être modifié que via la création d'une [PR](https://docs.github.com/fr/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). 
+
+Fonctionnement d'une PR
+<img width="850" height="452" alt="GitHub-Pull-request-flow" src="https://github.com/user-attachments/assets/60c53c34-4231-4232-8501-186b5d8da6f2" />
+
+Lors de la création d'une PR, il est demandé au développeur de remplir certaines informations dans le commentaire de cette dernière. Ces informations seront utiles aux autres développeurs pour saisir rapidement les changements apportés et permet également de traquer la source d'apparition d'un bug.
+
+Une pull request ne peut être merge qu'à condition que le build bitrise fonctionne et qu'un autre développeur a approuvé les changements.
+
+Une fois une PR créée, un workflow Github se lancera pour ajouter automatiquement des labels sur cette dernière. En cas de changements sur l'application (respectivement l'api), le tag "frontend" (resp. "backend") sera ajouté sans actions supplémentaires requises de la part du développeur.
+
+### Bitrise
+
+Bitrise est un outil de CI permettant de build l'application à chaque push sur la branche main, ainsi que la mise à disposition d'un lien de téléchargement pour les utilisateurs. On utilise également bitrise pour valider qu'une PR build bien, afin d'éviter d'introduire des changements qui cassent main.
+
+### Render
+
+Render est également un outil de CI, mais il nous permet cette fois de build l'API et de la mettre à disposition sur une URL fixe. À chaque push concernant l'api sur main le service déploiera une nouvelle instance de l'API sur une machine virtuelle créée à l'occasion, et joignable à l'url https://snoozespot.onrender.com/
+
+À noter que le déploiement peut prendre une dizaine de minute, et qu'au bout d'un certain temps d'inactivité, l'api est éteinte, pour être redémarrée dès qu'un nouvel appel est détecté (le démarrage peut prendre une bonne minute, d'où le splashscreen plus long que d'ordinaire).
+
+### Trello
+
+Pour le suivi de développement, on utilise un Trello. Le board contient 7 listes :
+- Future : une liste des développements à réaliser dans un futur plus ou moins proche (pas forcément de fonctionnalités claires, juste une idée globale)
+- Ready : les développements prêts à être réalisés, les fonctionnalités requises sont plus précises
+- Blocked : les développements déjà commencés, mais bloqués car en attente d'une autre fonctionnalité
+- In Progress : les développements en cours
+- To Review : les développements terminés dont la PR est créée, mais pas encore merge
+- Done : les développements terminés, et dont les PRs ont été merge
+- Tools : une simple liste des liens pour différents éléments du projet (doc, repo git, ...)
+
+Chaque tâche
 
 ## Installation du poste
 
