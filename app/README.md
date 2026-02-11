@@ -4,7 +4,15 @@
 
 SnoozeSpot est une appli de partage de lieu de sieste, permettant à des utilisateurs d'échanger dans un feed similaire au fonctionnement de twitter, mais également de poster des lieux de sieste sur une carte que les autres utilisateurs pourront commenter.
 
-L'application est écrite en Kotlin, en utilisant la syntaxe Compose. Retrofit est utilisé pour toute la partie appel à l'API, et une base de données Room est présente pour stocker des données en locale (surtout utilisé pour du cache).
+L'application est écrite en [Kotlin](https://kotlinlang.org/), en utilisant la syntaxe [Compose](https://developer.android.com/develop/ui/compose/kotlin?hl=fr). [Retrofit](https://developer.android.com/codelabs/basic-android-kotlin-compose-getting-data-internet?hl=fr#0) est utilisé pour toute la partie appel à l'API, et une base de données [Room](https://developer.android.com/training/data-storage/room?hl=fr) est présente pour stocker des données en locale (surtout utilisé pour du cache).
+
+Pour la partie appel à l'API, 
+
+## Conventions de nommage
+
+- Les noms des packages sont en flatcase
+- Les noms des fichiers, classes et composants sont en PascalCase
+- Les noms des variables et fonctions sont en camelCase
 
 ## Architecture globale
 
@@ -22,6 +30,64 @@ L'application de base sur une architecture de type MVVM (Modèle, Vue, Vue-Modè
 Un repository est une couche d'abstraction entre l'accès aux données et les ViewModels. Leur rôle est de garantir une transparence quant à l'appel à l'api et la DB locale. Ainsi, pour récupérer la liste des spots, un ViewModel fera un appel du type `SpotsRepository.getSpots()`, et le repository se chargera d'essayer de récupérer les données de l'API, en cas d'erreur de récupérer les données de la DB locale.
 
 Le rôle du repository est également d'assurer la partie gestion d'erreur, afin d'éviter d'incessants try catchs dans les ViewModels. Pour ce, toutes les fonctions des repositories retournent non pas le type de la donnée demandée directement, mais une `Response<Type>`, basée sur le [design pattern Result](https://medium.com/@wgyxxbf/result-pattern-a01729f42f8c). Ainsi, dans un ViewModel, on vérifie si un appel a fonctionné en faisant `response.isSuccessful`, dans quel cas on pourra accéder à la donnée avec `response.body()`.
+
+### View
+
+Une vue est donc la partie visuelle, aka la "présentation", elle représente ce avec quoi l'utilisateur interagit pour utiliser l'app.
+
+Pour créer une nouvelle vue, créer le <page>Screen et <page>ViewModel (cf. partie Fichiers), la structure de ces fichiers doit être la suivante : 
+
+#### \<page\>Screen
+
+```Kotlin
+... # package & imports
+
+@Destination
+@Composable
+fun <page>Screen(
+  navigator: DestinationsNavigator, // Permet la navigation entre les écrans
+  scaffoldController: ScaffoldController, // Permet de gérer la topbar/bottombar à afficher sur l'écran
+  modifier: Modifier = Modifier,
+  vm: <page>ViewModel = viewModel(), // Inclus par android via l'injection de dépendance
+) {
+  LaunchedEffect(true) {
+    scaffoldController.topBar.value = { BackTopBar(navigator) } // Ou autre, voir partie "Quelques éléments"
+    scaffoldController.showBottomBar.value = <true/false>
+  }
+
+  val <data>: <DataType> by vm.<data>.collectAsState() // Permet de reconstruire les composants qu'il faut lors du changement d'état de <data> dans le ViewModel
+  ... // collecte d'autres données du ViewModel
+
+  // SI BESOIN
+  LaunchedEffect(true) {
+    vm.<fetchData>() // appel automatique au ViewModel, ex: pour lancer un appel api qui charge les données
+  }
+
+   ... // Le reste du composant
+}
+```
+
+#### \<page\>ViewModel
+
+```Kotlin
+... # package & imports
+
+class <page>ViewModel: ViewModel() {
+  private val _data = MutableStateFlow<Type>(<default_value>) // variable que le ViewModel va mettre à jour 
+  val data = _data.asStateFlow() // variable que la vue va récupérer et observer
+
+  fun fetchData() { # exemple d'appel à un repository
+    viewModelScope.launch {
+      val response = DataRepository.fetchData()
+      if (response.isSuccessful)
+        _data.update { response.body() }
+      else
+        Toaster.instance.toast(R.string.could_not_fetch) // voir partie "Quelques éléments"
+    }
+  }
+}
+```
+
 
 Repositories, viewmodels, view, Toaster
 
@@ -93,6 +159,24 @@ app/
 ├── ...
 └── local.properties   # Pas gitté car contient des clés d'API, demander aux autres devs pour l'avoir
 ```
+
+## Quelques éléments
+
+### Traductions
+
+TODO
+
+### Topbar/bottombar
+
+TODO
+
+### Toaster
+
+TODO
+
+### Hand-written API routes
+
+TODO
 
 ## Développement en local
 
