@@ -201,11 +201,66 @@ fun Composant(...) {
 
 ### Topbar/bottombar
 
-TODO
+Comme mentionné dans la partie Architecture globale, chaque vue doit prendre en paramètre un ScaffoldController, permettant de gérer la topbar et la bottombar à afficher.
+
+#### BottomBar
+
+L'app utilise une unique bottomBar, le ScaffoldController permet donc de choisir de l'afficher ou non.
+
+```Kotlin
+@Composable
+fun Composant(..., scaffoldController: ScaffoldController) {
+  LaunchedEffect(true) {
+    scaffoldController.showBottomBar.value = <true/false>
+  }
+
+  ...
+}
+```
+
+#### TopBar
+
+La topbar quant à elle possède plusieurs variantes. Toutes ces variantes sont disponibles dans app/components/TopBar.kt. Les topbars disponibles sont des topbars assez génériques (une topbar avec simplement le logo de l'app, une topbar avec un bouton retour, ...).
+
+```Kotlin
+@Composable
+fun Composant(..., scaffoldController: ScaffoldController) {
+  LaunchedEffect(true) {
+    scaffoldController.topBar.value = { DefaultTopBar() }
+  }
+
+  ...
+}
+```
 
 ### Toaster
 
-TODO
+D'ordinaire, pour faire apparaitre un toast en Kotlin Compose, il faut avoir accès au Contexte, ce qui est le cas des vues, mais pas des ViewModels (sauf si on le passe en paramètre d'une fonction appelée par la vue, mais ce n'est pas une bonne pratique).
+
+Pour pallier à ce problème, nous avons mis en place ce qu'on a décidé d'appeler un "Toaster", un singleton qui peut être appelé depuis n'importe où dans l'appli (notamment dans les ViewModels), possédant une méthode `toast(string)`. L'appel à cette méthode alimente un flux d'évènement (Plus précisemment un [MutableSharedFlow](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-mutable-shared-flow/)), qui est observé à la racine de l'application pour afficher les toasts demandés.
+
+Utilisation : 
+```Kotlin
+Toaster.instance.toast(R.string.example_toast)
+```
+
+### Gestion d'erreur
+
+Cette partie traitera de la gestion d'erreur lors de l'appel à un repository (pas de try catch, on parle bien de lorsque la Response n'est pas successful).
+
+On distingue deux types de failure : 
+
+#### Le cas où si l'appel échoue, l'écran n'est pas du tout utilisable 
+(ex: un post ne charge pas sur la page détails)
+
+Dans ce cas, il conviendra de faire apparaitre l'erreur en plein écran, avec un bouton en dessous permettant de relancer l'appel.
+
+Pour l'affichage de l'erreur, il conviendra d'utiliser la classe ErrorMessage, contenant les types d'erreurs classiques, ainsi que l'id des tradcode correspondants
+
+#### Le cas où si l'appel échoue, on peut contionuer à utiliser l'écran normalement 
+(ex: le like d'un post ne fonctionne pas)
+
+Dans ce cas, il conviendra de simplement afficher un toast indiquant à l'utilisateur que l'action n'a pas pu être réalisée (voir partie Toaster)
 
 ### routes API écrites à la main
 
@@ -217,4 +272,32 @@ Dans ce cas, il conviendra d'écrire les fonctions d'interfaces Retrofit à la m
 
 /!\ Bien suivre la procédure décrite dans la partie "Installation du poste".
 
-adb reverse, certificat auto-généré, build-variant
+### Build-variants
+
+Les builds variants sont accessibles sous Android Studio via ce menu :
+
+<img width="349" height="544" alt="image" src="https://github.com/user-attachments/assets/e85a975a-1003-4d6d-8360-653066d47ca0" />
+
+Il existe 3 types de builds : 
+- development : pour le développement local
+- beta : version beta de l'application
+- production : version de l'application publiée et exploitable par de vrais utilisateurs
+
+à noter que les 2 derniers types de builds sont configurés pour utiliser l'API déployée sur render, tandis que le type development utilisera l'api déployée en local (ip https://localhost:8080) (voir partie ADB Reverse)
+
+### ADB reverse
+
+Pour le développement en local, il est nécessaire que l'application puisse récupérer les données de l'API hébergée sur la machine du développeur. Pour cela, il convient de mettre en place du port forwarding du téléphone à la machine de développeur. Dans l'idée, cela revient à rediriger un port X du localhost du téléphone à un port Y de la machine du développeur (ex: aller sur localhost:8080 du téléphone peut faire appel au localhost:443 de la machine du développeur). 
+
+- La première étape consiste à [activer l'USB debugging](https://developer.android.com/studio/debug/dev-options?hl=fr)
+- La deuxieme étape consiste à installer [ADB](https://developer.android.com/tools/adb) sur la machine du développeur
+- La troisième étape est de brancher le téléphone à la machine du développeur via un cable USB permettant le transfert de données
+- La quatrièeme et dernière étape consiste à ouvrir un shell et taper `adb reverse tcp:8080 tcp:443`, avant d'accepter la demande qui devrait apparaitre sur le téléphone
+
+### Certificat SSL auto-généré
+
+Dans un soucis de sécurité avec Android, il a été nécessaire de générer un certificat SSL pour pouvoir contacter l'API en HTTPS. Pour cela, on utilise un outil lors du lancement de l'API qui va généré un certificat auto-signé. Le problème est maintenant qu'Android n'accepte pas les certificats auto-signés par défaut, il faut donc lui indiquer que ce certificat peut être utilisé sans risque. Alors, lors du lancement de l'API, on copie le certificat généré dans les fichiers de l'app pour qu'il soit inclus dans son build, et qu'Android accepte son utilisation.
+
+C'est pour cette raison que dès lors qu'on relance l'API, il est nécessaire de recompiler l'app, sans quoi on ne pourra plus la contacter.
+
+certificat auto-généré
