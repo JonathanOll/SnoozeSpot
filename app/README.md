@@ -1,4 +1,4 @@
-<img width="628" height="78" alt="image" src="https://github.com/user-attachments/assets/eeac9953-4a4d-4ceb-9d05-3a8e77b6f318" /># Documentation technique SnoozeSpot
+# Documentation technique SnoozeSpot
 
 ## Présentation générale
 
@@ -21,12 +21,16 @@ Git, PR, Bitrise, render, trello
 - Sync gradle
 - Dans la barre du haut, cliquer sur Edit Configurations
 <img width="326" height="228" alt="image" src="https://github.com/user-attachments/assets/299b09eb-26cc-4f30-aa9b-63fea83e7e40" />
+
 - Créer une nouvelle configuration
 <img width="286" height="78" alt="image" src="https://github.com/user-attachments/assets/04b70054-ec6d-44aa-af3f-0889ab9a2932" />
+
 - Tout en bas de la partie droite de la fenêtre, ajouter une task "Run Gradle Task"
 <img width="880" height="688" alt="image" src="https://github.com/user-attachments/assets/137fb46e-32b5-4bfa-896c-c72db047e5ca" />
+
 - Sélectionner le gradle project app:app, et saisir preBuild dans "Tasks", puis valider
 <img width="367" height="302" alt="image" src="https://github.com/user-attachments/assets/82396dcf-f53a-4451-b555-60475ad07e62" />
+
 - Placer cette tâche au dessus de "Gradle-aware Make", puis appliquer les changements
 <img width="628" height="78" alt="image" src="https://github.com/user-attachments/assets/3c577aef-ff56-47de-974d-c900528a35b5" />
 
