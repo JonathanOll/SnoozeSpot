@@ -48,7 +48,7 @@ Pour le suivi de développement, on utilise un Trello. Le board contient 7 liste
 - Done : les développements terminés, et dont les PRs ont été merge
 - Tools : une simple liste des liens pour différents éléments du projet (doc, repo git, ...)
 
-Chaque tâche
+Chaque tâche devra être agrémentée de tags pour la caractériser : des tags "front", "api" si concerné, et un tag ["story point"](https://www.atlassian.com/fr/agile/project-management/estimation), un nombre correspondant à la difficulté/temps estimé pour cette tâche.
 
 ## Installation du poste
 
