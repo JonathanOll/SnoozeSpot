@@ -34,9 +34,6 @@ Git, PR, Bitrise, render, trello
 - Placer cette tâche au dessus de "Gradle-aware Make", puis appliquer les changements
 <img width="628" height="78" alt="image" src="https://github.com/user-attachments/assets/3c577aef-ff56-47de-974d-c900528a35b5" />
 
-
-
-
 Le poste devrait maintenant être opérationnel
 
 /!\ à noter qu'en local, chaque relancement de l'API requerra le relancement de l'app (voir partie Développement en local)
@@ -46,6 +43,7 @@ Le poste devrait maintenant être opérationnel
 - Les noms des packages sont en flatcase
 - Les noms des fichiers, classes et composants sont en PascalCase
 - Les noms des variables et fonctions sont en camelCase
+- Les tradcodes sont en snake_case
 
 ## Architecture globale
 
@@ -190,7 +188,16 @@ app/
 
 ### Traductions
 
-TODO
+Tous les textes de l'application sont traduits en utilisant [le système de traductions d'Android](https://developer.android.com/studio/write/translations-editor?hl=fr). Ainsi, à l'ajout d'un nouveau texte, il devra être saisi dans chaque langue, comme décrit dans la documentation android.
+
+Pour accéder à ses traductions, on utilise la classe R :
+
+```Kotlin
+@Composable
+fun Composant(...) {
+  Text(stringResource(R.string.example_trad_code))
+}
+```
 
 ### Topbar/bottombar
 
@@ -200,10 +207,14 @@ TODO
 
 TODO
 
-### Hand-written API routes
+### routes API écrites à la main
 
-TODO
+Dans certains cas, le générateur de documentation OpenAPI ne permet pas de générer une documentation correcte pour certaines routes d'API (ex: routes gérant des uploads de fichiers).
+
+Dans ce cas, il conviendra d'écrire les fonctions d'interfaces Retrofit à la main, dans le fichier /api/data/SnoozeSpotApi.kt, au sein de l'interface SnoozeSpotApi.
 
 ## Développement en local
 
-build gradle task à ajouter pr génération openapi, adb reverse, certificat auto-généré, build-variant
+/!\ Bien suivre la procédure décrite dans la partie "Installation du poste".
+
+adb reverse, certificat auto-généré, build-variant
