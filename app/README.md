@@ -109,7 +109,7 @@ Pour créer une nouvelle vue, créer le <page>Screen et <page>ViewModel (cf. par
 #### \<page\>Screen
 
 ```Kotlin
-... # package & imports
+... // package & imports
 
 @Destination
 @Composable
@@ -145,7 +145,7 @@ class <page>ViewModel: ViewModel() {
   private val _data = MutableStateFlow<Type>(<default_value>) // variable que le ViewModel va mettre à jour 
   val data = _data.asStateFlow() // variable que la vue va récupérer et observer
 
-  fun fetchData() { # exemple d'appel à un repository
+  fun fetchData() { // exemple d'appel à un repository
     viewModelScope.launch {
       val response = DataRepository.fetchData()
       if (response.isSuccessful)
@@ -337,5 +337,3 @@ Pour le développement en local, il est nécessaire que l'application puisse ré
 Dans un soucis de sécurité avec Android, il a été nécessaire de générer un certificat SSL pour pouvoir contacter l'API en HTTPS. Pour cela, on utilise un outil lors du lancement de l'API qui va généré un certificat auto-signé. Le problème est maintenant qu'Android n'accepte pas les certificats auto-signés par défaut, il faut donc lui indiquer que ce certificat peut être utilisé sans risque. Alors, lors du lancement de l'API, on copie le certificat généré dans les fichiers de l'app pour qu'il soit inclus dans son build, et qu'Android accepte son utilisation.
 
 C'est pour cette raison que dès lors qu'on relance l'API, il est nécessaire de recompiler l'app, sans quoi on ne pourra plus la contacter.
-
-certificat auto-généré
